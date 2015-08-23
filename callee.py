@@ -11,7 +11,7 @@ import sys
 
 
 __all__ = [
-    'Any',
+    'Any', 'Not', 'And', 'Or',
     'String', 'Unicode', 'Bytes',
 ]
 
@@ -25,20 +25,75 @@ class Matcher(object):
     def __eq__(self, other):
         raise NotImplementedError("matching not implemented")
 
-    # TODO(xion): overload & | ~ to work as `and`, `or`, `not`
-    # TODO(xion): but also provide And, Or and Not matchers separately
+    def __invert__(self):
+        return Not(self)
+
+    def __and__(self, other):
+        matchers = other._matchers if isinstance(other, And) else [self]
+        return And(self, *matchers)
+
+    def __or__(self, other):
+        matchers = other._matchers if isinstance(other, Or) else [self]
+        return Or(self, *matchers)
 
 
-class Any(object):
+# General matchers
+
+class Any(Matcher):
     """Matches any object."""
+
+    # TODO(xion): add a constructor that may optionally accept at type
+    # to perform an `isinstance` check against
 
     def __eq__(self, other):
         return True
 
 
+class Not(Matcher):
+    """Negates given matcher.
+
+    :param matcher: Matcher object to negate the semantics of
+    """
+    def __init__(self, matcher):
+        assert isinstance(matcher, Matcher), "Not() expects a matcher"
+        self._matcher = matcher
+
+    def __eq__(self, other):
+        return not self._matcher.__eq__(other)
+
+    def __invert__(self):
+        return self._matcher
+
+
+class And(Matcher):
+    """Matches the argument only if all given matchers do."""
+
+    def __init__(self, *matchers):
+        assert matchers, "And() expects at least one matcher"
+        assert all(isinstance(m, Matcher)
+                   for m in matchers), "And() expects matchers"
+        self._matchers = list(matchers)
+
+    def __eq__(self, other):
+        return all(matcher.__eq__(other) for matcher in self._matchers)
+
+
+class Or(Matcher):
+    """Matches the argument only if at least one given matcher does."""
+
+    def __init__(self, *matchers):
+        assert matchers, "Or() expects at least one matcher"
+        assert any(isinstance(m, Matcher)
+                   for m in matchers), "Or() expects matchers"
+        self._matchers = list(matchers)
+
+    def __eq__(self, other):
+        return any(matcher.__eq__(other) for matcher in self._matchers)
+
+
 # String matchers
 
-class StringMatcher(object):
+class StringMatcher(Matcher):
     """Matches some string type."""
 
     #: String class to match.
