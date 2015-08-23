@@ -1,0 +1,6 @@
+# Test-only dependencies
+
+pytest
+
+# TODO(xion): settle on Taipan from PyPI rather than pulling it from GitHub
+git+https://github.com/Xion/taipan.git#egg=taipan

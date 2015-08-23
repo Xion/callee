@@ -8,6 +8,7 @@ callee
 import ast
 import os
 from setuptools import setup
+import sys
 
 
 # Utility functions
@@ -73,6 +74,10 @@ def read_requirements(filename='requirements.txt'):
 tags = read_tags('callee.py')
 __doc__ = __doc__.format(**tags)
 
+tests_require = read_requirements('test')
+if sys.version_info < (3, 3):
+    tests_require.extend(read_requirements('test-py32'))
+
 setup(
     name="callee",
     version=tags['version'],
@@ -99,4 +104,6 @@ setup(
 
     platforms='any',
     py_modules=['callee'],
+
+    tests_require=tests_require,
 )
