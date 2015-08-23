@@ -75,6 +75,8 @@ tags = read_tags('callee.py')
 __doc__ = __doc__.format(**tags)
 
 tests_require = read_requirements('test')
+if sys.version_info < (2, 7):
+    tests_require.extend(read_requirements('test-py26'))
 if sys.version_info < (3, 3):
     tests_require.extend(read_requirements('test-py32'))
 

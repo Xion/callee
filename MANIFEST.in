@@ -1,0 +1,3 @@
+include requirements-test.txt
+include requirements-test-py32.txt
+recursive-exclude * *.pyc
