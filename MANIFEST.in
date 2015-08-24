@@ -1,3 +1,4 @@
 include requirements-test.txt
+include requirements-test-py26.txt
 include requirements-test-py32.txt
 recursive-exclude * *.pyc
