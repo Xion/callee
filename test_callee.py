@@ -6,24 +6,112 @@ try:
 except ImportError:
     import mock
 
-from taipan.testing import TestCase
+from taipan.testing import TestCase, skipIf, skipUnless
 
 import callee as __unit__
 
 
-class Any(TestCase):
-    test_none = lambda self: self._test(None)
-    test_zero = lambda self: self._test(0)
-    test_empty_string = lambda self: self._test('')
-    test_empty_list = lambda self: self._test([])
-    test_empty_tuple = lambda self: self._test(())
-    test_some_object = lambda self: self._test(object())
-    test_some_string = lambda self: self._test("Alice has a cat")
-    test_some_number = lambda self: self._test(42)
-    test_some_list = lambda self: self._test([1, 2, 3, 5, 8, 13])
-    test_some_tuple = lambda self: self._test(('foo', -1, ['bar']))
+class MatcherTestCase(TestCase):
+    """Base class for matcher test cases."""
 
-    def _test(self, *args, **kwargs):
+    def assert_match(self, matcher, value):
         m = mock.Mock()
-        m(*args, **kwargs)
-        m.assert_called_with(__unit__.Any())
+        m(value)
+        m.assert_called_with(matcher)
+
+    def assert_no_match(self, matcher, value):
+        m = mock.Mock()
+        m(value)
+        with self.assertRaises(AssertionError):
+            m.assert_called_with(matcher)
+
+IS_PY3 = __unit__.IS_PY3
+
+
+# General matchers
+
+class Any(MatcherTestCase):
+    test_none = lambda self: self.assert_match(None)
+    test_zero = lambda self: self.assert_match(0)
+    test_empty_string = lambda self: self.assert_match('')
+    test_empty_list = lambda self: self.assert_match([])
+    test_empty_tuple = lambda self: self.assert_match(())
+    test_some_object = lambda self: self.assert_match(object())
+    test_some_string = lambda self: self.assert_match("Alice has a cat")
+    test_some_number = lambda self: self.assert_match(42)
+    test_some_list = lambda self: self.assert_match([1, 2, 3, 5, 8, 13])
+    test_some_tuple = lambda self: self.assert_match(('foo', -1, ['bar']))
+
+    def assert_match(self, value):
+        super(Any, self).assert_match(__unit__.Any(), value)
+
+
+# String matchers
+
+class String(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_empty_string = lambda self: self.assert_match('')
+    test_some_string = lambda self: self.assert_match("Alice has a cat")
+
+    @skipIf(IS_PY3, "requires Python 2.x")
+    def test_some_bytes__py2(self):
+        self.assert_match(bytes("Alice has a cat"))
+
+    @skipUnless(IS_PY3, "requires Python 3.x")
+    def test_some_bytes__py3(self):
+        self.assert_no_match(bytes("Alice has a cat", 'ascii'))
+
+    test_some_object = lambda self: self.assert_no_match(object())
+    test_some_number = lambda self: self.assert_no_match(42)
+
+    def assert_match(self, value):
+        super(String, self).assert_match(__unit__.String(), value)
+
+    def assert_no_match(self, value):
+        super(String, self).assert_no_match(__unit__.String(), value)
+
+
+class Unicode(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_empty_unicode = lambda self: self.assert_match(u'')
+    test_some_unicode = lambda self: self.assert_match(u"Alice has a cat")
+
+    @skipIf(IS_PY3, "requires Python 2.x")
+    def test_some_string__py2(self):
+        self.assert_no_match("Alice has a cat")
+
+    @skipUnless(IS_PY3, "requires Python 3.x")
+    def test_some_string__py3(self):
+        self.assert_match("Alice has a cat")
+
+    test_some_object = lambda self: self.assert_no_match(object())
+    test_some_number = lambda self: self.assert_no_match(42)
+
+    def assert_match(self, value):
+        super(Unicode, self).assert_match(__unit__.Unicode(), value)
+
+    def assert_no_match(self, value):
+        super(Unicode, self).assert_no_match(__unit__.Unicode(), value)
+
+
+class Bytes(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_empty_unicode = lambda self: self.assert_no_match(u'')
+    test_some_unicode = lambda self: self.assert_no_match(u"Alice has a cat")
+
+    @skipIf(IS_PY3, "requires Python 2.x")
+    def test_some_string__py2(self):
+        self.assert_match("Alice has a cat")
+
+    @skipUnless(IS_PY3, "requires Python 3.x")
+    def test_some_string__py3(self):
+        self.assert_no_match("Alice has a cat")
+
+    test_some_object = lambda self: self.assert_no_match(object())
+    test_some_number = lambda self: self.assert_no_match(42)
+
+    def assert_match(self, value):
+        super(Bytes, self).assert_match(__unit__.Bytes(), value)
+
+    def assert_no_match(self, value):
+        super(Bytes, self).assert_no_match(__unit__.Bytes(), value)
