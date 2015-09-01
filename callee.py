@@ -22,8 +22,13 @@ IS_PY3 = sys.version[0] == '3'
 class Matcher(object):
     """Base class for argument matchers."""
 
-    def __eq__(self, other):
+    def match(self, value):
         raise NotImplementedError("matching not implemented")
+
+    # TODO(xion): prevent the methods below from being overridden via metaclass
+
+    def __eq__(self, other):
+        return self.match(other)
 
     def __invert__(self):
         return Not(self)
@@ -45,7 +50,7 @@ class Any(Matcher):
     # TODO(xion): add a constructor that may optionally accept at type
     # to perform an `isinstance` check against
 
-    def __eq__(self, other):
+    def match(self, value):
         return True
 
 
@@ -58,8 +63,8 @@ class Not(Matcher):
         assert isinstance(matcher, Matcher), "Not() expects a matcher"
         self._matcher = matcher
 
-    def __eq__(self, other):
-        return not self._matcher.__eq__(other)
+    def match(self, value):
+        return not self._matcher.match(value)
 
     def __invert__(self):
         return self._matcher
@@ -74,8 +79,8 @@ class And(Matcher):
                    for m in matchers), "And() expects matchers"
         self._matchers = list(matchers)
 
-    def __eq__(self, other):
-        return all(matcher.__eq__(other) for matcher in self._matchers)
+    def match(self, value):
+        return all(matcher.match(value) for matcher in self._matchers)
 
 
 class Or(Matcher):
@@ -87,8 +92,8 @@ class Or(Matcher):
                    for m in matchers), "Or() expects matchers"
         self._matchers = list(matchers)
 
-    def __eq__(self, other):
-        return any(matcher.__eq__(other) for matcher in self._matchers)
+    def match(self, value):
+        return any(matcher.match(value) for matcher in self._matchers)
 
 
 # String matchers
@@ -103,8 +108,8 @@ class StringMatcher(Matcher):
     def __init__(self):
         assert self.CLASS, "must specify string type to match"
 
-    def __eq__(self, other):
-        return isinstance(other, self.CLASS)
+    def match(self, value):
+        return isinstance(value, self.CLASS)
 
 
 class String(StringMatcher):
