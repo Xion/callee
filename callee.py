@@ -11,7 +11,8 @@ import sys
 
 
 __all__ = [
-    'Any', 'Not', 'And', 'Or',
+    'Any', 'Matching', 'InstanceOf', 'IsA',
+    'Not', 'And', 'Or',
     'String', 'Unicode', 'Bytes',
 ]
 
@@ -47,12 +48,39 @@ class Matcher(object):
 class Any(Matcher):
     """Matches any object."""
 
-    # TODO(xion): add a constructor that may optionally accept at type
-    # to perform an `isinstance` check against
-
     def match(self, value):
         return True
 
+
+class Matching(Matcher):
+    """Matches an object that satisfies given predicate."""
+
+    def __init__(self, predicate):
+        if not callable(predicate):
+            raise TypeError(
+                "Matching requires a predicate, got %r" % (predicate,))
+        self.predicate = predicate
+
+    def match(self, value):
+        return bool(self.predicate(value))
+
+
+class InstanceOf(Matcher):
+    """Matches an object that's an instance of given type."""
+
+    def __init__(self, type_):
+        if not isinstance(type_, type):
+            raise TypeError("InstanceOf requires a type, got %r" % (type_,))
+        self.type_ = type_
+
+    def match(self, value):
+        return isinstance(value, self.type_)
+
+#: Alias for :class:`InstanceOf`.
+IsA = InstanceOf
+
+
+# Logical combinators for matchers
 
 class Not(Matcher):
     """Negates given matcher.
