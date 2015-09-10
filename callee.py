@@ -17,6 +17,10 @@ __all__ = [
 ]
 
 
+# TODO(xion): promote into package and split into module
+# TODO(xion): introduce custom exception types rather than using built-ins
+
+
 IS_PY3 = sys.version[0] == '3'
 
 
@@ -29,6 +33,14 @@ class Matcher(object):
     # TODO(xion): prevent the methods below from being overridden via metaclass
 
     def __eq__(self, other):
+        if isinstance(other, Matcher):
+            # TODO(xion): although this most likely indicates that a Matcher
+            # has been used in production code (and thus passed to a mock),
+            # this is technically a valid use case, so we should introduce
+            # an Eq matcher that allows it for the miniscule number of users
+            # that require it, while retaining this sanity check for others
+            raise TypeError(
+                "incorrect use of matcher object as a value to match on")
         return self.match(other)
 
     def __invert__(self):
