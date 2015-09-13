@@ -7,7 +7,7 @@ callee
 """
 import ast
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 import sys
 
 
@@ -71,7 +71,7 @@ def read_requirements(filename='requirements.txt'):
 
 # setup() call
 
-tags = read_tags('callee.py')
+tags = read_tags(os.path.join('callee', '__init__.py'))
 __doc__ = __doc__.format(**tags)
 
 tests_require = read_requirements('test')
@@ -105,7 +105,7 @@ setup(
     ],
 
     platforms='any',
-    py_modules=['callee'],
+    packages=find_packages(exclude=['tests']),
 
     tests_require=tests_require,
 )
