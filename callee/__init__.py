@@ -17,7 +17,6 @@ __all__ = [
 ]
 
 
-# TODO(xion): promote into package and split into module
 # TODO(xion): introduce custom exception types rather than using built-ins
 
 
