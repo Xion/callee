@@ -1,53 +1,12 @@
 """
-Unit tests.
+Tests for string matchers.
 """
-try:
-    import unittest.mock as mock
-except ImportError:
-    import mock
-import sys
+from taipan.testing import skipIf, skipUnless
 
-from taipan.testing import TestCase, skipIf, skipUnless
-
-import callee as __unit__
+import callee.strings as __unit__
+from tests import IS_PY3, MatcherTestCase
 
 
-class MatcherTestCase(TestCase):
-    """Base class for matcher test cases."""
-
-    def assert_match(self, matcher, value):
-        m = mock.Mock()
-        m(value)
-        m.assert_called_with(matcher)
-
-    def assert_no_match(self, matcher, value):
-        m = mock.Mock()
-        m(value)
-        with self.assertRaises(AssertionError):
-            m.assert_called_with(matcher)
-
-IS_PY3 = sys.version[0] == '3'
-
-
-# General matchers
-
-class Any(MatcherTestCase):
-    test_none = lambda self: self.assert_match(None)
-    test_zero = lambda self: self.assert_match(0)
-    test_empty_string = lambda self: self.assert_match('')
-    test_empty_list = lambda self: self.assert_match([])
-    test_empty_tuple = lambda self: self.assert_match(())
-    test_some_object = lambda self: self.assert_match(object())
-    test_some_string = lambda self: self.assert_match("Alice has a cat")
-    test_some_number = lambda self: self.assert_match(42)
-    test_some_list = lambda self: self.assert_match([1, 2, 3, 5, 8, 13])
-    test_some_tuple = lambda self: self.assert_match(('foo', -1, ['bar']))
-
-    def assert_match(self, value):
-        super(Any, self).assert_match(__unit__.Any(), value)
-
-
-# String matchers
 
 class String(MatcherTestCase):
     test_none = lambda self: self.assert_no_match(None)
