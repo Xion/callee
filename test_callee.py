@@ -5,6 +5,7 @@ try:
     import unittest.mock as mock
 except ImportError:
     import mock
+import sys
 
 from taipan.testing import TestCase, skipIf, skipUnless
 
@@ -25,7 +26,7 @@ class MatcherTestCase(TestCase):
         with self.assertRaises(AssertionError):
             m.assert_called_with(matcher)
 
-IS_PY3 = __unit__.IS_PY3
+IS_PY3 = sys.version[0] == '3'
 
 
 # General matchers
