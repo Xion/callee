@@ -30,11 +30,11 @@ class BaseMatcher(object):
         return Not(self)
 
     def __and__(self, other):
-        matchers = other._matchers if isinstance(other, And) else [self]
+        matchers = other._matchers if isinstance(other, And) else [other]
         return And(self, *matchers)
 
     def __or__(self, other):
-        matchers = other._matchers if isinstance(other, Or) else [self]
+        matchers = other._matchers if isinstance(other, Or) else [other]
         return Or(self, *matchers)
 
 
