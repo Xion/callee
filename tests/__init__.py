@@ -5,7 +5,6 @@ try:
     import unittest.mock as mock
 except ImportError:
     import mock
-import sys
 
 from taipan.testing import TestCase
 
@@ -23,4 +22,3 @@ class MatcherTestCase(TestCase):
         m(value)
         with self.assertRaises(AssertionError):
             m.assert_called_with(matcher)
-

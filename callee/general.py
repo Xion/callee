@@ -49,4 +49,3 @@ class InstanceOf(BaseMatcher):
 
 #: Alias for :class:`InstanceOf`.
 IsA = InstanceOf
-

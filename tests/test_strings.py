@@ -8,7 +8,6 @@ import callee.strings as __unit__
 from tests import MatcherTestCase
 
 
-
 class String(MatcherTestCase):
     test_none = lambda self: self.assert_no_match(None)
     test_empty_string = lambda self: self.assert_match('')
