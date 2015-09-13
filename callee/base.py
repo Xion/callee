@@ -68,6 +68,20 @@ class Not(BaseMatcher):
     def __invert__(self):
         return self._matcher
 
+    def __and__(self, other):
+        # convert (~a) & (~b) into ~(a | b) which is one operation less
+        # but still equivalent as per de Morgan laws
+        if isinstance(other, Not):
+            return Not(self.matcher | other.matcher)
+        return super(Not, self).__and__(other)
+
+    def __or__(self, other):
+        # convert (~a) | (~b) into ~(a & b) which is one operation less
+        # but still equivalent as per de Morgan laws
+        if isinstance(other, Not):
+            return Not(self.matcher & other.matcher)
+        return super(Not, self).__or__(other)
+
 
 class And(BaseMatcher):
     """Matches the argument only if all given matchers do."""
