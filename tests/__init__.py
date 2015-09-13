@@ -24,5 +24,3 @@ class MatcherTestCase(TestCase):
         with self.assertRaises(AssertionError):
             m.assert_called_with(matcher)
 
-
-IS_PY3 = sys.version[0] == '3'

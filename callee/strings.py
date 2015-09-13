@@ -1,15 +1,11 @@
 """
 Matchers for strings.
 """
-import sys
-
+from callee._compat import IS_PY3
 from callee.base import BaseMatcher
 
 
 __all__ = ['String', 'Unicode', 'Bytes']
-
-
-IS_PY3 = sys.version[0] == '3'
 
 
 class StringMatcher(BaseMatcher):

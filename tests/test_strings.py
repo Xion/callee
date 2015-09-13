@@ -3,8 +3,9 @@ Tests for string matchers.
 """
 from taipan.testing import skipIf, skipUnless
 
+from callee._compat import IS_PY3
 import callee.strings as __unit__
-from tests import IS_PY3, MatcherTestCase
+from tests import MatcherTestCase
 
 
 
