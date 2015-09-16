@@ -25,10 +25,10 @@ class String(MatcherTestCase):
     test_some_number = lambda self: self.assert_no_match(42)
 
     def assert_match(self, value):
-        super(String, self).assert_match(__unit__.String(), value)
+        return super(String, self).assert_match(__unit__.String(), value)
 
     def assert_no_match(self, value):
-        super(String, self).assert_no_match(__unit__.String(), value)
+        return super(String, self).assert_no_match(__unit__.String(), value)
 
 
 class Unicode(MatcherTestCase):
@@ -48,10 +48,10 @@ class Unicode(MatcherTestCase):
     test_some_number = lambda self: self.assert_no_match(42)
 
     def assert_match(self, value):
-        super(Unicode, self).assert_match(__unit__.Unicode(), value)
+        return super(Unicode, self).assert_match(__unit__.Unicode(), value)
 
     def assert_no_match(self, value):
-        super(Unicode, self).assert_no_match(__unit__.Unicode(), value)
+        return super(Unicode, self).assert_no_match(__unit__.Unicode(), value)
 
 
 class Bytes(MatcherTestCase):
@@ -71,7 +71,7 @@ class Bytes(MatcherTestCase):
     test_some_number = lambda self: self.assert_no_match(42)
 
     def assert_match(self, value):
-        super(Bytes, self).assert_match(__unit__.Bytes(), value)
+        return super(Bytes, self).assert_match(__unit__.Bytes(), value)
 
     def assert_no_match(self, value):
-        super(Bytes, self).assert_no_match(__unit__.Bytes(), value)
+        return super(Bytes, self).assert_no_match(__unit__.Bytes(), value)

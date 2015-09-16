@@ -30,7 +30,10 @@ class Matching(BaseMatcher):
         self.predicate = predicate
 
     def match(self, value):
-        return bool(self.predicate(value))
+        try:
+            return bool(self.predicate(value))
+        except Exception:
+            return False
 
 #: Alias for :class:`Matching`.
 ArgThat = Matching

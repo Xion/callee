@@ -16,9 +16,11 @@ class MatcherTestCase(TestCase):
         m = mock.Mock()
         m(value)
         m.assert_called_with(matcher)
+        return True
 
     def assert_no_match(self, matcher, value):
         m = mock.Mock()
         m(value)
         with self.assertRaises(AssertionError):
             m.assert_called_with(matcher)
+        return True

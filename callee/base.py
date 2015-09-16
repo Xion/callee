@@ -37,6 +37,9 @@ class BaseMatcher(object):
         matchers = other._matchers if isinstance(other, Or) else [other]
         return Or(self, *matchers)
 
+    # TODO(xion): implement base __repr__, as well as specific __repr__
+    # for all matcher clases for better AssertionError messages in failed tests
+
 
 class Eq(BaseMatcher):
     """Matches given value exactly using the equality operator. """
