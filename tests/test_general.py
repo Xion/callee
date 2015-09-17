@@ -107,3 +107,36 @@ class InstanceOf(MatcherTestCase):
     def assert_no_match(self, value, type_):
         return super(InstanceOf, self) \
             .assert_no_match(__unit__.InstanceOf(type_), value)
+
+
+class SubclassOf(MatcherTestCase):
+
+    def test_invalid_type(self):
+        with self.assertRaises(TypeError):
+            __unit__.SubclassOf(object())
+
+    def test_non_types(self):
+        self.assert_no_match(None, object)
+        self.assert_no_match(0, object)
+        self.assert_no_match("Alice has a cat", object)
+        self.assert_no_match((), object)
+        self.assert_no_match([], object)
+
+    def test_types(self):
+        self.assert_match(self.Class, object)
+        self.assert_match(self.Class, self.Class)
+        self.assert_match(self.Class, object)
+        self.assert_match(object, object)
+
+    # Utility code
+
+    class Class(object):
+        pass
+
+    def assert_match(self, value, type_):
+        return super(SubclassOf, self) \
+            .assert_match(__unit__.SubclassOf(type_), value)
+
+    def assert_no_match(self, value, type_):
+        return super(SubclassOf, self) \
+            .assert_no_match(__unit__.SubclassOf(type_), value)

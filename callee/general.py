@@ -6,7 +6,7 @@ from callee.base import BaseMatcher
 
 __all__ = [
     'Any',
-    'Matching', 'ArgThat', 'InstanceOf', 'IsA',
+    'Matching', 'ArgThat', 'InstanceOf', 'IsA', 'SubclassOf', 'Inherits',
 ]
 
 
@@ -52,3 +52,19 @@ class InstanceOf(BaseMatcher):
 
 #: Alias for :class:`InstanceOf`.
 IsA = InstanceOf
+
+
+class SubclassOf(BaseMatcher):
+    """Matches a class that's a subclass of given type."""
+
+    def __init__(self, type_):
+        # TODO(xion): strict= argument
+        if not isinstance(type_, type):
+            raise TypeError("SubclassOf requires a type, got %r" % (type_,))
+        self.type_ = type_
+
+    def match(self, value):
+        return isinstance(value, type) and issubclass(value, self.type_)
+
+#: Alias for :class:`SubclassOf`.
+Inherits = SubclassOf
