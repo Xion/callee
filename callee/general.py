@@ -39,13 +39,21 @@ class Matching(BaseMatcher):
 ArgThat = Matching
 
 
-class InstanceOf(BaseMatcher):
-    """Matches an object that's an instance of given type."""
+# Type-based matchers
 
+class TypeMatcher(BaseMatcher):
+    """Matches an object to a type.
+    This class shouldn't be used directly.
+    """
     def __init__(self, type_):
         if not isinstance(type_, type):
-            raise TypeError("InstanceOf requires a type, got %r" % (type_,))
+            raise TypeError("%s requires a type, got %r" % (
+                self.__class__.__name__, type_))
         self.type_ = type_
+
+
+class InstanceOf(TypeMatcher):
+    """Matches an object that's an instance of given type."""
 
     def match(self, value):
         return isinstance(value, self.type_)
@@ -54,14 +62,12 @@ class InstanceOf(BaseMatcher):
 IsA = InstanceOf
 
 
-class SubclassOf(BaseMatcher):
+class SubclassOf(TypeMatcher):
     """Matches a class that's a subclass of given type."""
 
     def __init__(self, type_):
         # TODO(xion): strict= argument
-        if not isinstance(type_, type):
-            raise TypeError("SubclassOf requires a type, got %r" % (type_,))
-        self.type_ = type_
+        super(SubclassOf, self).__init__(type_)
 
     def match(self, value):
         return isinstance(value, type) and issubclass(value, self.type_)
