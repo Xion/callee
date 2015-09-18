@@ -20,6 +20,10 @@ class Any(BaseMatcher):
         return True
 
 
+# Function-based matchers
+
+# TODO(xion): Callable matcher
+
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 

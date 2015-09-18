@@ -12,7 +12,6 @@ class StringMatcher(BaseMatcher):
     """Matches some string type.
     This class shouldn't be used directly.
     """
-
     #: String class to match.
     #: Must be overridden in subclasses.
     CLASS = None
