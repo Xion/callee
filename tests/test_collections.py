@@ -35,3 +35,34 @@ class Iterable(MatcherTestCase):
     def assert_no_match(self, value):
         return super(Iterable, self) \
             .assert_no_match(__unit__.Iterable(), value)
+
+
+class Sequence(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_empty_string = lambda self: self.assert_match('')
+    test_empty_list = lambda self: self.assert_match([])
+    test_empty_set = lambda self: self.assert_no_match(set())
+    test_empty_tuple = lambda self: self.assert_match(())
+    test_empty_generator = lambda self: self.assert_no_match(x for x in ())
+
+    def test_some_string(self):
+        s = "Alice has a cat"
+        self.assert_match(s)
+        self.assert_match(s, of=str)
+
+    test_some_number = lambda self: self.assert_no_match(42)
+
+    def test_some_list(self):
+        l = [1, 2, 3, 5, 8, 13]
+        self.assert_match(l)
+        self.assert_match(l, of=int)
+
+    test_some_tuple = lambda self: self.assert_match(('foo', -1, ['bar']))
+
+    def assert_match(self, value, of=None):
+        return super(Sequence, self).assert_match(__unit__.Sequence(of), value)
+
+    def assert_no_match(self, value, of=None):
+        return super(Sequence, self) \
+            .assert_no_match(__unit__.Sequence(of), value)
