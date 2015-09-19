@@ -1,8 +1,8 @@
 """
 Tests for general matchers.
 """
-from tests import MatcherTestCase
 import callee.general as __unit__
+from tests import MatcherTestCase
 
 
 class Any(MatcherTestCase):
