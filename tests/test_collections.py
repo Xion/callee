@@ -59,6 +59,8 @@ class Sequence(MatcherTestCase):
         self.assert_match(l, of=int)
 
     test_some_tuple = lambda self: self.assert_match(('foo', -1, ['bar']))
+    test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
+    test_some_object = lambda self: self.assert_no_match(object())
 
     def assert_match(self, value, of=None):
         return super(Sequence, self).assert_match(__unit__.Sequence(of), value)
@@ -66,3 +68,48 @@ class Sequence(MatcherTestCase):
     def assert_no_match(self, value, of=None):
         return super(Sequence, self) \
             .assert_no_match(__unit__.Sequence(of), value)
+
+
+class List(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_empty_string = lambda self: self.assert_no_match('')
+    test_empty_list = lambda self: self.assert_match([])
+    test_empty_set = lambda self: self.assert_no_match(set())
+    test_empty_tuple = lambda self: self.assert_no_match(())
+    test_empty_generator = lambda self: self.assert_no_match(x for x in ())
+    test_some_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_number = lambda self: self.assert_no_match(42)
+    test_some_list = lambda self: self.assert_match([1, 2, 3, 5, 8, 13])
+    test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
+    test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def assert_match(self, value, of=None):
+        return super(List, self).assert_match(__unit__.List(of), value)
+
+    def assert_no_match(self, value, of=None):
+        return super(List, self).assert_no_match(__unit__.List(of), value)
+
+
+class Set(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_empty_string = lambda self: self.assert_no_match('')
+    test_empty_list = lambda self: self.assert_no_match([])
+    test_empty_set = lambda self: self.assert_match(set())
+    test_empty_tuple = lambda self: self.assert_no_match(())
+    test_empty_generator = lambda self: self.assert_no_match(x for x in ())
+    test_some_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_number = lambda self: self.assert_no_match(42)
+    test_some_list = lambda self: self.assert_no_match([1, 2, 3, 5, 8, 13])
+    test_some_set = lambda self: self.assert_match(set([2, 4, 6, 8, 10]))
+    test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
+    test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def assert_match(self, value, of=None):
+        return super(Set, self).assert_match(__unit__.Set(of), value)
+
+    def assert_no_match(self, value, of=None):
+        return super(Set, self).assert_no_match(__unit__.Set(of), value)

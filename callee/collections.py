@@ -94,6 +94,9 @@ class Set(CollectionMatcher):
     CLASS = collections.Set
 
 
+# TODO(xion): Tuple matcher
+
+
 # Mappings
 
 class MappingMatcher(CollectionMatcher):
