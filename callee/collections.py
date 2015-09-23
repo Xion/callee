@@ -113,12 +113,13 @@ class MappingMatcher(CollectionMatcher):
         assert self.CLASS, "must specify mapping type to match"
 
         self.keys = self.values = None
-        try:
-            self.keys, self.values = map(self._validate_argument, of)
-        except ValueError:
-            raise TypeError(
-                "argument of %s has to be a pair of types or matchers" % (
-                    self.__class__.__name__,))
+        if of is not None:
+            try:
+                self.keys, self.values = map(self._validate_argument, of)
+            except ValueError:
+                raise TypeError(
+                    "argument of %s has to be a pair of types or matchers" % (
+                        self.__class__.__name__,))
 
     def match(self, value):
         if not isinstance(value, self.CLASS):
