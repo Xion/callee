@@ -1,6 +1,8 @@
 """
 Tests for collections' matchers.
 """
+import collections
+
 import callee.collections as __unit__
 from tests import MatcherTestCase
 
@@ -37,6 +39,8 @@ class Iterable(MatcherTestCase):
         return super(Iterable, self) \
             .assert_no_match(__unit__.Iterable(), value)
 
+
+# Ordinary collections
 
 class Sequence(MatcherTestCase):
     test_none = lambda self: self.assert_no_match(None)
@@ -119,6 +123,79 @@ class Set(MatcherTestCase):
         return super(Set, self).assert_no_match(__unit__.Set(of), value)
 
 
+# Mappings
+
+class CustomDict(collections.MutableMapping):
+    """"Custom, no-op mapping class that just wraps a regular Python dict
+    but is not a Python dict itself.
+    """
+    def __init__(self, iterable=(), **kwargs):
+        if isinstance(iterable, collections.Mapping):
+            iterable = iterable.items()
+
+        self.d = {}
+        for k, v in iterable:
+            self.d[k] = v
+        self.d.update(kwargs)
+
+    def __delitem__(self, key):
+        del self.d[key]
+
+    def __getitem__(self, key):
+        return self.d[key]
+
+    def __iter__(self):
+        return iter(self.d)
+
+    def __len__(self):
+        return len(self.d)
+
+    def __setitem__(self, key, value):
+        self.d[key] = value
+
+
+class Mapping(MatcherTestCase):
+
+    def test_invalid_arg(self):
+        with self.assertRaises(TypeError):
+            self.assert_match(None, of='not a pair of matchers')
+
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_empty_string = lambda self: self.assert_no_match('')
+    test_empty_list = lambda self: self.assert_no_match([])
+    test_empty_set = lambda self: self.assert_no_match(set())
+    test_empty_tuple = lambda self: self.assert_no_match(())
+    test_empty_dict__regular = lambda self: self.assert_match({})
+    test_empty_dict__custom = lambda self: self.assert_match(CustomDict())
+    test_empty_generator = lambda self: self.assert_no_match(x for x in ())
+    test_some_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_number = lambda self: self.assert_no_match(42)
+    test_some_list = lambda self: self.assert_no_match([1, 2, 3, 5, 8, 13])
+    test_some_set = lambda self: self.assert_no_match(set([2, 4, 6, 8, 10]))
+    test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
+
+    def test_some_dict__regular(self):
+        d = {'a': 1}
+        self.assert_match(d)
+        self.assert_match(d, of=(str, int))
+
+    def test_some_dict__custom(self):
+        d = CustomDict({'a': 1})
+        self.assert_match(d)
+        self.assert_match(d, of=(str, int))
+
+    test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def assert_match(self, value, of=None):
+        return super(Mapping, self).assert_match(__unit__.Mapping(of), value)
+
+    def assert_no_match(self, value, of=None):
+        return super(Mapping, self) \
+            .assert_no_match(__unit__.Mapping(of), value)
+
+
 class Dict(MatcherTestCase):
 
     def test_invalid_arg(self):
@@ -131,7 +208,8 @@ class Dict(MatcherTestCase):
     test_empty_list = lambda self: self.assert_no_match([])
     test_empty_set = lambda self: self.assert_no_match(set())
     test_empty_tuple = lambda self: self.assert_no_match(())
-    test_empty_dict = lambda self: self.assert_match({})
+    test_empty_dict__regular = lambda self: self.assert_match({})
+    test_empty_dict__custom = lambda self: self.assert_no_match(CustomDict())
     test_empty_generator = lambda self: self.assert_no_match(x for x in ())
     test_some_string = lambda self: self.assert_no_match("Alice has a cat")
     test_some_number = lambda self: self.assert_no_match(42)
@@ -139,10 +217,15 @@ class Dict(MatcherTestCase):
     test_some_set = lambda self: self.assert_no_match(set([2, 4, 6, 8, 10]))
     test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
 
-    def test_some_dict(self):
+    def test_some_dict__regular(self):
         d = {'a': 1}
         self.assert_match(d)
         self.assert_match(d, of=(str, int))
+
+    def test_some_dict__custom(self):
+        d = CustomDict({'a': 1})
+        self.assert_no_match(d)
+        self.assert_no_match(d, of=(str, int))
 
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
