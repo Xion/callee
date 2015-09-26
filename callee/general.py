@@ -1,12 +1,15 @@
 """
 General matchers.
 """
+import inspect
+
 from callee.base import BaseMatcher
 
 
 __all__ = [
-    'Any',
-    'Matching', 'ArgThat', 'InstanceOf', 'IsA', 'SubclassOf', 'Inherits',
+    'Any', 'Matching', 'ArgThat',
+    'Callable', 'Function', 'GeneratorFunction',
+    'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
 ]
 
 
@@ -19,10 +22,6 @@ class Any(BaseMatcher):
     def match(self, value):
         return True
 
-
-# Function-based matchers
-
-# TODO(xion): Callable matcher
 
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
@@ -43,7 +42,34 @@ class Matching(BaseMatcher):
 ArgThat = Matching
 
 
-# Type-based matchers
+# Function-related matchers
+
+class Callable(BaseMatcher):
+    """Matches any callable object."""
+
+    def match(self, value):
+        return callable(value)
+
+
+class Function(BaseMatcher):
+    """Matches any Python function."""
+
+    def match(self, value):
+        return inspect.isfunction(value)
+
+
+class GeneratorFunction(BaseMatcher):
+    """Matches a generator function, i.e. one that uses `yield` in its body.
+
+    Note that this is distinct from matching a _generator_
+    which is an iterable result of calling the generator function
+    (among other things).
+    """
+    def match(self, value):
+        return inspect.isgeneratorfunction(value)
+
+
+# Type-related matchers
 
 class TypeMatcher(BaseMatcher):
     """Matches an object to a type.
@@ -78,3 +104,17 @@ class SubclassOf(TypeMatcher):
 
 #: Alias for :class:`SubclassOf`.
 Inherits = SubclassOf
+
+
+class Type(BaseMatcher):
+    """Matches any Python type."""
+
+    def match(self, value):
+        return isinstance(value, type)
+
+
+class Class(BaseMatcher):
+    """Matches a class (but not any other type)."""
+
+    def match(self, value):
+        return inspect.isclass(value)

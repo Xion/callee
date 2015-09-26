@@ -95,6 +95,7 @@ class Set(CollectionMatcher):
 
 
 # TODO(xion): Tuple matcher
+# TODO(xion): Generator matcher
 
 
 # Mappings
