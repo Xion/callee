@@ -90,7 +90,14 @@ class Callable(MatcherTestCase):
                 pass
         self.assert_match(Foo())
 
+    def test_generator_function(self):
+        def func():
+            yield
+        self.assert_match(func)
+        self.assert_no_match(func())
+
     test_lambda = lambda self: self.assert_match(lambda: ())
+    test_generator = lambda self: self.assert_no_match(x for x in ())
 
     def assert_match(self, value):
         return super(Callable, self).assert_match(__unit__.Callable(), value)
@@ -120,7 +127,14 @@ class Function(MatcherTestCase):
                 pass
         self.assert_no_match(Foo())
 
+    def test_generator_function(self):
+        def func():
+            yield
+        self.assert_match(func)
+        self.assert_no_match(func())
+
     test_lambda = lambda self: self.assert_match(lambda: ())
+    test_generator = lambda self: self.assert_no_match(x for x in ())
 
     def assert_match(self, value):
         return super(Function, self).assert_match(__unit__.Function(), value)
@@ -128,6 +142,44 @@ class Function(MatcherTestCase):
     def assert_no_match(self, value):
         return super(Function, self) \
             .assert_no_match(__unit__.Function(), value)
+
+
+class GeneratorFunction(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def test_function(self):
+        def func():
+            pass
+        self.assert_no_match(func)
+
+    test_method = lambda self: self.assert_no_match(str.upper)
+    test_type = lambda self: self.assert_no_match(object)
+
+    def test_callable_object(self):
+        class Foo(object):
+            def __call__(self):
+                pass
+        self.assert_no_match(Foo())
+
+    def test_generator_function(self):
+        def func():
+            yield
+        self.assert_match(func)
+        self.assert_no_match(func())
+
+    test_lambda = lambda self: self.assert_no_match(lambda: ())
+    test_generator = lambda self: self.assert_no_match(x for x in ())
+
+    def assert_match(self, value):
+        return super(GeneratorFunction, self) \
+            .assert_match(__unit__.GeneratorFunction(), value)
+
+    def assert_no_match(self, value):
+        return super(GeneratorFunction, self) \
+            .assert_no_match(__unit__.GeneratorFunction(), value)
 
 
 # Type-related matchers
