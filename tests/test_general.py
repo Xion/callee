@@ -68,6 +68,40 @@ class Matching(MatcherTestCase):
             .assert_no_match(__unit__.Matching(predicate), value)
 
 
+# Function-related matchers
+
+class Callable(MatcherTestCase):
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def test_function(self):
+        def func():
+            pass
+        self.assert_match(func)
+
+    test_method = lambda self: self.assert_match(str.upper)
+    test_type = lambda self: self.assert_match(object)
+
+    def test_callable_object(self):
+        class Foo(object):
+            def __call__(self):
+                pass
+        self.assert_match(Foo())
+
+    test_lambda = lambda self: self.assert_match(lambda: ())
+
+    def assert_match(self, value):
+        return super(Callable, self).assert_match(__unit__.Callable(), value)
+
+    def assert_no_match(self, value):
+        return super(Callable, self) \
+            .assert_no_match(__unit__.Callable(), value)
+
+
+# Type-related matchers
+
 class InstanceOf(MatcherTestCase):
 
     def test_invalid_type(self):
