@@ -8,19 +8,26 @@ __license__ = "Simplified BSD"
 
 
 from callee.base import And, Or, Not
+from callee.collections import Dict, List, Mapping, Iterable, Sequence, Set
 from callee.general import \
     Any, ArgThat, IsA, Inherits, InstanceOf, Matching, SubclassOf
 from callee.strings import Bytes, String, Unicode
 
 
 __all__ = [
+    'BaseMatcher', 'Eq',
     'Not', 'And', 'Or',
-    'Any',
-    'Matching', 'ArgThat', 'InstanceOf', 'IsA', 'SubclassOf', 'Inherits',
+
+    'Iterable', 'Sequence',
+    'List', 'Set', 'Mapping', 'Dict',
+
+    'Any', 'Matching', 'ArgThat',
+    'Callable', 'Function', 'GeneratorFunction',
+    'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
+
     'String', 'Unicode', 'Bytes',
 ]
 
 
 # TODO(xion): operator-based matchers (GreaterThan, ShorterThan, etc.)
-# TODO(xion): collection matchers (lists, sequences, dicts, ...)
 # TODO(xion): matchers for positional & keyword arguments
