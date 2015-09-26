@@ -64,7 +64,7 @@ class Iterable(CollectionMatcher):
         #
         # An otherwise unspecified iterable can't be iterated upon
         # more than once safely, because it could be a one-off iterable
-        # (e.g. a generator comprehension) that's exhausted after a single pass.
+        # (e.g. generator comprehension) that's exhausted after a single pass.
         #
         # Thus the sole act of checking the element types would alter
         # the object we're trying to match, and potentially cause all sorts
