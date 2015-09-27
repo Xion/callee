@@ -31,5 +31,6 @@ __all__ = [
 ]
 
 
+# TODO(xion): numeric matchers (Int, Long, Float, Complex, etc.)
 # TODO(xion): operator-based matchers (GreaterThan, ShorterThan, etc.)
 # TODO(xion): matchers for positional & keyword arguments
