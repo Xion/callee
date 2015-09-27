@@ -7,7 +7,7 @@ __author__ = "Karol Kuczmarski"
 __license__ = "Simplified BSD"
 
 
-from callee.base import And, Or, Not
+from callee.base import And, Eq, Is, Or, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import \
@@ -16,7 +16,7 @@ from callee.strings import Bytes, String, Unicode
 
 
 __all__ = [
-    'BaseMatcher', 'Eq',
+    'Eq', 'Is',
     'Not', 'And', 'Or',
 
     'Iterable', 'Generator',

@@ -4,7 +4,8 @@ Base classes for argument matcher.
 
 
 __all__ = [
-    'BaseMatcher', 'Eq',
+    'BaseMatcher',
+    'Eq', 'Is',
     'Not', 'And', 'Or',
 ]
 
@@ -41,8 +42,14 @@ class BaseMatcher(object):
     # for all matcher clases for better AssertionError messages in failed tests
 
 
+# TODO(xion): add the Matcher class as an allowed base class for custom,
+# user-written matchers
+
+
+# Special cases around equality/identity
+
 class Eq(BaseMatcher):
-    """Matches given value exactly using the equality operator. """
+    """Matches given value exactly using the equality operator."""
 
     # TODO(xion): document the potential rare use of this class, which
     # is asserting on mock calls that pass matcher objects in *production* code
@@ -52,6 +59,16 @@ class Eq(BaseMatcher):
 
     def __eq__(self, other):
         return self.value == other
+
+
+class Is(BaseMatcher):
+    """Matches given value using the identity (``is``) operator."""
+
+    def __init__(self, value):
+        self.value = value
+
+    def __eq__(self, other):
+        return self.value is other
 
 
 # Logical combinators for matchers
