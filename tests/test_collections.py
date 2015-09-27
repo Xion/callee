@@ -23,12 +23,8 @@ class Iterable(MatcherTestCase):
     def test_some_generator(self):
         gen = (x for x in [1, 2, 5])
         self.assert_match(gen)
-
-        # ensure that the generator is still usable after the test
-        # (i.e. the matcher didn't go over it, which would exhaust it)
-        for x in gen:
-            return
-        self.fail("matcher shouldn't have iterated over the passed generator")
+        self.assertNotEmpty(
+            gen, msg="matcher shouldn't have iterated over the generator")
 
     test_some_object = lambda self: self.assert_no_match(object())
 
@@ -56,12 +52,8 @@ class Generator(MatcherTestCase):
     def test_some_generator(self):
         gen = (x for x in [1, 2, 5])
         self.assert_match(gen)
-
-        # ensure that the generator is still usable after the test
-        # (i.e. the matcher didn't go over it, which would exhaust it)
-        for x in gen:
-            return
-        self.fail("matcher shouldn't have iterated over the passed generator")
+        self.assertNotEmpty(
+            gen, msg="matcher shouldn't have iterated over the generator")
 
     test_some_object = lambda self: self.assert_no_match(object())
 
