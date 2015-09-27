@@ -37,8 +37,8 @@ or extremely general::
     my_mock.assert_called_with(ANY, ANY, ANY)
     # passes as long as argument count is the same
 
-This can make your tests over-specified (and thus fragile) or too broad, missing some erroneous
-cases and possibly letting your code fail in production.
+The former can make your tests over-specified, and thus fragile.
+The latter could make them too broad, missing some erroneous cases and possibly letting your code fail in production.
 
 *callee* provides **argument matchers** that allow you to be exactly as precise as you want::
 
@@ -55,3 +55,20 @@ It has plenty of matcher types to fit all common and uncommon needs, and you can
 
 .. _mocking library: https://docs.python.org/3/library/unittest.mock.html
 .. _backport: https://pypi.python.org/pypi/mock
+
+
+Installation
+~~~~~~~~~~~~
+
+Installing *callee* is easy with pip.
+
+    $ pip install callee
+
+*callee* works with Python 2.6 or newer, and both the *unittest.mock* module from Python 3.3+ and its backport.
+
+
+API reference
+~~~~~~~~~~~~~
+
+See the `documentation <http://callee.readthedocs.org>`_ for complete reference on
+the library usage and all available matchers.

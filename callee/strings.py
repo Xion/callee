@@ -48,3 +48,8 @@ class Bytes(StringMatcher):
     On Python 3, byte strings are a separate type, distinct from :type:`str`.
     """
     CLASS = bytes
+
+
+# TODO(xion): StartsWith and EndsWith matchers
+# TODO(xion): Regex matcher
+# TODO(xion): Glob matcher
