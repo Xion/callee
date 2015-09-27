@@ -13,7 +13,7 @@ from callee.base import BaseMatcher
 __all__ = [
     'Number',
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
-    'Integral', 'Integer', 'Long',
+    'Integral', 'Integer', 'Int', 'Long',
 ]
 
 
@@ -97,6 +97,9 @@ class Integer(NumericMatcher):
     On Python 2, this matches the :type:`int` integers exclusively.
     """
     CLASS = int
+
+#: Alias for :class:`Integer`.
+Int = Integer
 
 
 class Long(NumericMatcher):

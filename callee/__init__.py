@@ -12,6 +12,8 @@ from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import \
     Any, ArgThat, IsA, Inherits, InstanceOf, Matching, SubclassOf
+from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
+                            Long, Number, Rational, Real)
 from callee.strings import Bytes, String, Unicode
 
 
@@ -27,10 +29,13 @@ __all__ = [
     'Callable', 'Function', 'GeneratorFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
 
+    'Number',
+    'Complex', 'Real', 'Float', 'Rational', 'Fraction',
+    'Integral', 'Integer', 'Int', 'Long',
+
     'String', 'Unicode', 'Bytes',
 ]
 
 
-# TODO(xion): numeric matchers (Int, Long, Float, Complex, etc.)
 # TODO(xion): operator-based matchers (GreaterThan, ShorterThan, etc.)
 # TODO(xion): matchers for positional & keyword arguments
