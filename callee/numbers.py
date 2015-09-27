@@ -17,69 +17,75 @@ __all__ = [
 ]
 
 
-class Number(BaseMatcher):
-    """Matches any number (integer, float, complex, etc.)."""
-
-    def match(self, value):
-        return isinstance(value, numbers.Number)
-
-
 class NumericMatcher(BaseMatcher):
     """Matches some number type.
     This class shouldn't be used directly.
     """
-    #: Abstract number class to match.
-    #: If omitted, ``CONCRETE_TYPE`` is used exclusively instead.
-    ABSTRACT_CLASS = None
+    #: Number class to match.
+    #: Must be overridden in subclasses.
+    CLASS = None
 
-    #: Concrete number type to match if strict matching was chosen.
-    #: Must be overridden in subclases.
-    CONCRETE_TYPE = None
-
-    def __init__(self, strict=True):
-        assert self.CONCRETE_TYPE, "must specify number type to match"
-
-        self.type_ = self.ABSTRACT_CLASS
-        if strict or not self.type_:
-            self.type_ = self.CONCRETE_TYPE
+    def __init__(self):
+        assert self.CLASS, "must specify number type to match"
 
     def match(self, value):
-        return isinstance(value, self.type_)
+        return isinstance(value, self.CLASS)
+
+
+class Number(NumericMatcher):
+    """Matches any number
+    (integer, float, complex, custom number types, etc.).
+    """
+    CLASS = numbers.Number
 
 
 class Complex(NumericMatcher):
-    """Matches a complex number."""
+    """Matches any complex number.
 
-    ABSTRACT_CLASS = numbers.Complex
-    CONCRETE_TYPE = complex
+    This *includes* all real, rational, and integer numbers as well,
+    which in Python translates to `float`\ s, fractions, and `int`\ egers.
+    """
+    CLASS = numbers.Complex
+
+
+# TODO(xion): consider adding a dedicated matcher for the ``complex`` type;
+# right now, though, ``IsA(complex)`` and ``Complex() & ~Real()`` are probably
+# acceptable workarounds
 
 
 class Real(NumericMatcher):
-    """Matches a real (floating point) number."""
+    """Matches any real number.
 
-    ABSTRACT_CLASS = numbers.Real
-    CONCRETE_TYPE = float
+    This includes all rational and integer numbers as well, which in Python
+    translates to fractions, and `int`\ egers.
+    """
+    CLASS = numbers.Real
 
-#: Alias for :class:`Real`.
-Float = Real
+
+class Float(NumericMatcher):
+    """Matches a floating point number."""
+
+    CLASS = float
 
 
 class Rational(NumericMatcher):
-    """Matches a rational number."""
+    """Matches a rational number.
+    This includes all `int`\ eger numbers as well.
+    """
+    CLASS = numbers.Rational
 
-    ABSTRACT_CLASS = numbers.Rational
-    CONCRETE_TYPE = fractions.Fraction
 
-#: Alias for :class:`Rational`.
-Fraction = Rational
+class Fraction(NumericMatcher):
+    """Matches a fraction object."""
+
+    CLASS = fractions.Fraction
 
 
 class Integral(NumericMatcher):
     """Matches any integer.
     This ignores the length of integer's internal representation on Python 2.
     """
-    ABSTRACT_CLASS = numbers.Integral
-    CONCRETE_TYPE = int if IS_PY3 else (int, long)
+    CLASS = int if IS_PY3 else (int, long)
 
 
 class Integer(NumericMatcher):
@@ -90,7 +96,7 @@ class Integer(NumericMatcher):
 
     On Python 2, this matches the :type:`int` integers exclusively.
     """
-    CONCRETE_TYPE = int
+    CLASS = int
 
 
 class Long(NumericMatcher):
@@ -101,4 +107,4 @@ class Long(NumericMatcher):
 
     On Python 2, this matches the :type:`long` integers exclusively.
     """
-    CONCRETE_TYPE = int if IS_PY3 else long
+    CLASS = int if IS_PY3 else long
