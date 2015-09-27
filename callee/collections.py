@@ -4,14 +4,16 @@ Matchers for collections.
 from __future__ import absolute_import
 
 import collections
+import inspect
 
 from callee.base import BaseMatcher
 from callee.general import InstanceOf
 
 
 __all__ = [
-    'Iterable', 'Sequence',
-    'List', 'Set', 'Mapping', 'Dict',
+    'Iterable', 'Generator',
+    'Sequence', 'List', 'Set',
+    'Mapping', 'Dict',
 ]
 
 
@@ -52,8 +54,6 @@ class CollectionMatcher(BaseMatcher):
         return True
 
 
-# Ordinary collections
-
 class Iterable(CollectionMatcher):
     """Matches any iterable."""
 
@@ -73,6 +73,18 @@ class Iterable(CollectionMatcher):
         #
         super(Iterable, self).__init__(of=None)
 
+
+class Generator(BaseMatcher):
+    """Matches an iterable that's a generator.
+
+    A generator can be a generator expression ("comprehension")
+    or an invocation of a function that `yield`\ s objects.
+    """
+    def match(self, value):
+        return inspect.isgenerator(value)
+
+
+# Ordinary collections
 
 class Sequence(CollectionMatcher):
     """Matches a sequence of given items.
@@ -94,8 +106,8 @@ class Set(CollectionMatcher):
     CLASS = collections.Set
 
 
-# TODO(xion): Tuple matcher
-# TODO(xion): Generator matcher
+# TODO(xion): Tuple matcher, with of= that accepts a tuple of matchers
+# so that tuple elements can be also matched on
 
 
 # Mappings
