@@ -60,11 +60,12 @@ It has plenty of matcher types to fit all common and uncommon needs, and you can
 Installation
 ~~~~~~~~~~~~
 
-Installing *callee* is easy with pip.
+Installing *callee* is easy with pip::
 
     $ pip install callee
 
-*callee* works with Python 2.6 or newer, and both the *unittest.mock* module from Python 3.3+ and its backport.
+*callee* support goes all the way to Python 2.6.
+It also works both with the *unittest.mock* module from Python 3.3+ or its backport.
 
 
 API reference
