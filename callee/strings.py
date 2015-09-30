@@ -22,6 +22,9 @@ class StringMatcher(BaseMatcher):
     def match(self, value):
         return isinstance(value, self.CLASS)
 
+    def __repr__(self):
+        return "<%s>" % (self.__class__.__name__,)
+
 
 class String(StringMatcher):
     """Matches any string.

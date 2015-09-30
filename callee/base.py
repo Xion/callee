@@ -19,6 +19,9 @@ class BaseMatcher(object):
     def match(self, value):
         raise NotImplementedError("matching not implemented")
 
+    def __repr__(self):
+        return "<unspecified matcher>"
+
     # TODO(xion): prevent the methods below from being overridden via metaclass
 
     def __eq__(self, other):
@@ -37,9 +40,6 @@ class BaseMatcher(object):
     def __or__(self, other):
         matchers = other._matchers if isinstance(other, Or) else [other]
         return Or(self, *matchers)
-
-    # TODO(xion): implement base __repr__, as well as specific __repr__
-    # for all matcher clases for better AssertionError messages in failed tests
 
 
 # TODO(xion): add the Matcher class as an allowed base class for custom,
@@ -60,6 +60,9 @@ class Eq(BaseMatcher):
     def __eq__(self, other):
         return self.value == other
 
+    def __repr__(self):
+        return "<Eq %r>" % (self.value,)
+
 
 class Is(BaseMatcher):
     """Matches given value using the identity (``is``) operator."""
@@ -69,6 +72,9 @@ class Is(BaseMatcher):
 
     def __eq__(self, other):
         return self.value is other
+
+    def __repr__(self):
+        return "<Is %r>" % (self.value,)
 
 
 # Logical combinators for matchers
@@ -84,6 +90,9 @@ class Not(BaseMatcher):
 
     def match(self, value):
         return not self._matcher.match(value)
+
+    def __repr__(self):
+        return "not %r" % (self.matcher,)
 
     def __invert__(self):
         return self._matcher
@@ -115,6 +124,9 @@ class And(BaseMatcher):
     def match(self, value):
         return all(matcher.match(value) for matcher in self._matchers)
 
+    def __repr__(self, value):
+        return "<%s>" % " and ".join(map(repr, self.matchers))
+
 
 class Or(BaseMatcher):
     """Matches the argument only if at least one given matcher does."""
@@ -127,3 +139,6 @@ class Or(BaseMatcher):
 
     def match(self, value):
         return any(matcher.match(value) for matcher in self._matchers)
+
+    def __repr__(self, value):
+        return "<%s>" % " or ".join(map(repr, self.matchers))

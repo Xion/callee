@@ -7,7 +7,7 @@ import collections
 import inspect
 
 from callee.base import BaseMatcher
-from callee.general import InstanceOf
+from callee.general import Any, InstanceOf
 
 
 __all__ = [
@@ -53,6 +53,17 @@ class CollectionMatcher(BaseMatcher):
             return all(self.of == item for item in value)
         return True
 
+    def __repr__(self):
+        """Return a readable representation of the matcher
+        Used mostly for AssertionError messages in failed tests.
+
+        Example::
+
+            <List[<Integer>]>
+        """
+        of = "" if self.of is None else "[%r]" % (self.of,)
+        return "<%s%s>" % (self.__class__.__name__, of)
+
 
 class Iterable(CollectionMatcher):
     """Matches any iterable."""
@@ -82,6 +93,9 @@ class Generator(BaseMatcher):
     """
     def match(self, value):
         return inspect.isgenerator(value)
+
+    def __repr__(self):
+        return "<Generator>"
 
 
 # Ordinary collections
@@ -141,6 +155,21 @@ class MappingMatcher(CollectionMatcher):
             return all(self.keys == k and self.values == v
                        for k, v in value.items())
         return True
+
+    def __repr__(self):
+        """Return a readable representation of the matcher
+        Used mostly for AssertionError messages in failed tests.
+
+        Example::
+
+            <Dict[<String> => <Any>]>
+        """
+        of = ""
+        if self.keys is not None or self.values is not None:
+            keys = repr(Any() if self.keys is None else self.keys)
+            values = repr(Any() if self.values is None else self.values)
+            of = "[%s => %s]" % (keys, values)
+        return "<%s%s>" % (self.__class__.__name__, of)
 
 
 class Mapping(MappingMatcher):
