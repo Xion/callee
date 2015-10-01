@@ -1,6 +1,9 @@
 """
-Base classes for argument matcher.
+Base classes for argument matchers.
 """
+import inspect
+
+from callee._compat import metaclass
 
 
 __all__ = [
@@ -10,6 +13,47 @@ __all__ = [
 ]
 
 
+class BaseMatcherMetaclass(type):
+    """Metaclass for :class:`BaseMatcher`."""
+
+    #: What __magic__ methods can be overriden by user-defined subclasses.
+    #:
+    #: Any method not on this list can only be redefined by classes defined
+    #: within this module. This prevents users from accidentally interfering
+    #: with fundamental matcher functionality while writing their own matchers.
+    #:
+    USER_OVERRIDABLE_MAGIC_METHODS = ('init', 'repr')
+
+    # TODO(xion): write tests for this logic
+    def __new__(meta, classname, bases, dict_):
+        """Create a new matcher class."""
+        # ensure that no important magic methods are being overridden
+        for name, member in dict_.items():
+            if not (name.startswith('__') and name.endswith('__')):
+                continue
+
+            name = name[2:-2]
+            if not name or name in meta.USER_OVERRIDABLE_MAGIC_METHODS:
+                continue
+
+            # non-function attributes, like __slots__, are harmless
+            if not inspect.isfunction(member):
+                continue
+
+            # classes in this very module are exempt, since they define
+            # the very behavior of matchers we want to protect
+            if member.__module__ == __name__:
+                continue
+
+            raise RuntimeError(
+                "matcher class %s cannot override the __%s__ method" % (
+                    classname, name))
+
+        return super(BaseMatcherMetaclass, meta) \
+            .__new__(meta, classname, bases, dict_)
+
+
+@metaclass(BaseMatcherMetaclass)
 class BaseMatcher(object):
     """Base class for all argument matchers.
 
@@ -21,8 +65,6 @@ class BaseMatcher(object):
 
     def __repr__(self):
         return "<unspecified matcher>"
-
-    # TODO(xion): prevent the methods below from being overridden via metaclass
 
     def __eq__(self, other):
         if isinstance(other, BaseMatcher):
