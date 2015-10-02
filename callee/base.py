@@ -16,7 +16,8 @@ __all__ = [
 class BaseMatcherMetaclass(type):
     """Metaclass for :class:`BaseMatcher`."""
 
-    #: What __magic__ methods can be overriden by user-defined subclasses.
+    #: What __magic__ methods of :class:`BaseMatcher`
+    #: can be overriden by user-defined subclasses.
     #:
     #: Any method not on this list can only be redefined by classes defined
     #: within this module. This prevents users from accidentally interfering
@@ -24,16 +25,35 @@ class BaseMatcherMetaclass(type):
     #:
     USER_OVERRIDABLE_MAGIC_METHODS = ('init', 'repr')
 
-    # TODO(xion): write tests for this logic
     def __new__(meta, classname, bases, dict_):
         """Create a new matcher class."""
+        meta._validate_class_definition(classname, bases, dict_)
+
+        return super(BaseMatcherMetaclass, meta) \
+            .__new__(meta, classname, bases, dict_)
+
+    # TODO(xion): write tests for this logic
+    @classmethod
+    def _validate_class_definition(meta, classname, bases, dict_):
+        """Ensure the matcher class definition is acceptable.
+        :raise RuntimeError: If there is a problem
+        """
+        # let the BaseMatcher class be created without hassle
+        if meta._is_base_matcher_class_definition(classname, dict_):
+            return
+
         # ensure that no important magic methods are being overridden
         for name, member in dict_.items():
             if not (name.startswith('__') and name.endswith('__')):
                 continue
 
+            # check if it's not a whitelisted magic method name
             name = name[2:-2]
-            if not name or name in meta.USER_OVERRIDABLE_MAGIC_METHODS:
+            if not name:
+                continue  # unlikely case of a ``____`` function
+            if name not in meta._list_magic_methods(BaseMatcher):
+                continue
+            if name in meta.USER_OVERRIDABLE_MAGIC_METHODS:
                 continue
 
             # non-function attributes, like __slots__, are harmless
@@ -49,8 +69,23 @@ class BaseMatcherMetaclass(type):
                 "matcher class %s cannot override the __%s__ method" % (
                     classname, name))
 
-        return super(BaseMatcherMetaclass, meta) \
-            .__new__(meta, classname, bases, dict_)
+    @classmethod
+    def _is_base_matcher_class_definition(meta, classname, dict_):
+        """Checks whether given class name and dictionary
+        define the :class:`BaseMatcher`.
+        """
+        return (classname == 'BaseMatcher' and dict_
+                and all(m.__module__ == __name__ for m in dict_.items()
+                        if inspect.isfunction(m)))
+
+    @classmethod
+    def _list_magic_methods(meta, class_):
+        """Return names of magic methods defined by a class.
+        :return: Iterable of magic methods, each w/o the ``__`` prefix/suffix
+        """
+        return [n[2:-2] for n, m in class_.__dict__.items()
+                if len(n) > 4 and n.startswith('__') and n.endswith('__')
+                and inspect.isfunction(m)]
 
 
 @metaclass(BaseMatcherMetaclass)
