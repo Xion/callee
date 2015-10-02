@@ -18,6 +18,7 @@ from callee.strings import Bytes, String, Unicode
 
 
 __all__ = [
+    'Matcher',
     'Eq', 'Is',
     'Not', 'And', 'Or',
 

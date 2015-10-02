@@ -7,7 +7,7 @@ from callee._compat import metaclass
 
 
 __all__ = [
-    'BaseMatcher',
+    'BaseMatcher', 'Matcher',
     'Eq', 'Is',
     'Not', 'And', 'Or',
 ]
@@ -119,8 +119,21 @@ class BaseMatcher(object):
         return Or(self, *matchers)
 
 
-# TODO(xion): add the Matcher class as an allowed base class for custom,
-# user-written matchers
+class Matcher(BaseMatcher):
+    """Base class for custom (user-defined) argument matchers.
+
+    To create a custom matcher, simply inherit from this class
+    and implement the :meth:`match` method.
+
+    If the matcher is more complicated (e.g. parametrized),
+    you may also  want to provide a :meth:`__repr__` method implementation
+    for better error messages.
+    """
+    def __repr__(self):
+        """Provides a default representation for custom matchers."""
+        # TODO(xion): more informative matcher object description
+        args = "(...)" if '__init__' in self.__class__.__dict__ else ""
+        return "<%s%s>" % (self.__class__.__name__, args)
 
 
 # Special cases around equality/identity
