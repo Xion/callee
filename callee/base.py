@@ -74,18 +74,21 @@ class BaseMatcherMetaclass(type):
         """Checks whether given class name and dictionary
         define the :class:`BaseMatcher`.
         """
-        return (classname == 'BaseMatcher' and dict_
-                and all(m.__module__ == __name__ for m in dict_.items()
-                        if inspect.isfunction(m)))
+        if classname != 'BaseMatcher':
+            return False
+        methods = list(filter(inspect.isfunction, dict_.values()))
+        return methods and all(m.__module__ == __name__ for m in methods)
 
     @classmethod
     def _list_magic_methods(meta, class_):
         """Return names of magic methods defined by a class.
         :return: Iterable of magic methods, each w/o the ``__`` prefix/suffix
         """
-        return [n[2:-2] for n, m in class_.__dict__.items()
-                if len(n) > 4 and n.startswith('__') and n.endswith('__')
-                and inspect.isfunction(m)]
+        return [
+            name[2:-2] for name, member in class_.__dict__.items()
+            if len(name) > 4 and name.startswith('__') and name.endswith('__')
+            and inspect.isfunction(member)
+        ]
 
 
 @metaclass(BaseMatcherMetaclass)
