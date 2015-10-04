@@ -1,6 +1,7 @@
 """
 Matchers based on Python operators.
 """
+from numbers import Number
 import operator
 
 from callee.base import BaseMatcher, Eq, Is
@@ -13,11 +14,14 @@ __all__ = [
     'LessOrEqual', 'LessOrEqualTo', 'Le',
     'Greater', 'GreaterThan', 'Gt',
     'GreaterOrEqual', 'GreaterOrEqualTo', 'Ge',
+
+    'Shorter', 'ShorterThan', 'ShorterOrEqual', 'ShorterOrEqualTo',
+    'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
 ]
 
 
 class OperatorMatcher(BaseMatcher):
-    """Matches based on comparison operator and a reference object.
+    """Matches values based on comparison operator and a reference object.
     This class shouldn't be used directly.
     """
     #: Operator function to use for comparing a value with a reference object.
@@ -83,8 +87,8 @@ Lt = Less
 
 
 class LessOrEqual(OperatorMatcher):
-    """Matches values that are smaller than (as per ``<`` operator),
-    or equal to (as per ``==`` operator), given object.
+    """Matches values that are smaller than,
+    or equal to (as per ``<=`` operator), given object.
     """
     OP = operator.le
 
@@ -109,8 +113,8 @@ Gt = Greater
 
 
 class GreaterOrEqual(OperatorMatcher):
-    """Matches values that are greater than (as per ``>`` operator),
-    or equal to (as per ``==`` operator), given object.
+    """Matches values that are greater than,
+    or equal to (as per ``>=`` operator), given object.
     """
     OP = operator.ge
 
@@ -119,3 +123,59 @@ GreaterOrEqualTo = GreaterOrEqual
 
 #: Alias for :class:`GreaterOrEqual`.
 Ge = GreaterOrEqual
+
+
+# Length comparisons
+
+class LengthMatcher(OperatorMatcher):
+    """Matches values based on their length, as compared to a reference.
+    This class shouldn't be used directly.
+    """
+    TRANSFORM = len
+
+    def __init__(self, *args, **kwargs):
+        super(LengthMatcher, self).__init__(*args, **kwargs)
+
+        # allow the reference to be either a numeric length or another sequence
+        if not isinstance(self.ref, Number):
+            self.ref = len(self.ref)
+
+
+class Shorter(LengthMatcher):
+    """Matches values that are shorter (as per ``<`` comparison on ``len``)
+    than given value.
+    """
+    OP = operator.lt
+
+#: Alias for :class:`Shorter`.
+ShorterThan = Shorter
+
+
+class ShorterOrEqual(LengthMatcher):
+    """Matches values that are shorter than,
+    or equal in ``len``\ gth to (as per ``<=`` operator), given object.
+    """
+    OP = operator.le
+
+#: Alias for :class:`ShorterOrEqual`.
+ShorterOrEqualTo = ShorterOrEqual
+
+
+class Longer(LengthMatcher):
+    """Matches values that are longer (as per ``>`` comparison on ``len``)
+    than given value.
+    """
+    OP = operator.gt
+
+#: Alias for :class:`Longer`.
+LongerThan = Longer
+
+
+class LongerOrEqual(LengthMatcher):
+    """Matches values that are longer than,
+    or equal in ``len``\ gth to (as per ``>=`` operator), given object.
+    """
+    OP = operator.ge
+
+#: Alias for :class:`LongerOrEqual`.
+LongerOrEqualTo = LongerOrEqual
