@@ -24,6 +24,8 @@ class OperatorTestCase(MatcherTestCase):
             self.assert_match(value, ref)
 
 
+# Simple comparisons
+
 class Less(OperatorTestCase):
 
     def test_numbers(self):
@@ -64,3 +66,128 @@ class Less(OperatorTestCase):
     def assert_no_match(self, value, ref):
         return super(Less, self).assert_no_match(__unit__.Less(ref), value)
 
+
+class LessOrEqual(OperatorTestCase):
+
+    def test_numbers(self):
+        ref = 42
+
+        self.assert_match(0, ref)
+        self.assert_match(-ref, ref)
+        self.assert_match(3.14, ref)
+        self.assert_match(ref, ref)
+
+        self.assert_no_match(2 * ref, ref)
+
+    def test_strings(self):
+        ref = "Alice has a cat"
+
+        for i in range(len(ref) - 1):
+            self.assert_match(ref[:i], ref)
+        self.assert_match(ref, ref)
+
+        self.assert_no_match(2 * ref, ref)
+        self.assert_no_match("Bob has a cat", ref)
+
+    def test_sets(self):
+        ref = set([1, 2, 3, 5])
+
+        for s in self.subsets(ref):
+            self.assert_match(s, ref)
+
+        self.assert_no_match(ref | set([7]), ref)
+        self.assert_no_match(set([0]), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(LessOrEqual, self) \
+            .assert_match(__unit__.LessOrEqual(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(LessOrEqual, self) \
+            .assert_no_match(__unit__.LessOrEqual(ref), value)
+
+
+class Greater(OperatorTestCase):
+
+    def test_numbers(self):
+        ref = 42
+
+        self.assert_match(2 * ref, ref)
+
+        self.assert_no_match(0, ref)
+        self.assert_no_match(-ref, ref)
+        self.assert_no_match(3.14, ref)
+        self.assert_no_match(ref, ref)
+
+    def test_strings(self):
+        ref = "Alice has a cat"
+
+        self.assert_match(2 * ref, ref)
+        self.assert_match("Bob has a cat", ref)
+
+        for i in range(len(ref) - 1):
+            self.assert_no_match(ref[:i], ref)
+        self.assert_no_match(ref, ref)
+
+    def test_sets(self):
+        ref = set([1, 2, 3, 5])
+
+        self.assert_match(ref | set([7]), ref)
+
+        for s in self.subsets(ref):
+            self.assert_no_match(s, ref)
+        self.assert_no_match(set([0]), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(Greater, self).assert_match(__unit__.Greater(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(Greater, self) \
+            .assert_no_match(__unit__.Greater(ref), value)
+
+
+class GreaterOrEqual(OperatorTestCase):
+
+    def test_numbers(self):
+        ref = 42
+
+        self.assert_match(ref, ref)
+        self.assert_match(2 * ref, ref)
+
+        self.assert_no_match(0, ref)
+        self.assert_no_match(-ref, ref)
+        self.assert_no_match(3.14, ref)
+
+    def test_strings(self):
+        ref = "Alice has a cat"
+
+        self.assert_match(ref, ref)
+        self.assert_match(2 * ref, ref)
+        self.assert_match("Bob has a cat", ref)
+
+        for i in range(len(ref) - 1):
+            self.assert_no_match(ref[:i], ref)
+
+    def test_sets(self):
+        ref = set([1, 2, 3, 5])
+
+        self.assert_match(ref, ref)
+        self.assert_match(ref | set([7]), ref)
+
+        for s in self.subsets(ref, strict=True):
+            self.assert_no_match(s, ref)
+        self.assert_no_match(set([0]), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(GreaterOrEqual, self) \
+            .assert_match(__unit__.GreaterOrEqual(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(GreaterOrEqual, self) \
+            .assert_no_match(__unit__.GreaterOrEqual(ref), value)
