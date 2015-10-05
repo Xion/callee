@@ -70,6 +70,8 @@ class OperatorMatcher(BaseMatcher):
             value = self.TRANSFORM(value)
         return self.OP(value, self.ref)
 
+    # TODO(xion): __repr__, ideally universal, based on OP and TRANSFORM
+
 
 # Simple comparisons
 
