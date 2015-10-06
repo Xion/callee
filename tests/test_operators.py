@@ -19,10 +19,6 @@ class OperatorTestCase(MatcherTestCase):
                        chain.from_iterable(combinations(s, n)
                                            for n in range(max_subset_size))))
 
-    def assert_type_error(self, value, ref):
-        with self.assertRaises(TypeError):
-            self.assert_match(value, ref)
-
 
 # Simple comparisons
 
@@ -191,3 +187,142 @@ class GreaterOrEqual(OperatorTestCase):
     def assert_no_match(self, value, ref):
         return super(GreaterOrEqual, self) \
             .assert_no_match(__unit__.GreaterOrEqual(ref), value)
+
+
+# Length comparisons
+
+class Shorter(OperatorTestCase):
+
+    def test_length_value(self):
+        ref = 12
+
+        self.assert_match([], ref)
+        self.assert_match([1], ref)
+        self.assert_match("Alice", ref)
+
+        self.assert_no_match(range(ref), ref)
+        self.assert_no_match('x' * ref, ref)
+        self.assert_no_match("Alice has a cat", ref)
+
+    def test_sequence(self):
+        ref = [1, 2, 3]
+
+        for s in self.subsets(ref, strict=True):
+            self.assert_match(list(s), ref)
+        self.assert_match([42] * (len(ref) - 1), ref)
+
+        self.assert_no_match(ref, ref)
+        self.assert_no_match(2 * ref, ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(Shorter, self).assert_match(__unit__.Shorter(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(Shorter, self) \
+            .assert_no_match(__unit__.Shorter(ref), value)
+
+
+class ShorterOrEqual(OperatorTestCase):
+
+    def test_length_value(self):
+        ref = 12
+
+        self.assert_match([], ref)
+        self.assert_match([1], ref)
+        self.assert_match("Alice", ref)
+        self.assert_match(range(ref), ref)
+        self.assert_match('x' * ref, ref)
+
+        self.assert_no_match('x' * (ref + 1), ref)
+        self.assert_no_match("Alice has a cat", ref)
+
+    def test_sequence(self):
+        ref = [1, 2, 3]
+
+        for s in self.subsets(ref):
+            self.assert_match(list(s), ref)
+        self.assert_match([42] * (len(ref) - 1), ref)
+
+        self.assert_no_match(2 * ref, ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(ShorterOrEqual, self) \
+            .assert_match(__unit__.ShorterOrEqual(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(ShorterOrEqual, self) \
+            .assert_no_match(__unit__.ShorterOrEqual(ref), value)
+
+
+class Longer(OperatorTestCase):
+
+    def test_length_value(self):
+        ref = 12
+
+        self.assert_match('x' * (ref + 1), ref)
+        self.assert_match("Alice has a cat", ref)
+
+        self.assert_no_match([], ref)
+        self.assert_no_match([1], ref)
+        self.assert_no_match("Alice", ref)
+        self.assert_no_match(range(ref), ref)
+        self.assert_no_match('x' * ref, ref)
+
+    def test_sequence(self):
+        ref = [1, 2, 3]
+
+        self.assert_match(2 * ref, ref)
+        self.assert_match([42] * (len(ref) + 1), ref)
+
+        for s in self.subsets(ref):
+            self.assert_no_match(list(s), ref)
+        self.assert_no_match([42] * len(ref), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(Longer, self).assert_match(__unit__.Longer(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(Longer, self) \
+            .assert_no_match(__unit__.Longer(ref), value)
+
+
+class LongerOrEqual(OperatorTestCase):
+
+    def test_length_value(self):
+        ref = 12
+
+        self.assert_match('x' * (ref + 1), ref)
+        self.assert_match("Alice has a cat", ref)
+        self.assert_match(range(ref), ref)
+        self.assert_match('x' * ref, ref)
+
+        self.assert_no_match([], ref)
+        self.assert_no_match([1], ref)
+        self.assert_no_match("Alice", ref)
+
+    def test_sequence(self):
+        ref = [1, 2, 3]
+
+        self.assert_match(ref, ref)
+        self.assert_match(2 * ref, ref)
+        self.assert_match([42] * len(ref), ref)
+        self.assert_match([42] * (len(ref) + 1), ref)
+
+        for s in self.subsets(ref, strict=True):
+            self.assert_no_match(list(s), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(LongerOrEqual, self) \
+            .assert_match(__unit__.LongerOrEqual(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(LongerOrEqual, self) \
+            .assert_no_match(__unit__.LongerOrEqual(ref), value)

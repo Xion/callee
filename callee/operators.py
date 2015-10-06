@@ -1,6 +1,8 @@
 """
 Matchers based on Python operators.
 """
+from __future__ import absolute_import
+
 from numbers import Number
 import operator
 
@@ -66,6 +68,9 @@ class OperatorMatcher(BaseMatcher):
         self.ref = ref
 
     def match(self, value):
+        # Note that any possible exceptions from either ``TRANSFORM`` or ``OP``
+        # are intentionally let through, to make it easier to diagnose errors
+        # than a plain "no match" response would.
         if self.TRANSFORM is not None:
             value = self.TRANSFORM(value)
         return self.OP(value, self.ref)
@@ -139,6 +144,8 @@ class LengthMatcher(OperatorMatcher):
         super(LengthMatcher, self).__init__(*args, **kwargs)
 
         # allow the reference to be either a numeric length or another sequence
+        # TODO(xion): remember at least the sequence type to make it impossible
+        # e.g. to accidentally strings and lists by length
         if not isinstance(self.ref, Number):
             self.ref = len(self.ref)
 
