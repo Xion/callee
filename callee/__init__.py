@@ -14,6 +14,11 @@ from callee.general import \
     Any, ArgThat, IsA, Inherits, InstanceOf, Matching, SubclassOf
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
+from callee.operators import (
+    Ge, Greater, GreaterOrEqual, GreaterOrEqualTo, GreaterThan, Gt,
+    Le, Less, LessOrEqual, LessOrEqualTo, LessThan,
+    Longer, LongerOrEqual, LongerOrEqualTo, LongerThan, Lt,
+    Shorter, ShorterOrEqual, ShorterOrEqualTo, ShorterThan)
 from callee.strings import Bytes, String, Unicode
 
 
@@ -34,10 +39,16 @@ __all__ = [
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
     'Integral', 'Integer', 'Int', 'Long',
 
+    'Less', 'LessThan', 'Lt',
+    'LessOrEqual', 'LessOrEqualTo', 'Le',
+    'Greater', 'GreaterThan', 'Gt',
+    'GreaterOrEqual', 'GreaterOrEqualTo', 'Ge',
+    'Shorter', 'ShorterThan', 'ShorterOrEqual', 'ShorterOrEqualTo',
+    'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
+
     'String', 'Unicode', 'Bytes',
 ]
 
 
-# TODO(xion): operator-based matchers (GreaterThan, ShorterThan, etc.)
 # TODO(xion): attribute-based matchers: HasAttr, HasAttrs, Attrs(<attr>=<val>)
 # TODO(xion): matchers for positional & keyword arguments
