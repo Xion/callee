@@ -143,3 +143,6 @@ class Class(BaseMatcher):
 
     def __repr__(self):
         return "<Class>"
+
+
+# TODO(xion): attribute-based matchers: HasAttr, HasAttrs, Attrs(<attr>=<val>)

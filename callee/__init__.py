@@ -50,5 +50,4 @@ __all__ = [
 ]
 
 
-# TODO(xion): attribute-based matchers: HasAttr, HasAttrs, Attrs(<attr>=<val>)
 # TODO(xion): matchers for positional & keyword arguments
