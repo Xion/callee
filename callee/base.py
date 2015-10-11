@@ -110,6 +110,8 @@ class BaseMatcher(object):
                 "incorrect use of matcher object as a value to match on")
         return self.match(other)
 
+    # TODO(xion): make matcher objects callable
+
     def __invert__(self):
         return Not(self)
 
@@ -150,8 +152,11 @@ class Eq(BaseMatcher):
     def __init__(self, value):
         self.value = value
 
+    def match(self, value):
+        return self.value == value
+
     def __eq__(self, other):
-        return self.value == other
+        return self.match(other)
 
     def __repr__(self):
         return "<Eq %r>" % (self.value,)
@@ -163,8 +168,11 @@ class Is(BaseMatcher):
     def __init__(self, value):
         self.value = value
 
+    def match(self, value):
+        return self.value is value
+
     def __eq__(self, other):
-        return self.value is other
+        return self.match(other)
 
     def __repr__(self):
         return "<Is %r>" % (self.value,)
