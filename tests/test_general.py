@@ -256,3 +256,84 @@ class SubclassOf(MatcherTestCase):
     def assert_no_match(self, value, type_):
         return super(SubclassOf, self) \
             .assert_no_match(__unit__.SubclassOf(type_), value)
+
+
+# Attribute-related matchers
+
+class Attrs(MatcherTestCase):
+    VALUE = 42
+
+    def test_invalid(self):
+        with self.assertRaises(TypeError):
+            self.assert_match('unused')
+
+    def test_names_only__one(self):
+        foo = self.Object(foo=self.VALUE)
+        self.assert_match(foo, 'foo')
+        self.assert_no_match(foo, 'bar')
+
+    def test_names_only__several(self):
+        foo_bar = self.Object(foo=self.VALUE, bar=self.VALUE * 2)
+
+        self.assert_match(foo_bar, 'foo')
+        self.assert_match(foo_bar, 'bar')
+        self.assert_match(foo_bar, 'foo', 'bar')
+
+        self.assert_no_match(foo_bar, 'baz')
+        self.assert_no_match(foo_bar, 'foo', 'baz')
+
+    def test_values_only__one(self):
+        foo = self.Object(foo=self.VALUE)
+
+        self.assert_match(foo, foo=self.VALUE)
+
+        self.assert_no_match(foo, foo=self.VALUE + 1)
+        self.assert_no_match(foo, bar=self.VALUE)
+
+    def test_values_only__several(self):
+        foo_bar = self.Object(foo=self.VALUE, bar=self.VALUE * 2)
+
+        self.assert_match(foo_bar, foo=self.VALUE)
+        self.assert_match(foo_bar, bar=self.VALUE * 2)
+        self.assert_match(foo_bar, foo=self.VALUE, bar=self.VALUE * 2)
+
+        self.assert_no_match(foo_bar, foo=self.VALUE + 1, bar=self.VALUE)
+        self.assert_no_match(foo_bar, foo=self.VALUE, baz=self.VALUE * 2)
+
+    def test_both__one_each(self):
+        foo_bar = self.Object(foo=self.VALUE, bar=self.VALUE * 2)
+
+        self.assert_match(foo_bar, 'foo', bar=self.VALUE * 2)
+        self.assert_match(foo_bar, 'bar', foo=self.VALUE)
+
+        self.assert_no_match(foo_bar, 'foo', baz=self.VALUE * 2)
+        self.assert_no_match(foo_bar, 'baz', foo=self.VALUE)
+
+    def test_both__mix(self):
+        attrs = dict(foo=self.VALUE,
+                     bar=self.VALUE * 2,
+                     baz=self.VALUE * 2 + 1)
+        foo_bar_baz = self.Object(**attrs)
+
+        self.assert_match(foo_bar_baz, 'bar', 'baz', foo=self.VALUE)
+        self.assert_match(foo_bar_baz, 'baz',
+                          foo=self.VALUE, bar=self.VALUE * 2)
+        self.assert_match(foo_bar_baz, **attrs)
+
+        self.assert_no_match(foo_bar_baz, 'qux', **attrs)
+        self.assert_no_match(foo_bar_baz, 'foo', 'bar', baz='wrong value')
+
+    # Utility code
+
+    class Object(object):
+        def __init__(self, **attrs):
+            for name, value in attrs.items():
+                setattr(self, name, value)
+
+    def assert_match(self, value, *args, **kwargs):
+        return super(Attrs, self) \
+            .assert_match(__unit__.Attrs(*args, **kwargs), value)
+
+    def assert_no_match(self, value, *args, **kwargs):
+        return super(Attrs, self) \
+            .assert_no_match(__unit__.Attrs(*args, **kwargs), value)
