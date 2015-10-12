@@ -10,8 +10,8 @@ __license__ = "Simplified BSD"
 from callee.base import And, Eq, Is, Or, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
-from callee.general import \
-    Any, ArgThat, IsA, Inherits, InstanceOf, Matching, SubclassOf
+from callee.general import (Any, ArgThat, Attrs, Attr, HasAttr, HasAttrs,
+                            IsA, Inherits, InstanceOf, Matching, SubclassOf)
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
 from callee.operators import (
@@ -34,6 +34,7 @@ __all__ = [
     'Any', 'Matching', 'ArgThat',
     'Callable', 'Function', 'GeneratorFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
+    'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
 
     'Number',
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
