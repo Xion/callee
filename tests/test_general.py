@@ -323,6 +323,8 @@ class Attrs(MatcherTestCase):
         self.assert_no_match(foo_bar_baz, 'qux', **attrs)
         self.assert_no_match(foo_bar_baz, 'foo', 'bar', baz='wrong value')
 
+    # TODO(xion): test the __repr__ method
+
     # Utility code
 
     class Object(object):

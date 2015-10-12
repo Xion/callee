@@ -2,6 +2,8 @@
 General matchers.
 """
 import inspect
+from itertools import starmap
+from operator import itemgetter
 
 from callee.base import BaseMatcher, Eq
 
@@ -190,8 +192,26 @@ class Attrs(BaseMatcher):
 
         return True
 
+    def __repr__(self):
+        """Return a representation of the matcher."""
+        # get both the names-only and valued attributes and sort them by name
+        sentinel = object()
+        attrs = [(name, sentinel)
+                 for name in self.attr_names] + self.attr_dict.items()
+        attrs.sort(key=itemgetter(0))
 
-class Attr(BaseMatcher):
+        def attr_repr(name, value):
+            # include the value with attribute name whenever necessary
+            if value is sentinel:
+                return name
+            value = value.value if isinstance(value, Eq) else value
+            return "%s=%r" % (name, value)
+
+        return "<%s %s>" % (self.__class__.__name__,
+                            " ".join(starmap(attr_repr, attrs)))
+
+
+class Attr(Attrs):
     """Matches objects that have an attribute with given name and value,
     as given by a keyword argument.
     """
