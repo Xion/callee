@@ -4,3 +4,5 @@ dist
 
 .tox
 .cache
+
+docs/_build
