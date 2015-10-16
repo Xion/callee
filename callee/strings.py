@@ -104,7 +104,7 @@ class Glob(BaseMatcher):
     def __init__(self, pattern):
         self.pattern = pattern
 
-    def match(seff, value):
+    def match(self, value):
         return fnmatch(value, self.pattern)
 
     def __repr__(self):
@@ -139,3 +139,6 @@ class Regex(BaseMatcher):
 
     def __repr__(self):
         return "<Regex %s>" % (self.pattern.pattern,)
+
+
+# TODO(xion): matchers for common string formats: Url, Email, IPv4, IPv6

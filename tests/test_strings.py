@@ -109,7 +109,7 @@ class EndsWith(MatcherTestCase):
 
 # Pattern matchers
 
-class Glob(BaseMatcher):
+class Glob(MatcherTestCase):
 
     # Assertion functions
 
@@ -121,7 +121,7 @@ class Glob(BaseMatcher):
             .assert_no_match(__unit__.Glob(pattern), value)
 
 
-class Regex(BaseMatcher):
+class Regex(MatcherTestCase):
 
     # Assertion functions
 
