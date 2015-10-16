@@ -1,6 +1,9 @@
 """
 Matchers for strings.
 """
+from fnmatch import fnmatch
+import re
+
 from callee._compat import IS_PY3
 from callee.base import BaseMatcher
 
@@ -8,6 +11,7 @@ from callee.base import BaseMatcher
 __all__ = [
     'String', 'Unicode', 'Bytes',
     'StartsWith', 'EndsWith',
+    'Glob', 'Regex',
 ]
 
 
@@ -71,6 +75,9 @@ class StartsWith(BaseMatcher):
     def match(self, value):
         return value.startswith(self.prefix)
 
+    def __repr__(self):
+        return "<StartsWith %r>" % (self.prefix,)
+
 
 class EndsWith(BaseMatcher):
     """Matches a string ending with given suffix."""
@@ -81,8 +88,54 @@ class EndsWith(BaseMatcher):
     def match(self, value):
         return value.endswith(self.suffix)
 
+    def __repr__(self):
+        return "<EndsWith %r>" % (self.prefix,)
 
-# Other
 
-# TODO(xion): Regex matcher
-# TODO(xion): Glob matcher
+# Pattern matchers
+
+class Glob(BaseMatcher):
+    """Matches a string against a Unix shell wildcard pattern.
+    See the `fnmatch` module for more details about those patterns.
+    """
+    # TODO(xion): add a case= argument with True/False/'system',
+    # and optionally use fnmatchcase
+
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def match(seff, value):
+        return fnmatch(value, self.pattern)
+
+    def __repr__(self):
+        return "<Glob %s>" % (self.pattern,)
+
+
+class Regex(BaseMatcher):
+    """Matches a string against a regular expression."""
+
+    def __init__(self, pattern, flags=0):
+        """Constructor.
+
+        :param pattern: Regular expression to match against.
+                        It can be given as string,
+                        or a compiled regular expression object
+        :param flags: Flags to use with a regular expression passed as string
+        """
+        if self._is_regex_object(pattern):
+            if flags and flags != pattern.flags:
+                raise ValueError("conflicting regex flags: %s vs. %s" % (
+                    bin(flags), bin(pattern.flags)))
+        else:
+            pattern = re.compile(pattern, flags)
+
+        self.pattern = pattern
+
+    def _is_regex_object(self, obj):
+        return type(obj) is type(re.compile(''))
+
+    def match(self, value):
+        return self.pattern.match(value)
+
+    def __repr__(self):
+        return "<Regex %s>" % (self.pattern.pattern,)
