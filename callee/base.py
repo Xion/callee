@@ -159,7 +159,9 @@ class Eq(BaseMatcher):
         return self.match(other)
 
     def __repr__(self):
-        return "<Eq %r>" % (self.value,)
+        # This representation matches the format of comparison operators
+        # (such as :class:`Less`) defined in the ``.operators`` module.
+        return "<... == %r>" % (self.value,)
 
 
 class Is(BaseMatcher):
@@ -175,7 +177,9 @@ class Is(BaseMatcher):
         return self.match(other)
 
     def __repr__(self):
-        return "<Is %r>" % (self.value,)
+        # This representation matches the format of comparison operators
+        # (such as :class:`Less`) defined in the ``.operators`` module.
+        return "<... is %r>" % (self.value,)
 
 
 # Logical combinators for matchers

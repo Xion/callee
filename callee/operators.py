@@ -75,7 +75,34 @@ class OperatorMatcher(BaseMatcher):
             value = self.TRANSFORM(value)
         return self.OP(value, self.ref)
 
-    # TODO(xion): __repr__, ideally universal, based on OP and TRANSFORM
+    def __repr__(self):
+        """Provide an universal representation of the matcher."""
+        # Mapping from operator functions to their symbols in Python.
+        #
+        # There is no point in including ``operator.contains`` due to lack of
+        # equivalent ``operator.in_``. These are handled by matcher classes
+        # directly.
+        operator_symbols = {
+            operator.eq: '==',
+            operator.ge: '>=',
+            operator.gt: '>',
+            operator.le: '<=',
+            operator.lt: '<',
+        }
+
+        # try to get the symbol for the operator, falling back to Haskell-esque
+        # "infix function" representation
+        op = operator_symbols.get(self.OP)
+        if op is None:
+            # TODO(xion): convert CamelCase to either snake_case or kebab-case
+            op = '`%s`' % (self.__class__.__name__.lower(),)
+
+        # placeholder for value to match may include a transformation to apply
+        placeholder = '...'
+        if self.TRANSFORM is not None:
+            placeholder = '%s(%s)' % (self.TRANSFORM.__name__, placeholder)
+
+        return "<%s %s %r>" % (placeholder, op, self.ref)
 
 
 # Simple comparisons
