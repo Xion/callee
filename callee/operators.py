@@ -19,6 +19,8 @@ __all__ = [
 
     'Shorter', 'ShorterThan', 'ShorterOrEqual', 'ShorterOrEqualTo',
     'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
+
+    'Contains', 'In',
 ]
 
 
@@ -80,8 +82,8 @@ class OperatorMatcher(BaseMatcher):
         # Mapping from operator functions to their symbols in Python.
         #
         # There is no point in including ``operator.contains`` due to lack of
-        # equivalent ``operator.in_``. These are handled by matcher classes
-        # directly.
+        # equivalent ``operator.in_``.
+        # These are handled by membership matchers directly.
         operator_symbols = {
             operator.eq: '==',
             operator.ge: '>=',
@@ -97,12 +99,14 @@ class OperatorMatcher(BaseMatcher):
             # TODO(xion): convert CamelCase to either snake_case or kebab-case
             op = '`%s`' % (self.__class__.__name__.lower(),)
 
-        # placeholder for value to match may include a transformation to apply
+        return "<%s %s %r>" % (self._get_placeholder_repr(), op, self.ref)
+
+    def _get_placeholder_repr(self):
+        """Return the placeholder part of matcher's ``__repr__``."""
         placeholder = '...'
         if self.TRANSFORM is not None:
             placeholder = '%s(%s)' % (self.TRANSFORM.__name__, placeholder)
-
-        return "<%s %s %r>" % (placeholder, op, self.ref)
+        return placeholder
 
 
 # Simple comparisons
@@ -217,4 +221,23 @@ class LongerOrEqual(LengthMatcher):
 LongerOrEqualTo = LongerOrEqual
 
 
-# TODO(xion): ``Contains`` and ``In``
+# Membership tests
+
+class Contains(OperatorMatcher):
+    """Matches values that contain (as per the ``in`` operator)
+    given reference object.
+    """
+    OP = operator.contains
+
+    def __repr__(self):
+        return "<%r in %s>" % (self.ref, self._get_placeholder_repr())
+
+
+class In(OperatorMatcher):
+    """Matches values that are within the reference object
+    (as per the ``in`` operator).
+    """
+    OP = lambda value, ref: value in ref  # there is no ``operator.in_`` :(
+
+    def __repr__(self):
+        return "<%s in %r>" % (self._get_placeholder_repr(), self.ref)
