@@ -326,3 +326,57 @@ class LongerOrEqual(OperatorTestCase):
     def assert_no_match(self, value, ref):
         return super(LongerOrEqual, self) \
             .assert_no_match(__unit__.LongerOrEqual(ref), value)
+
+
+# Membership tests
+
+class Contains(OperatorTestCase):
+
+    def test_lists(self):
+        ref = 42
+
+        self.assert_no_match([], ref)
+        self.assert_no_match(list(range(ref)), ref)
+
+        self.assert_match([ref], ref)
+        self.assert_match([None, ref], ref)
+        self.assert_match(list(range(ref + 1)), ref)
+
+    def test_strings(self):
+        ref = 'x'
+
+        self.assert_no_match('', ref)
+
+        self.assert_match(ref, ref)
+        self.assert_match(ref + 'foo', ref)
+
+    def test_sets(self):
+        ref = 42
+
+        self.assert_no_match(set(), ref)
+        self.assert_no_match(set(range(ref)), ref)
+
+        self.assert_match(set([ref]), ref)
+        self.assert_match(set([None, ref]), ref)
+        self.assert_match(set(range(ref + 1)), ref)
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(Contains, self) \
+            .assert_match(__unit__.Contains(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(Contains, self) \
+            .assert_no_match(__unit__.Contains(ref), value)
+
+
+class In(OperatorTestCase):
+
+    # Assertion functions
+
+    def assert_match(self, value, ref):
+        return super(In, self).assert_match(__unit__.In(ref), value)
+
+    def assert_no_match(self, value, ref):
+        return super(In, self).assert_no_match(__unit__.In(ref), value)
