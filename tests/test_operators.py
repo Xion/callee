@@ -373,6 +373,46 @@ class Contains(OperatorTestCase):
 
 class In(OperatorTestCase):
 
+    def test_list(self):
+        limit = 42
+        ref = list(range(limit))
+
+        self.assert_no_match(-1, ref)
+        self.assert_no_match(limit + 1, ref)
+        self.assert_no_match(None, ref)
+
+        for num in ref:
+            self.assert_match(num, ref)
+
+    def test_string(self):
+        ref = 'Alice has a cat'
+
+        self.assert_no_match('_', ref)
+        with self.assertRaises(TypeError):
+            self.assert_no_match(42, ref)
+        with self.assertRaises(TypeError):
+            self.assert_no_match(None, ref)
+
+        # every character should be inside the reference string
+        for char in ref:
+            self.assert_match(char, ref)
+
+        # as well as every substring
+        for i in range(len(ref)):
+            for j in range(i + 1, len(ref)):
+                self.assert_match(ref[i:j], ref)
+
+    def test_set(self):
+        limit = 42
+        ref = set(range(limit))
+
+        self.assert_no_match(-1, ref)
+        self.assert_no_match(limit + 1, ref)
+        self.assert_no_match(None, ref)
+
+        for num in ref:
+            self.assert_match(num, ref)
+
     # Assertion functions
 
     def assert_match(self, value, ref):

@@ -237,7 +237,8 @@ class In(OperatorMatcher):
     """Matches values that are within the reference object
     (as per the ``in`` operator).
     """
-    OP = lambda value, ref: value in ref  # there is no ``operator.in_`` :(
+    # There is no ``operator.in_``, so we must define the function ourselves.
+    OP = staticmethod(lambda value, ref: value in ref)
 
     def __repr__(self):
         return "<%s in %r>" % (self._get_placeholder_repr(), self.ref)
