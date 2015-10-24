@@ -26,8 +26,14 @@ that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
 .. _Mock.call_args_list: https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.call_args_list
 
 
-Learn more
------------
+Reference
+---------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+
+   General matchers <general>
+   String matchers <strings>
+   Numeric matchers <numbers>
+   Collection matchers <collections>
+   Operator-based matchers <operators>
