@@ -191,8 +191,21 @@ class Mapping(MatcherTestCase):
     test_empty_list = lambda self: self.assert_no_match([])
     test_empty_set = lambda self: self.assert_no_match(set())
     test_empty_tuple = lambda self: self.assert_no_match(())
-    test_empty_dict__regular = lambda self: self.assert_match({})
-    test_empty_dict__custom = lambda self: self.assert_match(CustomDict())
+
+    def test_empty_dict__regular(self):
+        d = {}
+        self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
+        self.assert_match(d, of=(str, int))
+
+    def test_empty_dict__custom(self):
+        d = CustomDict()
+        self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
+        self.assert_match(d, of=(str, int))
+
     test_empty_generator = lambda self: self.assert_no_match(x for x in ())
     test_some_string = lambda self: self.assert_no_match("Alice has a cat")
     test_some_number = lambda self: self.assert_no_match(42)
@@ -203,11 +216,15 @@ class Mapping(MatcherTestCase):
     def test_some_dict__regular(self):
         d = {'a': 1}
         self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
         self.assert_match(d, of=(str, int))
 
     def test_some_dict__custom(self):
         d = CustomDict({'a': 1})
         self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
         self.assert_match(d, of=(str, int))
 
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
@@ -234,8 +251,21 @@ class Dict(MatcherTestCase):
     test_empty_list = lambda self: self.assert_no_match([])
     test_empty_set = lambda self: self.assert_no_match(set())
     test_empty_tuple = lambda self: self.assert_no_match(())
-    test_empty_dict__regular = lambda self: self.assert_match({})
-    test_empty_dict__custom = lambda self: self.assert_no_match(CustomDict())
+
+    def test_empty_dict__regular(self):
+        d = {}
+        self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
+        self.assert_match(d, of=(str, int))
+
+    def test_empty_dict__custom(self):
+        d = CustomDict()
+        self.assert_no_match(d)
+        self.assert_no_match(d, str, int)
+        self.assert_no_match(d, keys=str, values=int)
+        self.assert_no_match(d, of=(str, int))
+
     test_empty_generator = lambda self: self.assert_no_match(x for x in ())
     test_some_string = lambda self: self.assert_no_match("Alice has a cat")
     test_some_number = lambda self: self.assert_no_match(42)
@@ -246,11 +276,15 @@ class Dict(MatcherTestCase):
     def test_some_dict__regular(self):
         d = {'a': 1}
         self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
         self.assert_match(d, of=(str, int))
 
     def test_some_dict__custom(self):
         d = CustomDict({'a': 1})
         self.assert_no_match(d)
+        self.assert_no_match(d, str, int)
+        self.assert_no_match(d, keys=str, values=int)
         self.assert_no_match(d, of=(str, int))
 
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
