@@ -6,14 +6,14 @@ callee
 
 *callee* provides a wide collection of **argument matchers** to use with the standard ``unittest.mock`` library.
 
-It allows you to write simple, readable, and powerful asserts about the interactions with your mocks:
+It allows you to write simple, readable, and powerful assertions about the interactions with your mocks:
 
 .. code-block:: python
 
     from callee import Dict, StartsWith, String
 
     mock_requests.get.assert_called_with(
-        String() & StartsWith('https://'), params=Dict())
+        String() & StartsWith('https://'), params=Dict(String(), String()))
 
 You can thus avoid both the broad, over-specified tests that use |mock.ANY|_, as well as the tedious, error-prone code
 that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
