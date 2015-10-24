@@ -134,26 +134,80 @@ class MappingMatcher(CollectionMatcher):
     #: Must be overridden in subclasses.
     CLASS = None
 
-    # TODO(xion): allow for keys= and values= arguments that'd assume
-    # ``Any()`` for the other if only one was specified
-    def __init__(self, of=None):
+    def __init__(self, *args, **kwargs):
+        """Constructor.
+
+        Can be invoked either with parameters described below
+        (given as keyword arguments), or with two positional arguments:
+        matchers/types for dictionary keys & values::
+
+            Dict(String(), int)  # dict mapping strings to ints
+
+        :param keys: Matcher for dictionary keys.
+        :param values: Matcher for dictionary values.
+        :param of: Matcher for dictionary items, or a tuple of matchers
+                   for keys & values, e.g. ``(String(), Integer())``.
+                   Cannot be provided if either ``keys`` or ``values``
+                   is also passed.
+
+        """
         assert self.CLASS, "must specify mapping type to match"
 
-        self.keys = self.values = None
-        if of is not None:
-            try:
-                self.keys, self.values = map(self._validate_argument, of)
-            except ValueError:
+        self.items = None
+        self.keys = None
+        self.values = None
+
+        if args:
+            if len(args) != 2:
+                raise TypeError("expected exactly two positional arguments, "
+                                "got %s" % len(args))
+            if kwargs:
                 raise TypeError(
-                    "argument of %s has to be a pair of types or matchers" % (
-                        self.__class__.__name__,))
+                    "expected positional or keyword arguments, not both")
+
+            # got positional arguments only
+            self.keys, self.values = map(self._validate_argument, args)
+        elif kwargs:
+            has_kv = 'keys' in kwargs and 'values' in kwargs
+            has_of = 'of' in kwargs
+            if not (has_kv or has_of):
+                raise TypeError("expected keys/values or items matchers, "
+                                "but got: %s" % list(kwargs.keys()))
+            if has_kv and has_of:
+                raise TypeError(
+                    "expected keys & values, or items matchers, not both")
+
+            if has_kv:
+                # got keys= and values= matchers
+                self.keys = self._validate_argument(kwargs['keys'])
+                self.values = self._validate_argument(kwargs['values'])
+            else:
+                # got of= matcher, which can be a tuple of matcher
+                # or a single matcher for dictionary items
+                of = kwargs['of']
+                if isinstance(of, tuple):
+                    try:
+                        # got of= as tuple of matchers
+                        self.keys, self.values = \
+                            map(self._validate_argument, of)
+                    except ValueError:
+                        raise TypeError(
+                            "of= tuple has to be a pair of matchers/types" % (
+                                self.__class__.__name__,))
+                else:
+                    # got of= as a single matcher
+                    self.items = self._validate_argument(of)
 
     def match(self, value):
         if not isinstance(value, self.CLASS):
             return False
+
+        if self.items is not None:
+            return all(self.items == i for i in value.items())
         if self.keys is not None and self.values is not None:
             return all(self.keys == k and self.values == v
                        for k, v in value.items())
+
         return True
 
     def __repr__(self):
@@ -165,10 +219,15 @@ class MappingMatcher(CollectionMatcher):
             <Dict[<String> => <Any>]>
         """
         of = ""
+
+        if self.items is not None:
+            of = "[%r]" % self.items
+
         if self.keys is not None or self.values is not None:
             keys = repr(Any() if self.keys is None else self.keys)
             values = repr(Any() if self.values is None else self.values)
             of = "[%s => %s]" % (keys, values)
+
         return "<%s%s>" % (self.__class__.__name__, of)
 
 

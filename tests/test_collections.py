@@ -213,12 +213,13 @@ class Mapping(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
-    def assert_match(self, value, of=None):
-        return super(Mapping, self).assert_match(__unit__.Mapping(of), value)
+    def assert_match(self, value, *args, **kwargs):
+        return super(Mapping, self)\
+            .assert_match(__unit__.Mapping(*args, **kwargs), value)
 
-    def assert_no_match(self, value, of=None):
+    def assert_no_match(self, value, *args, **kwargs):
         return super(Mapping, self) \
-            .assert_no_match(__unit__.Mapping(of), value)
+            .assert_no_match(__unit__.Mapping(*args, **kwargs), value)
 
 
 class Dict(MatcherTestCase):
@@ -255,8 +256,10 @@ class Dict(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
-    def assert_match(self, value, of=None):
-        return super(Dict, self).assert_match(__unit__.Dict(of), value)
+    def assert_match(self, value, *args, **kwargs):
+        return super(Dict, self) \
+            .assert_match(__unit__.Dict(*args, **kwargs), value)
 
-    def assert_no_match(self, value, of=None):
-        return super(Dict, self).assert_no_match(__unit__.Dict(of), value)
+    def assert_no_match(self, value, *args, **kwargs):
+        return super(Dict, self) \
+            .assert_no_match(__unit__.Dict(*args, **kwargs), value)
