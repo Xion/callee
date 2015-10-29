@@ -1,6 +1,9 @@
 """
 Tests for string matchers.
 """
+from itertools import combinations
+import re
+
 from taipan.testing import skipIf, skipUnless
 
 from callee._compat import IS_PY3
@@ -83,6 +86,8 @@ class Bytes(MatcherTestCase):
 
 class StartsWith(MatcherTestCase):
 
+    # TODO(xion): write those tests
+
     # Assertion functions
 
     def assert_match(self, value, prefix):
@@ -95,6 +100,8 @@ class StartsWith(MatcherTestCase):
 
 
 class EndsWith(MatcherTestCase):
+
+    # TODO(xion): write those tests
 
     # Assertion functions
 
@@ -109,7 +116,45 @@ class EndsWith(MatcherTestCase):
 
 # Pattern matchers
 
-class Glob(MatcherTestCase):
+class PatternTestCase(MatcherTestCase):
+    ALPHABET = 'abcdefghijklmnopqrstvuwxyz'
+
+    # Some tests is O(2^N) wrt to size of this set, so keep it short.
+    LETTERS = 'abcdef'
+
+    def suffixes(self):
+        for l in range(len(self.LETTERS)):
+            for suffix in combinations(self.LETTERS, l):
+                return ''.join(suffix)
+
+
+class Glob(PatternTestCase):
+
+    def test_exact(self):
+        self.assert_match('', '')
+        self.assert_match(' ', ' ')
+        self.assert_match('foo', 'foo')
+        self.assert_match('foo!', 'foo!')  # ! is not special outside of []
+
+    def test_escaping(self):
+        self.assert_match('foo?', 'foo[?]')
+        self.assert_match('foo*', 'foo[*]')
+
+    def test_question_mark(self):
+        text = 'foo'
+        for char in self.ALPHABET:
+            self.assert_match(text + char, text + '?')
+
+    def test_asterisk(self):
+        text = 'foo'
+        for suffix in self.suffixes():
+            self.assert_match(text + suffix, text + '*')
+
+    def test_square_brackets(self):
+        text = 'foo'
+        for suffix in self.suffixes():
+            square_pattern = ''.join('[%s]' % char for char in suffix)
+            self.assert_match(text + suffix, text + square_pattern)
 
     # Assertion functions
 
@@ -121,7 +166,33 @@ class Glob(MatcherTestCase):
             .assert_no_match(__unit__.Glob(pattern), value)
 
 
-class Regex(MatcherTestCase):
+class Regex(PatternTestCase):
+
+    def test_exact(self):
+        self.assert_match('', '')
+        self.assert_match(' ', ' ')
+        self.assert_match('foo', 'foo')
+        self.assert_match('foo^', 'foo')  # ^ is not special outside of []
+
+    def test_escaping(self):
+        self.assert_match('foo(', r'foo\(')
+        self.assert_match('foo.', r'foo\.')
+
+    def test_dot(self):
+        text = 'foo'
+        for char in self.ALPHABET:
+            self.assert_match(text + char, re.escape(text) + '.')
+
+    def test_dots(self):
+        text = 'foo'
+        for suffix in self.suffixes():
+            self.assert_match(text + suffix, re.escape(text) + '.*')
+
+    def test_square_brackets(self):
+        text = 'foo'
+        for suffix in self.suffixes():
+            square_pattern = ''.join('[%s]' % char for char in suffix)
+            self.assert_match(text + suffix, re.escape(text) + square_pattern)
 
     # Assertion functions
 
