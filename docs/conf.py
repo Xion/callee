@@ -30,6 +30,7 @@ import callee
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
 ]
@@ -285,3 +286,10 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+# -- Options for autodoc extension ----------------------------------------
+
+# Whether `autoclass` should include class's docstring, __init__ method's
+# docstring, or both.
+autoclass_content = 'both'

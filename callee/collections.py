@@ -26,8 +26,8 @@ class CollectionMatcher(BaseMatcher):
     CLASS = None
 
     def __init__(self, of=None):
-        """Constructor.
-        :param of: Matcher for the collection's elements, or a type.
+        """:param of: Optional matcher for the elements,
+                      or the expected type of the elements.
         """
         assert self.CLASS, "must specify collection type to match"
         self.of = self._validate_argument(of)
@@ -109,13 +109,13 @@ class Sequence(CollectionMatcher):
 
 
 class List(CollectionMatcher):
-    """Matches a list of given items."""
+    """Matches a :class:`list` of given items."""
 
     CLASS = list
 
 
 class Set(CollectionMatcher):
-    """Matches a set of given items."""
+    """Matches a :class:`set` of given items."""
 
     CLASS = collections.Set
 
@@ -135,9 +135,7 @@ class MappingMatcher(CollectionMatcher):
     CLASS = None
 
     def __init__(self, *args, **kwargs):
-        """Constructor.
-
-        Can be invoked either with parameters described below
+        """Constructor can be invoked either with parameters described below
         (given as keyword arguments), or with two positional arguments:
         matchers/types for dictionary keys & values::
 
@@ -238,7 +236,7 @@ class Mapping(MappingMatcher):
 
 
 class Dict(MappingMatcher):
-    """Matches a dictionary of given items."""
+    """Matches a dictionary (:class:`dict`) of given items."""
 
     CLASS = dict
 
