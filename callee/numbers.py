@@ -95,9 +95,9 @@ class Integer(NumericMatcher):
     """Matches a regular integer.
 
     On Python 3, there is no distinction between regular and long integer,
-    making this matchers and :class:`Long` equivalent.
+    making this matcher and :class:`Long` equivalent.
 
-    On Python 2, this matches the :type:`int` integers exclusively.
+    On Python 2, this matches the :class:`int` integers exclusively.
     """
     CLASS = int
 
@@ -111,6 +111,6 @@ class Long(NumericMatcher):
     On Python 3, this is the same as regular integer, making this matcher
     and :class:`Integer` equivalent.
 
-    On Python 2, this matches the :type:`long` integers exclusively.
+    On Python 2, this matches the :class:`long` integers exclusively.
     """
     CLASS = int if IS_PY3 else long
