@@ -90,7 +90,12 @@ class Generator(BaseMatcher):
     """Matches an iterable that's a generator.
 
     A generator can be a generator expression ("comprehension")
-    or an invocation of a function that `yield`\ s objects.
+    or an invocation of a generator function (one that ``yield``\ s objects).
+
+    .. note::
+
+        To match a generator *function*, you should use the
+        :class:`~callee.general.GeneratorFunction` matcher instead.
     """
     def match(self, value):
         return inspect.isgenerator(value)

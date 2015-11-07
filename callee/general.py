@@ -33,6 +33,10 @@ class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 
     def __init__(self, predicate):
+        """
+        :param predicate: Callable taking a single argument
+                          and returning True or False
+        """
         if not callable(predicate):
             raise TypeError(
                 "Matching requires a predicate, got %r" % (predicate,))
@@ -64,7 +68,7 @@ class FunctionMatcher(BaseMatcher):
 
 
 class Callable(FunctionMatcher):
-    """Matches any callable object."""
+    """Matches any callable object (as per the :func:`callable` function)."""
 
     def match(self, value):
         return callable(value)
@@ -78,11 +82,15 @@ class Function(FunctionMatcher):
 
 
 class GeneratorFunction(FunctionMatcher):
-    """Matches a generator function, i.e. one that uses `yield` in its body.
+    """Matches a generator function, i.e. one that uses ``yield`` in its body.
 
-    Note that this is distinct from matching a _generator_
-    which is an iterable result of calling the generator function
-    (among other things).
+    .. note::
+
+        This is distinct from matching a *generator*,
+        i.e. an iterable result of calling the generator function,
+        or a generator comprehension (``(... for x in ...)``).
+        The :class:`~callee.collections.Generator` matcher
+        should be used for those objects instead.
     """
     def match(self, value):
         return inspect.isgeneratorfunction(value)
@@ -95,6 +103,7 @@ class TypeMatcher(BaseMatcher):
     This class shouldn't be used directly.
     """
     def __init__(self, type_):
+        """:param type\ _: Type to match against"""
         if not isinstance(type_, type):
             raise TypeError("%s requires a type, got %r" % (
                 self.__class__.__name__, type_))
@@ -105,31 +114,32 @@ class TypeMatcher(BaseMatcher):
 
 
 class InstanceOf(TypeMatcher):
-    """Matches an object that's an instance of given type."""
-
+    """Matches an object that's an instance of given type
+    (as per `isinstance`).
+    """
     def match(self, value):
         return isinstance(value, self.type_)
 
-#: Alias for :class:`InstanceOf`.
 IsA = InstanceOf
 
 
 class SubclassOf(TypeMatcher):
-    """Matches a class that's a subclass of given type."""
-
+    """Matches a class that's a subclass of given type
+    (as per `issubclass`).
+    """
     def __init__(self, type_):
+        """:param type\ _: Type to match against"""
         # TODO(xion): strict= argument
         super(SubclassOf, self).__init__(type_)
 
     def match(self, value):
         return isinstance(value, type) and issubclass(value, self.type_)
 
-#: Alias for :class:`SubclassOf`.
 Inherits = SubclassOf
 
 
 class Type(BaseMatcher):
-    """Matches any Python type."""
+    """Matches any Python type object."""
 
     def match(self, value):
         return isinstance(value, type)
@@ -139,7 +149,7 @@ class Type(BaseMatcher):
 
 
 class Class(BaseMatcher):
-    """Matches a class (but not any other type)."""
+    """Matches a class (but not any other type object)."""
 
     def match(self, value):
         return inspect.isclass(value)
@@ -158,9 +168,9 @@ class Attrs(BaseMatcher):
         * have all the attributes whose names were passed
           as positional arguments (regardless of their values)
         * have the attribute names/values that correspond exactly
-          to keyword arguments names and values
+          to keyword arguments' names and values
 
-    Example::
+    Examples::
 
         Attrs('foo')  # `foo` attribute with any value
         Attrs('foo', 'bar')  # `foo` and `bar` attributes with any values
