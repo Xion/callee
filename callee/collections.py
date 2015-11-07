@@ -26,8 +26,9 @@ class CollectionMatcher(BaseMatcher):
     CLASS = None
 
     def __init__(self, of=None):
-        """:param of: Optional matcher for the elements,
-                      or the expected type of the elements.
+        """
+        :param of: Optional matcher for the elements,
+                   or the expected type of the elements.
         """
         assert self.CLASS, "must specify collection type to match"
         self.of = self._validate_argument(of)

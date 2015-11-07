@@ -38,8 +38,8 @@ class StringTypeMatcher(BaseMatcher):
 class String(StringTypeMatcher):
     """Matches any string.
 
-    On Python 2, this means either :type:`str` or :type:`unicode` objects.
-    On Python 3, this means :type:`str` objects exclusively.
+    On Python 2, this means either :class:`str` or :class:`unicode` objects.
+    On Python 3, this means :class:`str` objects exclusively.
     """
     CLASS = str if IS_PY3 else basestring
 
@@ -47,17 +47,17 @@ class String(StringTypeMatcher):
 class Unicode(StringTypeMatcher):
     """Matches a Unicode string.
 
-    On Python 2, this means :type:`unicode` objects exclusively.
-    On Python 3, this means :type:`str` objects exclusively.
+    On Python 2, this means :class:`unicode` objects exclusively.
+    On Python 3, this means :class:`str` objects exclusively.
     """
     CLASS = str if IS_PY3 else unicode
 
 
 class Bytes(StringTypeMatcher):
-    """Matches a byte string, i.e. the :type:`bytes` type.
+    """Matches a byte string, i.e. the :class:`bytes` type.
 
-    On Python 2, this is equivalent to :type:`str` type.
-    On Python 3, byte strings are a separate type, distinct from :type:`str`.
+    On Python 2, this is equivalent to :class:`str` class.
+    On Python 3, byte strings are a separate class, distinct from :class:`str`.
     """
     CLASS = bytes
 
@@ -115,8 +115,7 @@ class Regex(BaseMatcher):
     """Matches a string against a regular expression."""
 
     def __init__(self, pattern, flags=0):
-        """Constructor.
-
+        """
         :param pattern: Regular expression to match against.
                         It can be given as string,
                         or a compiled regular expression object

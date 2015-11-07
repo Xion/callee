@@ -226,6 +226,8 @@ class And(BaseMatcher):
                    for m in matchers), "And() expects matchers"
         self._matchers = list(matchers)
 
+    # TODO(xion): coalesce a & b & c into single And(a, b, c)
+
     def match(self, value):
         return all(matcher.match(value) for matcher in self._matchers)
 
@@ -241,6 +243,8 @@ class Or(BaseMatcher):
         assert any(isinstance(m, BaseMatcher)
                    for m in matchers), "Or() expects matchers"
         self._matchers = list(matchers)
+
+    # TODO(xion): coalesce a | b | c into single Or(a, b, c)
 
     def match(self, value):
         return any(matcher.match(value) for matcher in self._matchers)
