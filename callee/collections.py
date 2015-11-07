@@ -94,7 +94,7 @@ class Generator(BaseMatcher):
 
     .. note::
 
-        To match a generator *function*, you should use the
+        To match a *generator function* itself, you should use the
         :class:`~callee.general.GeneratorFunction` matcher instead.
     """
     def match(self, value):
