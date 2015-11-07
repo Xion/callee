@@ -96,7 +96,8 @@ class EndsWith(BaseMatcher):
 
 class Glob(BaseMatcher):
     """Matches a string against a Unix shell wildcard pattern.
-    See the `fnmatch` module for more details about those patterns.
+
+    See the :mod:`fnmatch` module for more details about those patterns.
     """
     # TODO(xion): add a case= argument with True/False/'system',
     # and optionally use fnmatchcase
@@ -118,7 +119,7 @@ class Regex(BaseMatcher):
         """
         :param pattern: Regular expression to match against.
                         It can be given as string,
-                        or a compiled regular expression object
+                        or as a compiled regular expression object
         :param flags: Flags to use with a regular expression passed as string
         """
         if self._is_regex_object(pattern):
