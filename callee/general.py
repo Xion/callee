@@ -2,7 +2,7 @@
 General matchers.
 """
 import inspect
-from itertools import starmap
+from itertools import chain, starmap
 from operator import itemgetter
 
 from callee.base import BaseMatcher, Eq
@@ -192,7 +192,7 @@ class Attrs(BaseMatcher):
         # we don't want to swallow any AttributeError exceptions that a custom
         # matcher for an attribute value may raise.
         # This would be awkward to do with regular try-catch.
-        for name in self.attr_names + self.attr_dict.keys():
+        for name in chain(self.attr_names, self.attr_dict.keys()):
             if not hasattr(value, name):
                 return False
 
@@ -207,7 +207,7 @@ class Attrs(BaseMatcher):
         # get both the names-only and valued attributes and sort them by name
         sentinel = object()
         attrs = [(name, sentinel)
-                 for name in self.attr_names] + self.attr_dict.items()
+                 for name in self.attr_names] + list(self.attr_dict.items())
         attrs.sort(key=itemgetter(0))
 
         def attr_repr(name, value):
