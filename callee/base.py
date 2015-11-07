@@ -8,7 +8,7 @@ from callee._compat import metaclass
 
 __all__ = [
     'BaseMatcher', 'Matcher',
-    'Eq', 'Is',
+    'Eq', 'Is', 'IsNot',
     'Not', 'And', 'Or',
 ]
 
@@ -144,7 +144,7 @@ class Matcher(BaseMatcher):
 # Special cases around equality/identity
 
 class Eq(BaseMatcher):
-    """Matches given value exactly using the equality operator."""
+    """Matches a value exactly using the equality operator."""
 
     # TODO(xion): document the potential rare use of this class, which
     # is asserting on mock calls that pass matcher objects in *production* code
@@ -165,13 +165,31 @@ class Eq(BaseMatcher):
 
 
 class Is(BaseMatcher):
-    """Matches given value using the identity (``is``) operator."""
+    """Matches a value using the identity (``is``) operator."""
 
     def __init__(self, value):
         self.value = value
 
     def match(self, value):
-        return self.value is value
+        return value is self.value
+
+    def __eq__(self, other):
+        return self.match(other)
+
+    def __repr__(self):
+        # This representation matches the format of comparison operators
+        # (such as :class:`Less`) defined in the ``.operators`` module.
+        return "<... is %r>" % (self.value,)
+
+
+class IsNot(BaseMatcher):
+    """Matches a value using the negated identity (``is not``) operator."""
+
+    def __init__(self, value):
+        self.value = value
+
+    def match(self, value):
+        return value is not self.value
 
     def __eq__(self, other):
         return self.match(other)

@@ -6,11 +6,12 @@ from __future__ import absolute_import
 from numbers import Number
 import operator
 
-from callee.base import BaseMatcher, Eq, Is
+from callee.base import BaseMatcher, Eq, Is, IsNot
 
 
 __all__ = [
-    'Eq', 'Is',  # they are defined elsewhere but they fit in this module, too
+    # those are defined elsewhere but they fit in this module, too
+    'Eq', 'Is', 'IsNot',
 
     'Less', 'LessThan', 'Lt',
     'LessOrEqual', 'LessOrEqualTo', 'Le',
@@ -36,9 +37,8 @@ class OperatorMatcher(BaseMatcher):
     TRANSFORM = None
 
     def __init__(self, *args, **kwargs):
-        """Constructor.
+        """Accepts a single argument: the reference object to compare against.
 
-        Accepts a single argument: the reference object to compare against.
         It can be passed either as a single positional parameter,
         or as a single keyword argument -- preferably with a readable name,
         for example::
