@@ -19,7 +19,8 @@ from callee.operators import (
     Le, Less, LessOrEqual, LessOrEqualTo, LessThan,
     Longer, LongerOrEqual, LongerOrEqualTo, LongerThan, Lt,
     Shorter, ShorterOrEqual, ShorterOrEqualTo, ShorterThan)
-from callee.strings import Bytes, String, Unicode
+from callee.strings import \
+    Bytes, EndsWith, Glob, Regex, StartsWith, String, Unicode
 
 
 __all__ = [
@@ -48,6 +49,7 @@ __all__ = [
     'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
 
     'String', 'Unicode', 'Bytes',
+    'StartsWith', 'EndsWith', 'Glob', 'Regex',
 ]
 
 
