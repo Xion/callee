@@ -71,5 +71,6 @@ It also works both with the *unittest.mock* module from Python 3.3+ or its backp
 API reference
 ~~~~~~~~~~~~~
 
-See the `documentation <http://callee.readthedocs.org>`_ for complete reference on
-the library usage and all available matchers.
+See the `documentation`_ for complete reference on the library usage and all available matchers.
+
+.. _documentation: http://callee.readthedocs.org

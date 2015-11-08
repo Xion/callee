@@ -36,4 +36,4 @@ Reference
    String matchers <strings>
    Numeric matchers <numbers>
    Collection matchers <collections>
-   Operator-based matchers <operators>
+   Operator matchers <operators>

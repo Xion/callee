@@ -144,16 +144,27 @@ class Matcher(BaseMatcher):
 # Special cases around equality/identity
 
 class Eq(BaseMatcher):
-    """Matches a value exactly using the equality operator."""
+    """Matches a value exactly using the equality (``==``) operator.
 
-    # TODO(xion): document the potential rare use of this class, which
-    # is asserting on mock calls that pass matcher objects in *production* code
+    This is already the default mode of operation for ``assert_called_with``
+    methods on mocks, making this matcher redundant in most situations::
 
+        mock_foo.assert_called_with(bar)
+        mock_foo.assert_called_with(Eq(bar))  # equivalent
+
+    In very rare and specialized cases, however, if the **tested code** treats
+    `callee` matcher objects in some special way, using :class:`Eq` may be
+    necessary.
+
+    Those situations shouldn't generally arise outside of writing tests
+    for code that is itself a test library or helper.
+    """
     def __init__(self, value):
+        """:param value: Value to match against"""
         self.value = value
 
     def match(self, value):
-        return self.value == value
+        return value == self.value
 
     def __eq__(self, other):
         return self.match(other)
