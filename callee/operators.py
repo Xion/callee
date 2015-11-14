@@ -117,10 +117,8 @@ class Less(OperatorMatcher):
     """
     OP = operator.lt
 
-#: Alias for :class:`Less`.
 LessThan = Less
 
-#: Alias for :class:`Less`.
 Lt = Less
 
 
@@ -130,10 +128,8 @@ class LessOrEqual(OperatorMatcher):
     """
     OP = operator.le
 
-#: Alias for :class:`LessOrEqual`.
 LessOrEqualTo = LessOrEqual
 
-#: Alias for :class:`LessOrEqual`.
 Le = LessOrEqual
 
 
@@ -143,10 +139,8 @@ class Greater(OperatorMatcher):
     """
     OP = operator.gt
 
-#: Alias for :class:`Greater`.
 GreaterThan = Greater
 
-#: Alias for :class:`Greater`.
 Gt = Greater
 
 
@@ -156,10 +150,8 @@ class GreaterOrEqual(OperatorMatcher):
     """
     OP = operator.ge
 
-#: Alias for :class:`GreaterOrEqual`.
 GreaterOrEqualTo = GreaterOrEqual
 
-#: Alias for :class:`GreaterOrEqual`.
 Ge = GreaterOrEqual
 
 
@@ -176,7 +168,7 @@ class LengthMatcher(OperatorMatcher):
 
         # allow the reference to be either a numeric length or another sequence
         # TODO(xion): remember at least the sequence type to make it impossible
-        # e.g. to accidentally strings and lists by length
+        # e.g. to accidentally compare strings and lists by length
         if not isinstance(self.ref, Number):
             self.ref = len(self.ref)
 
@@ -187,7 +179,6 @@ class Shorter(LengthMatcher):
     """
     OP = operator.lt
 
-#: Alias for :class:`Shorter`.
 ShorterThan = Shorter
 
 
@@ -197,7 +188,6 @@ class ShorterOrEqual(LengthMatcher):
     """
     OP = operator.le
 
-#: Alias for :class:`ShorterOrEqual`.
 ShorterOrEqualTo = ShorterOrEqual
 
 
@@ -207,7 +197,6 @@ class Longer(LengthMatcher):
     """
     OP = operator.gt
 
-#: Alias for :class:`Longer`.
 LongerThan = Longer
 
 
@@ -217,7 +206,6 @@ class LongerOrEqual(LengthMatcher):
     """
     OP = operator.ge
 
-#: Alias for :class:`LongerOrEqual`.
 LongerOrEqualTo = LongerOrEqual
 
 
