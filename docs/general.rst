@@ -3,6 +3,11 @@ General matchers
 
 .. currentmodule:: callee.general
 
+These matchers are the most general breed that is not specific to any
+particular kind of objects. They allow you to match mock parameters
+based on their Python types, object attributes, and even arbitrary
+logical predicates.
+
 .. autoclass:: Any
 
 .. autoclass:: Matching
