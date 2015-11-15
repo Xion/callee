@@ -12,8 +12,12 @@ DOCS_OUTPUT_DIR = os.path.join(DOCS_DIR, '_build')
 
 
 @task
-def docs(show=True):
+def docs(output='html', rebuild=False, show=True):
     """Build the docs and show them in default web browser."""
-    run('sphinx-build docs docs/_build')
+    build_cmd = 'sphinx-build -b {output} {all} docs docs/_build'.format(
+        output=output,
+        all='-a -E' if rebuild else '')
+    run(build_cmd)
+
     if show:
         webbrowser.open_new_tab(os.path.join(DOCS_OUTPUT_DIR, 'index.html'))
