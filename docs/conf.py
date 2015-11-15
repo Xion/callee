@@ -14,12 +14,25 @@
 
 import re
 
+from sphinx.util.docstrings import prepare_docstring
+
 import callee
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
+
+
+def setup(app):
+    """Setup the :class:`Sphinx` app object to process source code
+    and generate docs.
+
+    We use this functions to connect the handlers to various Sphinx
+    and extension events.
+    """
+    app.connect('autodoc-process-docstring', autodoc_process_docstring)
+
 
 # -- General configuration ------------------------------------------------
 
@@ -293,3 +306,29 @@ texinfo_documents = [
 # Whether `autoclass` should include class's docstring, __init__ method's
 # docstring, or both.
 autoclass_content = 'both'
+
+# Exceptions to the above setting, handled by ``autodoc_process_docstring``.
+# Any class names on this list will only have their class docstring included
+# (and not also the  ``__init__`` method docstring).
+autoclass_content_exceptions = [
+    'callee.operators.Contains',
+    'callee.operators.In',
+]
+
+
+def autodoc_process_docstring(app, what, name, obj, options, lines):
+    """Handler for the event emitted when autodoc processes a docstring.
+    See http://sphinx-doc.org/ext/autodoc.html#event-autodoc-process-docstring.
+
+    The TL;DR is that we can modify ``lines`` in-place to influence the output.
+    """
+    # for classes exempt from automatic merging of class & __init__ docs,
+    # pretend their __init__ methods have no docstring at all,
+    # so that nothing will be appended to the class's docstring
+    if what == 'class' and name in autoclass_content_exceptions:
+        # amusingly, when autodoc reads the constructor's docstring
+        # for appending it to class docstring, it will report ``what``
+        # as 'class' (again!); hence we must check what it actually read
+        ctor_docstring_lines = prepare_docstring(obj.__init__.__doc__)
+        if lines == ctor_docstring_lines:
+            lines[:] = []
