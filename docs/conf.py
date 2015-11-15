@@ -14,6 +14,7 @@
 
 import re
 
+from sphinx.errors import SphinxError
 from sphinx.util.docstrings import prepare_docstring
 
 import callee
@@ -322,6 +323,13 @@ def autodoc_process_docstring(app, what, name, obj, options, lines):
 
     The TL;DR is that we can modify ``lines`` in-place to influence the output.
     """
+    # check that only symbols that can be directly imported from ``callee``
+    # package are being documented
+    _, symbol = name.rsplit('.', 1)
+    if symbol not in callee.__all__:
+        raise SphinxError(
+            "autodoc'd '%s' is not a part of the public API!" % name)
+
     # for classes exempt from automatic merging of class & __init__ docs,
     # pretend their __init__ methods have no docstring at all,
     # so that nothing will be appended to the class's docstring
