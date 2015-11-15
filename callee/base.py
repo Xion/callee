@@ -135,7 +135,11 @@ class Matcher(BaseMatcher):
     for better error messages.
     """
     def __repr__(self):
-        """Provides a default representation for custom matchers."""
+        """Provides a default ``repr``\ esentation for custom matchers.
+
+        This representation will include mostly just the matcher class name.
+        If that's insufficient, consider overriding this method.
+        """
         # TODO(xion): more informative matcher object description
         args = "(...)" if '__init__' in self.__class__.__dict__ else ""
         return "<%s%s>" % (self.__class__.__name__, args)
