@@ -15,7 +15,9 @@ from callee.general import (Any, ArgThat, Attrs, Attr, HasAttr, HasAttrs,
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
 from callee.operators import (
+    Contains,
     Ge, Greater, GreaterOrEqual, GreaterOrEqualTo, GreaterThan, Gt,
+    In,
     Le, Less, LessOrEqual, LessOrEqualTo, LessThan,
     Longer, LongerOrEqual, LongerOrEqualTo, LongerThan, Lt,
     Shorter, ShorterOrEqual, ShorterOrEqualTo, ShorterThan)
@@ -47,6 +49,7 @@ __all__ = [
     'GreaterOrEqual', 'GreaterOrEqualTo', 'Ge',
     'Shorter', 'ShorterThan', 'ShorterOrEqual', 'ShorterOrEqualTo',
     'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
+    'Contains', 'In',
 
     'String', 'Unicode', 'Bytes',
     'StartsWith', 'EndsWith', 'Glob', 'Regex',
