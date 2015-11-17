@@ -22,8 +22,8 @@ Argument matchers for *unittest.mock*
     :alt: Build Status
 
 
-More robust tests
-~~~~~~~~~~~~~~~~~
+For more robust tests
+~~~~~~~~~~~~~~~~~~~~~~
 
 Python's `mocking library`_ (or its `backport`_ for Python <3.3) is simple, reliable, and easy to use.
 But it is also a little lacking when it comes to asserting what calls a mock has received.
@@ -37,8 +37,8 @@ or extremely general::
     my_mock.assert_called_with(ANY, ANY, ANY)
     # passes as long as argument count is the same
 
-The former can make your tests over-specified, and thus fragile.
-The latter could make them too broad, missing some erroneous cases and possibly letting your code fail in production.
+| The former can make your tests over-specified, and thus fragile.
+| The latter could make them too broad, missing some erroneous cases and possibly letting your code fail in production.
 
 *callee* provides **argument matchers** that allow you to be exactly as precise as you want::
 
@@ -64,8 +64,8 @@ Installing *callee* is easy with pip::
 
     $ pip install callee
 
-*callee* support goes all the way to Python 2.6.
-It also works both with the *unittest.mock* module from Python 3.3+ or its backport.
+| *callee* support goes all the way back to Python 2.6.
+| It also works both with the *unittest.mock* module from Python 3.3+ or its backport.
 
 
 API reference
