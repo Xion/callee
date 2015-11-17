@@ -27,14 +27,23 @@ that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
 .. _Mock.call_args_list: https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.call_args_list
 
 
-Reference
----------
+User's Guide
+------------
+
+TODO(xion): write this section
 
 .. toctree::
    :maxdepth: 1
 
-   General matchers <general>
-   String matchers <strings>
-   Numeric matchers <numbers>
-   Collection matchers <collections>
-   Operator matchers <operators>
+   installing
+   Using matchers with `mock` <usage>
+   Creating custom matchers <custom-matchers>
+
+
+API Reference
+-------------
+
+If you are looking for detailed information about all the matchers offered by *callee*,
+this is the place to go.
+
+.. include:: reference/toc.rst.inc

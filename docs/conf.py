@@ -131,7 +131,20 @@ html_theme = 'alabaster'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    # TODO(xion): add a logo
+    'description': "Argument matchers for unittest.mock",
+    'description_font_style': 'italic',
+
+    'github_user': 'Xion',
+    'github_repo': 'callee',
+    'github_type': 'star',
+    'github_count': False,
+    'github_banner': True,  # "Fork me onGitHub" in the corner
+
+    # TODO(xion): setup Travis CI
+    'travis_button': False,
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -171,7 +184,21 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    'index': [
+        # provided by Alabaster theme
+        'about.html',
+        # provided by Sphinx
+        'searchbox.html',
+    ],
+    '**': [
+        # provided by Alabaster theme
+        'about.html',
+        'navigation.html',
+        # provided by Sphinx
+        'searchbox.html',
+    ],
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -186,11 +213,15 @@ html_static_path = ['_static']
 # If true, the index is split into individual pages for each letter.
 #html_split_index = False
 
+# If true, the reST sources are included in the HTML build as _sources/name.
+# The default is True.
+html_copy_source = False
+
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #html_show_copyright = True
