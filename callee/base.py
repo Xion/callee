@@ -90,6 +90,11 @@ class BaseMatcherMetaclass(type):
             and inspect.isfunction(member)
         ]
 
+    # TODO(xion): consider making matcher classes interchangeable with matcher
+    # objects created w/o ctor args, i.e. making Integer and Integer()
+    # equivalent; it'd require this metaclass to implement the magic methods
+    # from BaseMatcher and something better than `isinstance(x, BaseMatcher)`
+
 
 @metaclass(BaseMatcherMetaclass)
 class BaseMatcher(object):
