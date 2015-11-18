@@ -133,7 +133,7 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    # TODO(xion): add a logo
+    'logo': 'logo.png',
     'description': "Argument matchers for unittest.mock",
     'description_font_style': 'italic',
 

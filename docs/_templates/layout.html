@@ -1,0 +1,18 @@
+{#
+  Extension of default Sphinx layout template
+#}
+{% extends '!layout.html' %}
+
+
+{% block footer %}
+  {{ super() }}
+
+  {# Alabaster theme doesn't provide a proper hook add additional copyright text to the footer,
+     so we cheat a little to make it look okay-ish #}
+  {# TODO(xion): file an issue (or submit a PR) with Alabaster and reference it here #}
+  <div class="footer" style="position: relative; top: -25px;">
+    <em>First Telephone</em> (project logo)
+    by <a href="https://thenounproject.com/patricia%20canales/">Patricia Canales Odriozola</a>
+    from the <a href="https://thenounproject.com/">Noun Project</a>
+  </div>
+{% endblock %}
