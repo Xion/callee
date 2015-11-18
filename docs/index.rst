@@ -31,14 +31,9 @@ that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
 User's Guide
 ------------
 
-TODO(xion): write this section
+TODO(xion): these are just empty stubs; write the guides
 
-.. toctree::
-   :maxdepth: 1
-
-   installing
-   Using matchers with `mock` <usage>
-   Creating custom matchers <custom-matchers>
+.. include:: guide/toc.rst.inc
 
 
 API Reference
