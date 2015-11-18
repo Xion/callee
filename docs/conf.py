@@ -133,7 +133,7 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'logo': 'logo.png',
+    'logo': 'logo.png',  # handled by the logo.html template
     'description': "Argument matchers for unittest.mock",
     'description_font_style': 'italic',
 
@@ -187,19 +187,14 @@ html_static_path = ['_static']
 # Custom sidebar templates, maps document names to template names.
 html_sidebars = {
     'index': [
-        # provided by Alabaster theme
-        'about.html',
-        # our own
-        'sidebar/index.html',
-        # provided by Sphinx
-        'searchbox.html',
+        'about.html',           # from Alabaster
+        'sidebar/index.html',   # own
+        'searchbox.html',       # from Sphinx
     ],
     '**': [
-        # provided by Alabaster theme
-        'about.html',
-        'navigation.html',
-        # provided by Sphinx
-        'searchbox.html',
+        'about.html',           # from Alabaster
+        'navigation.html',      # from Alabaster
+        'searchbox.html',       # from Sphinx
     ],
 }
 

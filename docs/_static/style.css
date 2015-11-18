@@ -1,0 +1,10 @@
+/**
+ * Custom CSS styles, used by files from _templates/
+ */
+
+.logo {
+  position: relative;
+  left: -8px;
+
+  margin-bottom: 15px;
+}

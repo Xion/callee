@@ -4,6 +4,10 @@
 {% extends '!layout.html' %}
 
 
+{# Include our own CSS file with the theme's stylesheets #}
+{% set css_files = css_files + ['_static/style.css'] %}
+
+
 {% block footer %}
   {{ super() }}
 
