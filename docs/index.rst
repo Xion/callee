@@ -14,7 +14,8 @@ on how the tested code should interact with your mocks:
     from callee import Dict, StartsWith, String
 
     mock_requests.get.assert_called_with(
-        String() & StartsWith('https://'), params=Dict(String(), String()))
+        String() & StartsWith('https://'),
+        params=Dict(String(), String()))
 
 With *callee*, you can avoid both the overly lenient |mock.ANY|_, as well as the tedious, error-prone code
 that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
