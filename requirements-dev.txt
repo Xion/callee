@@ -2,5 +2,8 @@
 # (but not required by the library code or its tests)
 
 tox>=1.7
-Sphinx
 invoke==0.11.1
+
+# docs
+Sphinx>=1.1
+alabaster

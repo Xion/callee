@@ -38,12 +38,13 @@ def setup(app):
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.1'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'alabaster',
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
@@ -140,7 +141,7 @@ html_theme_options = {
     'github_repo': 'callee',
     'github_type': 'star',
     'github_count': False,
-    'github_banner': True,  # "Fork me onGitHub" in the corner
+    'github_banner': True,  # "Fork me on GitHub" in the corner
 
     # TODO(xion): setup Travis CI
     'travis_button': False,
@@ -188,6 +189,8 @@ html_sidebars = {
     'index': [
         # provided by Alabaster theme
         'about.html',
+        # our own
+        'sidebar/index.html',
         # provided by Sphinx
         'searchbox.html',
     ],
