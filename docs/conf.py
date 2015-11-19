@@ -134,8 +134,7 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     'logo': 'logo.png',  # handled by the logo.html template
-    'description': "Argument matchers for unittest.mock",
-    'description_font_style': 'italic',
+    'description': callee.__description__,
 
     'github_user': 'Xion',
     'github_repo': 'callee',
@@ -193,7 +192,7 @@ html_sidebars = {
     ],
     '**': [
         'about.html',           # from Alabaster
-        'navigation.html',      # from Alabaster
+        'localtoc.html',        # from Sphinx
         'searchbox.html',       # from Sphinx
     ],
 }
