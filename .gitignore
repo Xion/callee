@@ -4,5 +4,6 @@ dist
 
 .tox
 .cache
+.coverage
 
 docs/_build
