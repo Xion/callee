@@ -40,6 +40,7 @@ or extremely general::
 | The former can make your tests over-specified, and thus fragile.
 | The latter could make them too broad, missing some erroneous cases and possibly letting your code fail in production.
 
+
 *callee* provides **argument matchers** that allow you to be exactly as precise as you want::
 
     my_mock.assert_called_with(Number(), InstanceOf(Foo), String())
