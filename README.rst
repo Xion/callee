@@ -22,8 +22,8 @@ Argument matchers for *unittest.mock*
     :alt: Build Status
 
 
-For more robust tests
-~~~~~~~~~~~~~~~~~~~~~~
+More robust tests
+~~~~~~~~~~~~~~~~~
 
 Python's `mocking library`_ (or its `backport`_ for Python <3.3) is simple, reliable, and easy to use.
 But it is also a little lacking when it comes to asserting what calls a mock has received.
@@ -66,7 +66,7 @@ Installing *callee* is easy with pip::
     $ pip install callee
 
 | *callee* support goes all the way back to Python 2.6.
-| It also works both with the *unittest.mock* module from Python 3.3+ or its backport.
+| It also works both with the ``unittest.mock`` module from Python 3.3+ or its backport.
 
 
 API reference
