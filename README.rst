@@ -47,10 +47,9 @@ or extremely general::
 
 without tedious, handcrafted, and poorly readable code that checks ``call_args`` or ``call_args_list``::
 
-    for posargs, kwargs in my_mock.call_args_list:
-        self.assertIsInstance(posargs[0], int)
-        self.assertIsInstance(posargs[1], Foo)
-        self.assertIsInstance(posargs[2], str)
+    self.assertIsInstance(mock.call_args[0][0], int)
+    self.assertIsInstance(mock.call_args[0][1], Foo)
+    self.assertIsInstance(mock.call_args[0][2], str)
 
 It has plenty of matcher types to fit all common and uncommon needs, and you can easily write your own if necessary.
 
