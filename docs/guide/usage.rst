@@ -56,12 +56,16 @@ or other ``mock`` objects. They are applicable as arguments to any of the follow
     * ``assert_any_call``
     * ``assert_not_called``
 
-# TODO(xion): add example
-
 Moreover, the |mock.call|_ helper can also accept matchers in place of call arguments. This enables you to also use
-the |assert_has_calls|_ method if you like.
+the |assert_has_calls|_ method if you like:
 
-# TODO(xion): add example
+.. code-block:: python
+
+    some_mock.assert_has_calls([
+        call(0, String()),
+        call(1, String()),
+        call(2, String()),
+    ])
 
 Finally, you can still leverage matchers even when you're working directly with ``call_args_list``, ``method_calls``,
 or ``mock_calls`` attributes. The only reason you'd still want that, though, is verifying the **exact** calls a mock receives, in order:
@@ -73,7 +77,7 @@ or ``mock_calls`` attributes. The only reason you'd still want that, though, is 
         mock.call(String(), 42),
     ]
 
-Note that most tests don't need to be this rigid, so you should use that technique sparingly.
+Note that most tests don't need to be this rigid, so you should use this technique sparingly.
 
 .. |mock.call| replace:: ``mock.call``
 .. _mock.call: https://docs.python.org/3/library/unittest.mock.html#calls-as-tuples
@@ -84,4 +88,24 @@ Note that most tests don't need to be this rigid, so you should use that techniq
 Combining matchers
 ******************
 
-TODO(xion): describe & | ~ operators
+Individual matchers, such as :class:`String <callee.strings.String>` or :class:`Float <callee.numbers.Float>`,
+can be combined to build more complex expressions. This is accomplished with help from Python's "logical" operators:
+``|``, ``&``, and ``~``.
+
+Specifically, given matchers ``A`` and ``B``:
+
+    * ``A | B`` matches objects that match ``A`` **or** ``B``
+    * ``A & B`` matches objects that match both ``A`` **and** ``B``
+    * ``~A`` matches objects do **not** match ``A``
+
+Here are a few examples:
+
+.. code-block:: python
+
+    some_mock.assert_called_with(Number() | InstanceOf(Foo))
+    some_mock.assert_called_with(String() & ShorterThan(9))
+    some_mock.assert_called_with(String() & ~Contains('forbidden'))
+
+All matchers can be combined this way, including any :doc:`custom ones <custom-matchers>` that you write yourself.
+
+.. TODO(xion): mention the existence of And, Or, Not classes
