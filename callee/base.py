@@ -217,7 +217,7 @@ class IsNot(BaseMatcher):
     def __repr__(self):
         # This representation matches the format of comparison operators
         # (such as :class:`Less`) defined in the ``.operators`` module.
-        return "<... is %r>" % (self.value,)
+        return "<... is not %r>" % (self.value,)
 
 
 # Logical combinators for matchers
