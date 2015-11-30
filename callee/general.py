@@ -53,7 +53,6 @@ class Matching(BaseMatcher):
         # we could display the code inline for short lambdas, for example
         return "<Matching %r>" % (self.predicate,)
 
-#: Alias for :class:`Matching`.
 ArgThat = Matching
 
 

@@ -88,6 +88,8 @@ Note that most tests don't need to be this rigid, so you should use this techniq
 Combining matchers
 ******************
 
+.. _logical-expressions:
+
 Individual matchers, such as :class:`String <callee.strings.String>` or :class:`Float <callee.numbers.Float>`,
 can be combined to build more complex expressions. This is accomplished with help from Python's "logical" operators:
 ``|``, ``&``, and ``~``.
