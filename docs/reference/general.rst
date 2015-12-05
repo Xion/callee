@@ -6,11 +6,12 @@ General matchers
 These matchers are the most general breed that is not specific to any
 particular kind of objects. They allow you to match mock parameters
 based on their Python types, object attributes, and even arbitrary
-logical predicates.
+boolean predicates.
 
 .. autoclass:: Any
 
 .. autoclass:: Matching
+.. autoclass:: ArgThat
 
 
 Type matchers
