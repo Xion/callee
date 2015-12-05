@@ -31,7 +31,7 @@ that manually checks |Mock.call_args|_ and |Mock.call_args_list|_.
 User's Guide
 ------------
 
-.. TODO(xion): these are just empty stubs; write the guides
+Start here for the installation instructions and a quick, complete overview of *callee* and its usage.
 
 .. include:: guide/toc.rst.inc
 

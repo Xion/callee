@@ -111,3 +111,15 @@ Here are a few examples:
 All matchers can be combined this way, including any :doc:`custom ones <custom-matchers>` that you write yourself.
 
 .. TODO(xion): mention the existence of And, Or, Not classes
+
+
+Next steps
+**********
+
+Now that you know how to use matchers and how to combine them into more complex expressions, you probably want to
+have a look at the wide array of existing matchers offerred by *callee*:
+
+.. include:: ../reference/toc.rst.inc
+
+If your needs can't be met by it, there is always a possibility of :doc:`defining your own matchers <custom-matchers>`
+as well.
