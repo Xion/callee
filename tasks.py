@@ -3,6 +3,7 @@ Automation tasks, aided by the Invoke package.
 """
 import os
 import webbrowser
+import sys
 
 from invoke import task, run
 
@@ -20,4 +21,7 @@ def docs(output='html', rebuild=False, show=True):
     run(build_cmd)
 
     if show:
-        webbrowser.open_new_tab(os.path.join(DOCS_OUTPUT_DIR, 'index.html'))
+        path = os.path.join(DOCS_OUTPUT_DIR, 'index.html')
+        if sys.platform == 'darwin':
+            path = 'file://%s' % os.path.abspath(path)
+        webbrowser.open_new_tab(path)
