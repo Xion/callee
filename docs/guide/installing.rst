@@ -68,7 +68,7 @@ decorator.
 Instructions
 ************
 
-The preferred way to install *callee* is using *pip*:
+The preferred way to install *callee* is through *pip*:
 
 .. code-block:: shell
 
@@ -85,8 +85,8 @@ If you want to work with the development version instead, you may either manuall
 install it directly from the Git repository.
 
 The first option is especially useful when you need to make some modifications to the library itself
-(which you'll hopefully contribute back via a pull request!). If that's the case, clone it and install in development
-mode:
+(which you'll hopefully contribute back via a pull request!). If that's the case, clone the library
+and install it in development mode:
 
 .. code-block:: shell
 
