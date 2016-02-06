@@ -12,6 +12,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from datetime import date
 import re
 
 from sphinx.errors import SphinxError
@@ -66,7 +67,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'callee'
-copyright = u'2015, Karol Kuczmarski'
+copyright = u'%s, Karol Kuczmarski' % date.today().year
 author = u'Karol Kuczmarski'
 
 # The version info for the project you're documenting, acts as replacement for
