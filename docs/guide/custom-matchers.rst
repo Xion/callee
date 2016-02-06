@@ -115,11 +115,11 @@ Usage of such a matcher is rather straightforward:
 Overriding ``__repr__``
 -----------------------
 
-Custom matchers written as classes have one more advantage over ad-hoc ones. It is namely possible to redefine their
-``__repr__`` method, thus allowing for more informative error messages on failed assertions.
+Custom matchers written as classes have one more advantage over ad-hoc ones. It is possible to redefine their
+``__repr__`` method, allowing for more informative error messages on failed assertions.
 
-As an example, it would be good if the ``Divisible`` matcher from previous section was telling us what number it expected
-the argument to be divisible by. This is easy enough to add:
+As an example, it would be good if ``Divisible`` matcher the from previous section told us what number it expected
+for the argument to be divisible by. This is easy enough to add:
 
 .. code-block:: python
 
@@ -153,7 +153,7 @@ Ad-hoc matchers (those created with :class:`Matching`/:class:`ArgThat`) are best
 you would want to involve them only if:
 
     * you already have a predicate you can use, or you can define one easily as a ``lambda``
-    * your test is very short, so that it's easy to debug should it break
+    * your test is very short, so that it's easy to debug when it breaks
 
 As a rule of thumb, whenever you define a function solely to use it with :class:`Matching`/:class:`ArgThat`,
 you should strongly consider creating a :class:`Matcher` subclass instead.
