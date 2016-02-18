@@ -210,14 +210,29 @@ class Glob(PatternTestCase):
             square_pattern = ''.join('[%s]' % char for char in suffix)
             self.assert_match(text + suffix, text + square_pattern)
 
+    def test_case_sensitive(self):
+        self.assert_match('', '', case=True)
+        self.assert_match(' ', ' ', case=True)
+        self.assert_match('foo', 'foo', case=True)
+        self.assert_no_match('foo', 'Foo', case=True)
+        self.assert_no_match('Foo', 'foo', case=True)
+
+    def test_case_insensitive(self):
+        self.assert_match('', '', case=False)
+        self.assert_match(' ', ' ', case=False)
+        self.assert_match('foo', 'foo', case=False)
+        self.assert_match('foo', 'Foo', case=False)
+        self.assert_match('FoO', 'fOo', case=False)
+
     # Assertion functions
 
-    def assert_match(self, value, pattern):
-        return super(Glob, self).assert_match(__unit__.Glob(pattern), value)
-
-    def assert_no_match(self, value, pattern):
+    def assert_match(self, value, pattern, case=__unit__.Glob.DEFAULT_CASE):
         return super(Glob, self) \
-            .assert_no_match(__unit__.Glob(pattern), value)
+            .assert_match(__unit__.Glob(pattern, case), value)
+
+    def assert_no_match(self, value, pattern, case=__unit__.Glob.DEFAULT_CASE):
+        return super(Glob, self) \
+            .assert_no_match(__unit__.Glob(pattern, case), value)
 
 
 class Regex(PatternTestCase):

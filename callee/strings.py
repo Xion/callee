@@ -1,7 +1,7 @@
 """
 Matchers for strings.
 """
-from fnmatch import fnmatch
+import fnmatch
 import re
 
 from callee._compat import IS_PY3
@@ -101,14 +101,34 @@ class Glob(BaseMatcher):
 
     See the :mod:`fnmatch` module for more details about those patterns.
     """
-    # TODO(xion): add a case= argument with True/False/'system',
-    # and optionally use fnmatchcase
+    DEFAULT_CASE = 'system'
 
-    def __init__(self, pattern):
+    #: fnmatch functions that the matchers uses based on case= argument.
+    FNMATCH_FUNCTIONS = {
+        DEFAULT_CASE: fnmatch.fnmatch,
+        True: fnmatch.fnmatchcase,
+        False: lambda f, p: fnmatch.fnmatchcase(f.lower(), p.lower()),
+    }
+
+    def __init__(self, pattern, case=DEFAULT_CASE):
+        """
+        :param pattern: Pattern to match against
+        :param case:
+
+            Case sensitivity setting. Possible options:
+
+                * ``'system'`` (default): case sensitvity is system-dependent
+                * ``True``: matching is case-sensitive
+                * ``False``: matching is case-insensitive
+        """
         self.pattern = pattern
+        try:
+            self.fnmatch = self.FNMATCH_FUNCTIONS[case]
+        except KeyError:
+            raise ValueError("invalid case= argument: %r" % (case,))
 
     def match(self, value):
-        return fnmatch(value, self.pattern)
+        return self.fnmatch(value, self.pattern)
 
     def __repr__(self):
         return "<Glob %s>" % (self.pattern,)
