@@ -186,7 +186,7 @@ class MappingMatcher(CollectionMatcher):
                 self.keys = self._validate_argument(kwargs['keys'])
                 self.values = self._validate_argument(kwargs['values'])
             else:
-                # got of= matcher, which can be a tuple of matcher
+                # got of= matcher, which can be a tuple of matchers,
                 # or a single matcher for dictionary items
                 of = kwargs['of']
                 if isinstance(of, tuple):
