@@ -128,15 +128,44 @@ class StartsWith(MatcherTestCase):
 
 class EndsWith(MatcherTestCase):
 
+    def test_exact(self):
+        self.assert_match('', '')
+        self.assert_match(' ', ' ')
+        self.assert_match('bar', 'bar')
+
+    def test_suffix(self):
+        self.assert_match('bar', '')  # empty string is a suffix of everything
+        self.assert_match('bar', 'r')
+        self.assert_match('bar', 'ar')
+        self.assert_match('bar ', ' ')
+
+    def test_no_match(self):
+        self.assert_no_match('bar', 'o')
+        self.assert_no_match('bar ', 'r')
+        self.assert_no_match('', 'bar')
+
+    @skipIf(IS_PY3, "requires Python 2.x")
+    def test_unicode(self):
+        self.assert_match(u'', u'')
+        self.assert_match(u' ', u' ')
+        self.assert_match(u'bar', u'bar')
+        self.assert_match(u'bar', u'')
+        self.assert_match(u'bar', u'r')
+        self.assert_match(u'bar', u'ar')
+        self.assert_match(u'bar ', u' ')
+        self.assert_no_match(u'bar', u'o')
+        self.assert_no_match(u'bar ', u'r')
+        self.assert_no_match(u'', u'bar')
+
     # Assertion functions
 
-    def assert_match(self, value, prefix):
+    def assert_match(self, value, suffix):
         return super(EndsWith, self) \
-            .assert_match(__unit__.EndsWith(prefix), value)
+            .assert_match(__unit__.EndsWith(suffix), value)
 
-    def assert_no_match(self, value, prefix):
+    def assert_no_match(self, value, suffix):
         return super(EndsWith, self) \
-            .assert_no_match(__unit__.EndsWith(prefix), value)
+            .assert_no_match(__unit__.EndsWith(suffix), value)
 
 
 # Pattern matchers

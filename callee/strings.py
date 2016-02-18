@@ -91,7 +91,7 @@ class EndsWith(BaseMatcher):
         return value.endswith(self.suffix)
 
     def __repr__(self):
-        return "<EndsWith %r>" % (self.prefix,)
+        return "<EndsWith %r>" % (self.suffix,)
 
 
 # Pattern matchers
