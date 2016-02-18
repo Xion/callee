@@ -40,8 +40,8 @@ class StringTypeMatcher(BaseMatcher):
 class String(StringTypeMatcher):
     """Matches any string.
 
-    On Python 2, this means either :class:`str` or :class:`unicode` objects.
-    On Python 3, this means :class:`str` objects exclusively.
+    | On Python 2, this means either :class:`str` or :class:`unicode` objects.
+    | On Python 3, this means :class:`str` objects exclusively.
     """
     CLASS = str if IS_PY3 else basestring
 
@@ -49,8 +49,8 @@ class String(StringTypeMatcher):
 class Unicode(StringTypeMatcher):
     """Matches a Unicode string.
 
-    On Python 2, this means :class:`unicode` objects exclusively.
-    On Python 3, this means :class:`str` objects exclusively.
+    | On Python 2, this means :class:`unicode` objects exclusively.
+    | On Python 3, this means :class:`str` objects exclusively.
     """
     CLASS = str if IS_PY3 else unicode
 
@@ -58,8 +58,8 @@ class Unicode(StringTypeMatcher):
 class Bytes(StringTypeMatcher):
     """Matches a byte string, i.e. the :class:`bytes` type.
 
-    On Python 2, this is equivalent to :class:`str` class.
-    On Python 3, byte strings are a separate class, distinct from :class:`str`.
+    | On Python 2, this is equivalent to :class:`str` class.
+    | On Python 3, byte strings are separate class, distinct from :class:`str`.
     """
     CLASS = bytes
 
