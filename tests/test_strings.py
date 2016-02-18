@@ -86,7 +86,34 @@ class Bytes(MatcherTestCase):
 
 class StartsWith(MatcherTestCase):
 
-    # TODO(xion): write those tests
+    def test_exact(self):
+        self.assert_match('', '')
+        self.assert_match(' ', ' ')
+        self.assert_match('foo', 'foo')
+
+    def test_prefix(self):
+        self.assert_match('foo', '')  # empty string is a prefix of everything
+        self.assert_match('foo', 'f')
+        self.assert_match('foo', 'fo')
+        self.assert_match(' foo', ' ')
+
+    def test_no_match(self):
+        self.assert_no_match('foo', 'b')
+        self.assert_no_match(' foo', 'f')
+        self.assert_no_match('', 'foo')
+
+    @skipIf(IS_PY3, "requires Python 2.x")
+    def test_unicode(self):
+        self.assert_match(u'', u'')
+        self.assert_match(u' ', u' ')
+        self.assert_match(u'foo', u'foo')
+        self.assert_match(u'foo', u'')
+        self.assert_match(u'foo', u'f')
+        self.assert_match(u'foo', u'fo')
+        self.assert_match(u' foo', u' ')
+        self.assert_no_match(u' foo', u'f')
+        self.assert_no_match(u'foo', u'b')
+        self.assert_no_match(u'', u'foo')
 
     # Assertion functions
 
@@ -100,8 +127,6 @@ class StartsWith(MatcherTestCase):
 
 
 class EndsWith(MatcherTestCase):
-
-    # TODO(xion): write those tests
 
     # Assertion functions
 
