@@ -6,7 +6,17 @@ try:
 except ImportError:
     import mock
 
-from taipan.testing import TestCase
+from taipan.testing import TestCase as _TestCase
+
+
+class TestCase(_TestCase):
+    """Base class for all test cases."""
+
+    def setUp(self):
+        super(TestCase, self).setUpClass()
+
+        # display full diffs when equality assertions fail under py.test
+        self.maxDiff = None
 
 
 class MatcherTestCase(TestCase):
