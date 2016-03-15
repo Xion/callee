@@ -20,20 +20,20 @@ class BaseMatcherMetaclass(type):
     #: What __magic__ methods of :class:`BaseMatcher`
     #: can be overriden by user-defined subclasses.
     #:
-    #: Any method not on this list can only be redefined by classes defined
+    #: Any method not on this list can only be overridden by classes defined
     #: within this module. This prevents users from accidentally interfering
     #: with fundamental matcher functionality while writing their own matchers.
+    #
+    #: The names are given without the leading or trailing underscores.
     #:
     USER_OVERRIDABLE_MAGIC_METHODS = ('init', 'repr')
 
     def __new__(meta, classname, bases, dict_):
         """Create a new matcher class."""
         meta._validate_class_definition(classname, bases, dict_)
-
         return super(BaseMatcherMetaclass, meta) \
             .__new__(meta, classname, bases, dict_)
 
-    # TODO(xion): write tests for this logic
     @classmethod
     def _validate_class_definition(meta, classname, bases, dict_):
         """Ensure the matcher class definition is acceptable.
