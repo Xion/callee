@@ -14,11 +14,18 @@ class Matcher(TestCase):
             pass
         self.assertEquals("<Custom>", "%r" % Custom())
 
-    def test_repr__argless_ctor(self):
+    def test_repr__argless_ctor__no_state(self):
         """Test default __repr__ of Matcher subclass with argless ctor."""
         class Custom(__unit__.Matcher):
             def __init__(self):
                 pass
+        self.assertEquals("<Custom>", "%r" % Custom())
+
+    def test_repr__argless_ctor__with_state(self):
+        """Test __repr__ of Matcher subclass with argless ctor & state."""
+        class Custom(__unit__.Matcher):
+            def __init__(self):
+                self.foo = 42
         self.assertEquals("<Custom>", "%r" % Custom())
 
     def test_repr__argful_ctor__no_state(self):

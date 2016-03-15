@@ -4,7 +4,7 @@ Base classes for argument matchers.
 import inspect
 from operator import itemgetter
 
-from callee._compat import metaclass
+from callee._compat import IS_PY3, metaclass
 
 
 __all__ = [
@@ -144,7 +144,7 @@ class Matcher(BaseMatcher):
         """Provides a default ``repr``\ esentation for custom matchers.
 
         This representation will include matcher class name
-        and some of its attribute values.
+        and the values of its public attributes.
         If that's insufficient, consider overriding this method.
         """
         args = ""
@@ -166,11 +166,14 @@ class Matcher(BaseMatcher):
                     """Safely represent a value as an ASCII string."""
                     if isinstance(value, bytes):
                         value = value.decode('ascii', 'ignore')
-                    return str(value)  # we don't want bytes in Python 3
+                    if not IS_PY3 and isinstance(value, unicode):
+                        value = value.encode('ascii', 'replace')
+                        value = str(value)
+                    return repr(value)
 
                 fields.sort(key=itemgetter(0))
                 args = "(%s)" % ", ".join(
-                    "%s=%r" % (name, repr_value(value)[:32])
+                    "%s=%s" % (name, repr_value(value)[:32])
                     for name, value in fields)
             else:
                 args = "(...)"
