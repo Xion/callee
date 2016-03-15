@@ -2,6 +2,7 @@
 Base classes for argument matchers.
 """
 import inspect
+from operator import itemgetter
 
 from callee._compat import metaclass
 
@@ -142,11 +143,38 @@ class Matcher(BaseMatcher):
     def __repr__(self):
         """Provides a default ``repr``\ esentation for custom matchers.
 
-        This representation will include mostly just the matcher class name.
+        This representation will include matcher class name
+        and some of its attribute values.
         If that's insufficient, consider overriding this method.
         """
-        # TODO(xion): more informative matcher object description
-        args = "(...)" if '__init__' in self.__class__.__dict__ else ""
+        args = ""
+
+        # check if the matcher class has a parametrized constructor
+        has_argful_ctor = False
+        if '__init__' in self.__class__.__dict__:
+            argnames, vargargs, kwargs, _ = inspect.getargspec(
+                self.__class__.__init__)
+            has_argful_ctor = bool(argnames[1:] or vargargs or kwargs)
+
+        # if so, then it probably means it has some interesting state
+        # in its attributes which we can include in the default representation
+        if has_argful_ctor:
+            fields = [(name, value) for name, value in self.__dict__.items()
+                      if not name.startswith('_')]
+            if fields:
+                def repr_value(value):
+                    """Safely represent a value as an ASCII string."""
+                    if isinstance(value, bytes):
+                        value = value.decode('ascii', 'ignore')
+                    return str(value)  # we don't want bytes in Python 3
+
+                fields.sort(key=itemgetter(0))
+                args = "(%s)" % ", ".join(
+                    "%s=%r" % (name, repr_value(value)[:32])
+                    for name, value in fields)
+            else:
+                args = "(...)"
+
         return "<%s%s>" % (self.__class__.__name__, args)
 
 
