@@ -32,6 +32,7 @@ class Any(BaseMatcher):
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 
+    # TODO(xion): consider accepting multiple predicates as And() condition
     def __init__(self, predicate):
         """
         :param predicate: Callable taking a single argument
@@ -122,6 +123,7 @@ class InstanceOf(TypeMatcher):
 IsA = InstanceOf
 
 
+# TODO(xion): reverse of this matcher (SuperclassOf)
 class SubclassOf(TypeMatcher):
     """Matches a class that's a subclass of given type
     (as per `issubclass`).
@@ -155,6 +157,9 @@ class Class(BaseMatcher):
 
     def __repr__(self):
         return "<Class>"
+
+
+# TODO(xion): Module() matcher
 
 
 # Attribute-based matchers

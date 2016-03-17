@@ -111,6 +111,8 @@ class OperatorMatcher(BaseMatcher):
 
 # Simple comparisons
 
+# TODO(xion): AlmostEq() for approximate comparisons with epsilon
+
 class Less(OperatorMatcher):
     """Matches values that are smaller (as per ``<`` operator)
     than given object.
