@@ -44,10 +44,12 @@ class Matching(BaseMatcher):
         self.predicate = predicate
 
     def match(self, value):
-        try:
-            return bool(self.predicate(value))
-        except Exception:
-            return False
+        # Note that any possible exceptions from ``predicate``
+        # are intentionally let through, to make it easier to diagnose errors
+        # than a plain "no match" response would.
+        return bool(self.predicate(value))
+        # TODO(xion): translate exceptions from the predicate into our own
+        # exception type to not clutter user-visible stracktraces with our code
 
     def __repr__(self):
         # TODO(xion): better representation of the predicate;

@@ -33,8 +33,11 @@ class Matching(MatcherTestCase):
             __unit__.Matching(object())
 
     def test_none(self):
-        self.assert_no_match(None, self.EVEN)
-        self.assert_no_match(None, self.ODD)
+        # Exceptions from the matcher's predicate should be let through.
+        with self.assertRaises(TypeError):
+            self.assert_no_match(None, self.EVEN)
+        with self.assertRaises(TypeError):
+            self.assert_no_match(None, self.ODD)
 
     def test_zero(self):
         self.assert_match(0, self.EVEN)
