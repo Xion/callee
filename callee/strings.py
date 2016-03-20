@@ -25,7 +25,7 @@ class StringTypeMatcher(BaseMatcher):
     #: Must be overridden in subclasses.
     CLASS = None
 
-    # TODO(xion): support of= param, so we can assret what characters
+    # TODO: support of= param, so we can assret what characters
     # the string consists of (e.g. letters, digits; or matcher(s))
     def __init__(self):
         assert self.CLASS, "must specify string type to match"
@@ -66,7 +66,7 @@ class Bytes(StringTypeMatcher):
 
 # Infix matchers
 
-# TODO(xion): generalize for all sequence/collection types
+# TODO: generalize for all sequence/collection types
 
 class StartsWith(BaseMatcher):
     """Matches a string starting with given prefix."""
@@ -163,4 +163,4 @@ class Regex(BaseMatcher):
         return "<Regex %s>" % (self.pattern.pattern,)
 
 
-# TODO(xion): matchers for common string formats: Url, Email, IPv4, IPv6
+# TODO: matchers for common string formats: Url, Email, IPv4, IPv6

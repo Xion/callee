@@ -143,7 +143,7 @@ html_theme_options = {
     'github_count': False,
     'github_banner': True,  # "Fork me on GitHub" in the corner
 
-    # TODO(xion): setup Travis CI
+    # TODO: setup Travis CI
     'travis_button': False,
 }
 

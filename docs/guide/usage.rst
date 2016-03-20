@@ -111,7 +111,7 @@ Here's a few examples:
 
 All matchers can be combined this way, including any :doc:`custom ones <custom-matchers>` that you write yourself.
 
-.. TODO(xion): mention the existence of And, Or, Not classes
+.. TODO: mention the existence of And, Or, Not classes
 
 
 Next steps

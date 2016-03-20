@@ -91,7 +91,7 @@ class BaseMatcherMetaclass(type):
             and inspect.isfunction(member)
         ]
 
-    # TODO(xion): consider making matcher classes interchangeable with matcher
+    # TODO: consider making matcher classes interchangeable with matcher
     # objects created w/o ctor args, i.e. making Integer and Integer()
     # equivalent; it'd require this metaclass to implement the magic methods
     # from BaseMatcher and something better than `isinstance(x, BaseMatcher)`
@@ -116,7 +116,7 @@ class BaseMatcher(object):
                 "incorrect use of matcher object as a value to match on")
         return self.match(other)
 
-    # TODO(xion): make matcher objects callable
+    # TODO: make matcher objects callable
 
     def __invert__(self):
         return Not(self)
@@ -295,7 +295,7 @@ class And(BaseMatcher):
                    for m in matchers), "And() expects matchers"
         self._matchers = list(matchers)
 
-    # TODO(xion): coalesce a & b & c into single And(a, b, c)
+    # TODO: coalesce a & b & c into single And(a, b, c)
 
     def match(self, value):
         return all(matcher.match(value) for matcher in self._matchers)
@@ -313,7 +313,7 @@ class Or(BaseMatcher):
                    for m in matchers), "Or() expects matchers"
         self._matchers = list(matchers)
 
-    # TODO(xion): coalesce a | b | c into single Or(a, b, c)
+    # TODO: coalesce a | b | c into single Or(a, b, c)
 
     def match(self, value):
         return any(matcher.match(value) for matcher in self._matchers)

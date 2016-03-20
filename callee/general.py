@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 
-# TODO(xion): introduce custom exception types rather than using built-ins
+# TODO: introduce custom exception types rather than using built-ins
 
 
 class Any(BaseMatcher):
@@ -32,7 +32,7 @@ class Any(BaseMatcher):
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 
-    # TODO(xion): consider accepting multiple predicates as And() condition
+    # TODO: consider accepting multiple predicates as And() condition
     def __init__(self, predicate):
         """
         :param predicate: Callable taking a single argument
@@ -48,11 +48,11 @@ class Matching(BaseMatcher):
         # are intentionally let through, to make it easier to diagnose errors
         # than a plain "no match" response would.
         return bool(self.predicate(value))
-        # TODO(xion): translate exceptions from the predicate into our own
+        # TODO: translate exceptions from the predicate into our own
         # exception type to not clutter user-visible stracktraces with our code
 
     def __repr__(self):
-        # TODO(xion): better representation of the predicate;
+        # TODO: better representation of the predicate;
         # we could display the code inline for short lambdas, for example
         return "<Matching %r>" % (self.predicate,)
 
@@ -125,14 +125,14 @@ class InstanceOf(TypeMatcher):
 IsA = InstanceOf
 
 
-# TODO(xion): reverse of this matcher (SuperclassOf)
+# TODO: reverse of this matcher (SuperclassOf)
 class SubclassOf(TypeMatcher):
     """Matches a class that's a subclass of given type
     (as per `issubclass`).
     """
     def __init__(self, type_):
         """:param type\ _: Type to match against"""
-        # TODO(xion): strict= argument
+        # TODO: strict= argument
         super(SubclassOf, self).__init__(type_)
 
     def match(self, value):
@@ -161,7 +161,7 @@ class Class(BaseMatcher):
         return "<Class>"
 
 
-# TODO(xion): Module() matcher
+# TODO: Module() matcher
 
 
 # Attribute-based matchers

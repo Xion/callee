@@ -51,7 +51,7 @@ class Complex(NumericMatcher):
     CLASS = numbers.Complex
 
 
-# TODO(xion): consider adding a dedicated matcher for the ``complex`` type;
+# TODO: consider adding a dedicated matcher for the ``complex`` type;
 # right now, though, ``IsA(complex)`` and ``Complex() & ~Real()`` are probably
 # acceptable workarounds
 

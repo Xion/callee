@@ -126,7 +126,7 @@ class Set(CollectionMatcher):
     CLASS = collections.Set
 
 
-# TODO(xion): Tuple matcher, with of= that accepts a tuple of matchers
+# TODO: Tuple matcher, with of= that accepts a tuple of matchers
 # so that tuple elements can be also matched on
 
 
@@ -247,5 +247,5 @@ class Dict(MappingMatcher):
     CLASS = dict
 
 
-# TODO(xion): consider adding a matcher for OrderedDict, but in a way
+# TODO: consider adding a matcher for OrderedDict, but in a way
 # that doesn't unconditionally require the ordereddict package for Python 2.6

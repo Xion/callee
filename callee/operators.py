@@ -96,7 +96,7 @@ class OperatorMatcher(BaseMatcher):
         # "infix function" representation
         op = operator_symbols.get(self.OP)
         if op is None:
-            # TODO(xion): convert CamelCase to either snake_case or kebab-case
+            # TODO: convert CamelCase to either snake_case or kebab-case
             op = '`%s`' % (self.__class__.__name__.lower(),)
 
         return "<%s %s %r>" % (self._get_placeholder_repr(), op, self.ref)
@@ -111,7 +111,7 @@ class OperatorMatcher(BaseMatcher):
 
 # Simple comparisons
 
-# TODO(xion): AlmostEq() for approximate comparisons with epsilon
+# TODO: AlmostEq() for approximate comparisons with epsilon
 
 class Less(OperatorMatcher):
     """Matches values that are smaller (as per ``<`` operator)
@@ -169,7 +169,7 @@ class LengthMatcher(OperatorMatcher):
         super(LengthMatcher, self).__init__(*args, **kwargs)
 
         # allow the reference to be either a numeric length or another sequence
-        # TODO(xion): remember at least the sequence type to make it impossible
+        # TODO: remember at least the sequence type to make it impossible
         # e.g. to accidentally compare strings and lists by length
         if not isinstance(self.ref, Number):
             self.ref = len(self.ref)
