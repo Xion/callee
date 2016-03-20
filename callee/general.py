@@ -2,7 +2,7 @@
 General matchers.
 """
 import inspect
-from itertools import chain, starmap
+from itertools import starmap
 from operator import itemgetter
 
 from callee.base import BaseMatcher, Eq
@@ -194,16 +194,24 @@ class Attrs(BaseMatcher):
                               for k, v in kwargs.items())
 
     def match(self, value):
-        # We also check the keyword-passed attributes here because
-        # we don't want to swallow any AttributeError exceptions that a custom
-        # matcher for an attribute value may raise.
-        # This would be awkward to do with regular try-catch.
-        for name in chain(self.attr_names, self.attr_dict.keys()):
-            if not hasattr(value, name):
+        for name in self.attr_names:
+            # Can't use hasattr() here because it swallows *all* exceptions
+            # from attribute access in Python 2.x, not just AttributeError.
+            # More details: https://hynek.me/articles/hasattr/
+            try:
+                getattr(value, name)
+            except AttributeError:
                 return False
 
         for name, matcher in self.attr_dict.items():
-            if not matcher.match(getattr(value, name)):
+            # Separately handle retrieving the attribute value,
+            # so that any stray AttributeErrors from the matcher itself
+            # are correctly propagated.
+            try:
+                attrvalue = getattr(value, name)
+            except AttributeError:
+                return False
+            if not matcher.match(attrvalue):
                 return False
 
         return True
