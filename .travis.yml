@@ -6,6 +6,6 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-install: pip install tox-travis --use-mirrors
+install: pip install tox-travis
 script: tox
 sudo: false
