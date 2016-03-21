@@ -146,8 +146,7 @@ html_theme_options = {
     'github_count': False,
     'github_banner': True,  # "Fork me on GitHub" in the corner
 
-    # TODO: setup Travis CI
-    'travis_button': False,
+    'travis_button': True,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
