@@ -4,7 +4,7 @@ callee
 __version__ = "0.1"
 __description__ = "Argument matchers for unittest.mock"
 __author__ = "Karol Kuczmarski"
-__license__ = "Simplified BSD"
+__license__ = "BSD"
 
 
 from callee.base import And, Eq, Is, IsNot, Or, Not
