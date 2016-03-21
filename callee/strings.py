@@ -25,8 +25,9 @@ class StringTypeMatcher(BaseMatcher):
     #: Must be overridden in subclasses.
     CLASS = None
 
-    # TODO: support of= param, so we can assret what characters
-    # the string consists of (e.g. letters, digits; or matcher(s))
+    # TODO: support of= param, so we can assert what characters
+    # the string consists of (e.g. letters, digits as iterables of chars;
+    # boolean predicate; or matcher)
     def __init__(self):
         assert self.CLASS, "must specify string type to match"
 
