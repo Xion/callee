@@ -13,11 +13,14 @@
 # serve to show the default.
 
 from datetime import date
+import os
 import re
+import sys
 
 from sphinx.errors import SphinxError
 from sphinx.util.docstrings import prepare_docstring
 
+sys.path.append(os.path.abspath('..'))
 import callee
 
 # If extensions (or modules to document with autodoc) are in another directory,
