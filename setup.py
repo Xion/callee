@@ -90,7 +90,7 @@ setup(
     license=tags['license'],
 
     classifiers=[
-        "Development Status :: 2 - Alpha",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
