@@ -1,7 +1,7 @@
 # Dependencies useful for development
 # (but not required by the library code or its tests)
 
-tox>=1.7
+tox>=1.8
 invoke==0.11.1
 
 # docs
