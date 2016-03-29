@@ -81,7 +81,7 @@ Contributing
 ~~~~~~~~~~~~
 
 Contributions are welcome!
-If you need ideas, head to the issue tracker or search for the various `TODO`\ s scattered around the codebase.
+If you need ideas, head to the issue tracker or search for the various ``TODO``\ s scattered around the codebase.
 Or just think what matchers you'd like to add :)
 
 After cloning the repository, this should get you up and running::
