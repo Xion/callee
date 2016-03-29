@@ -75,3 +75,17 @@ API reference
 See the `documentation`_ for complete reference on the library usage and all available matchers.
 
 .. _documentation: http://callee.readthedocs.org
+
+
+Contributing
+~~~~~~~~~~~~
+
+Contributions are welcome!
+If you need ideas, head to the issue tracker or search for the various `TODO`\ s scattered around the codebase.
+Or just think what matchers you'd like to add :)
+
+After cloning the repository, this should get you up and running::
+
+    # ... create virtualenv as necessary ...
+    pip install -r requirements-dev.txt
+    tox
