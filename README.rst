@@ -89,3 +89,9 @@ After cloning the repository, this should get you up and running::
     # ... create virtualenv as necessary ...
     pip install -r requirements-dev.txt
     tox
+
+To regenerate documentation, and display it in the browser, simply run::
+
+    inv docs
+
+Happy hacking!
