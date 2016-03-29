@@ -155,7 +155,7 @@ class Regex(BaseMatcher):
         self.pattern = pattern
 
     def _is_regex_object(self, obj):
-        return type(obj) is type(re.compile(''))
+        return isinstance(obj, type(re.compile('')))
 
     def match(self, value):
         return self.pattern.match(value)
