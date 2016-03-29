@@ -1,8 +1,16 @@
 """
 Tests for general matchers.
 """
+import platform
+
+from taipan.testing import skipIf, skipUnless
+
+from callee._compat import IS_PY3
 import callee.general as __unit__
 from tests import MatcherTestCase
+
+
+IS_PYPY3 = IS_PY3 and platform.python_implementation() == 'PyPy'
 
 
 class Any(MatcherTestCase):
@@ -121,7 +129,15 @@ class Function(MatcherTestCase):
             pass
         self.assert_match(func)
 
-    test_method = lambda self: self.assert_no_match(str.upper)
+    @skipIf(IS_PYPY3, "requires non-PyPy3 interpreter")
+    def test_method__non_pypy3(self):
+        self.assert_no_match(str.upper)
+        # TODO: accept unbound methods as functions
+
+    @skipUnless(IS_PYPY3, "requires PyPy3")
+    def test_method__pypy3(self):
+        self.assert_match(str.upper)
+
     test_type = lambda self: self.assert_no_match(object)
 
     def test_callable_object(self):
