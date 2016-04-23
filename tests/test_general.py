@@ -2,6 +2,7 @@
 Tests for general matchers.
 """
 import platform
+import sys
 
 from taipan.testing import skipIf, skipUnless
 
@@ -10,6 +11,7 @@ import callee.general as __unit__
 from tests import MatcherTestCase
 
 
+IS_PY33 = sys.version_info >= (3, 3)
 IS_PYPY3 = IS_PY3 and platform.python_implementation() == 'PyPy'
 
 
@@ -84,16 +86,17 @@ class Matching(MatcherTestCase):
 class MatchingRepr(MatcherTestCase):
     """Tests for the __repr__ method of Matching."""
 
-    test_lambda = lambda self: self.assert_lambda_repr(lambda _: True)
+    def test_lambda(self):
+        self.assert_lambda_repr(lambda _: True)
 
-    @skipIf(IS_PY3, "requires Python 2.x")
+    @skipIf(IS_PY33, "requires Python 2.x or 3.2")
     def test_local_function__py2(self):
         def predicate(_):
             return True
         self.assert_named_repr('predicate', predicate)
 
-    @skipUnless(IS_PY3, "requires Python 3.3+")
-    def test_local_function__py3(self):
+    @skipUnless(IS_PY33, "requires Python 3.3+")
+    def test_local_function__py33(self):
         def predicate(_):
             return True
         matcher = __unit__.Matching(predicate)
@@ -105,50 +108,50 @@ class MatchingRepr(MatcherTestCase):
     def test_staticmethod__lambda(self):
         self.assert_lambda_repr(MatchingRepr.staticmethod_lambda)
 
-    @skipIf(IS_PY3, "requires Python 2.x")
+    @skipIf(IS_PY33, "requires Python 2.x or 3.2")
     def test_staticmethod__function__py2(self):
         # In Python 2, static methods are exactly the same as global functions.
         self.assert_named_repr('staticmethod_function',
                                MatchingRepr.staticmethod_function)
 
-    @skipUnless(IS_PY3, "requires Python 3.3+")
-    def test_staticmethod__function__py3(self):
+    @skipUnless(IS_PY33, "requires Python 3.3+")
+    def test_staticmethod__function__py33(self):
         self.assert_named_repr('MatchingRepr.staticmethod_function',
                                MatchingRepr.staticmethod_function)
 
     def test_classmethod__lambda(self):
         self.assert_lambda_repr(MatchingRepr.classmethod_lambda)
 
-    @skipIf(IS_PY3, "requires Python 2.x")
+    @skipIf(IS_PY33, "requires Python 2.x or 3.2")
     def test_classmethod__function__py2(self):
         matcher = __unit__.Matching(MatchingRepr.classmethod_function)
         self.assertIn(' classmethod_function', repr(matcher))
 
-    @skipUnless(IS_PY3, "requires Python 3.3+")
-    def test_classmethod__function__py3(self):
+    @skipUnless(IS_PY33, "requires Python 3.3+")
+    def test_classmethod__function__py33(self):
         self.assert_named_repr('MatchingRepr.classmethod_function',
                                MatchingRepr.classmethod_function)
 
     def test_class(self):
         self.assert_named_repr('Class', Class)
 
-    @skipIf(IS_PY3, "requires Python 2.x")
+    @skipIf(IS_PY33, "requires Python 2.x or 3.2")
     def test_inner_class__py2(self):
         self.assert_named_repr('Class', MatchingRepr.Class)
 
-    @skipUnless(IS_PY3, "requires Python 3.3+")
-    def test_inner_class__py3(self):
+    @skipUnless(IS_PY33, "requires Python 3.3+")
+    def test_inner_class__py33(self):
         self.assert_named_repr('MatchingRepr.Class', MatchingRepr.Class)
 
-    @skipIf(IS_PY3, "requires Python 2.x")
+    @skipIf(IS_PY33, "requires Python 2.x or 3.2")
     def test_local_class__py2(self):
         class Class(object):
             def __call__(self, _):
                 return True
         self.assert_named_repr('Class', Class)
 
-    @skipUnless(IS_PY3, "requires Python 3.3+")
-    def test_local_class__py3(self):
+    @skipUnless(IS_PY33, "requires Python 3.3+")
+    def test_local_class__py33(self):
         class Class(object):
             def __call__(self, _):
                 return True
