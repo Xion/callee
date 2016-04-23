@@ -12,6 +12,8 @@ __all__ = [
 
 IS_PY3 = sys.version_info[0] == 3
 
+STRING_TYPES = (str,) if IS_PY3 else (basestring,)
+
 
 class MetaclassDecorator(object):
     """Decorator for creating a class through a metaclass.

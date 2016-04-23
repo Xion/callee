@@ -86,6 +86,23 @@ class Matching(MatcherTestCase):
 class MatchingRepr(MatcherTestCase):
     """Tests for the __repr__ method of Matching."""
 
+    def tesc_desc__empty(self):
+        matcher = __unit__.Matching(bool, "")
+        self.assertIn('""', repr(matcher))
+
+    def test_desc__nonempty(self):
+        desc = "Truthy"
+        matcher = __unit__.Matching(bool, desc)
+        self.assertIn(desc, repr(matcher))
+
+    def test_desc__trimmed(self):
+        desc = "Long description with extraneous characters: %s" % (
+            "x" * __unit__.Matching.MAX_DESC_LENGTH,)
+        matcher = __unit__.Matching(bool, desc)
+
+        self.assertNotIn(desc, repr(matcher))
+        self.assertIn("...", repr(matcher))
+
     def test_lambda(self):
         self.assert_lambda_repr(lambda _: True)
 

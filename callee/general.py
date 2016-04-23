@@ -5,6 +5,7 @@ import inspect
 from itertools import starmap
 from operator import itemgetter
 
+from callee._compat import IS_PY3, STRING_TYPES
 from callee.base import BaseMatcher, Eq
 
 
@@ -32,16 +33,44 @@ class Any(BaseMatcher):
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 
-    def __init__(self, predicate):
+    MAX_DESC_LENGTH = 32
+
+    def __init__(self, predicate, desc=None):
         """
         :param predicate: Callable taking a single argument
                           and returning True or False
+        :param desc: Optional description of the predicate.
+                     This will be displayed as a part of the error message
+                     on failed assertion.
         """
         if not callable(predicate):
             raise TypeError(
                 "Matching requires a predicate, got %r" % (predicate,))
 
         self.predicate = predicate
+        self.desc = self._validate_desc(desc)
+
+    def _validate_desc(self, desc):
+        """Validate the predicate description."""
+        if desc is None:
+            return desc
+
+        if not isinstance(desc, STRING_TYPES):
+            raise TypeError(
+                "predicate description for Matching must be a string, "
+                "got %r" % (type(desc),))
+
+        # Python 2 mandates __repr__ to be an ASCII string,
+        # so if Unicode is passed (usually due to unicode_literals),
+        # it should be ASCII-encodable.
+        if not IS_PY3 and isinstance(desc, unicode):
+            try:
+                desc = desc.encode('ascii', errors='strict')
+            except UnicodeEncodeError:
+                raise TypeError("predicate description must be "
+                                "an ASCII string in Python 2")
+
+        return desc
 
     def match(self, value):
         # Note that any possible exceptions from ``predicate``
@@ -54,28 +83,40 @@ class Matching(BaseMatcher):
     def __repr__(self):
         """Return a representation of the matcher."""
         name = getattr(self.predicate, '__name__', None)
+        desc = self.desc
 
-        # If not a lambda function, we can probably make the representation
-        # more readable by showing just the function's own name.
-        if name and name != '<lambda>':
-            # Where possible, make it a fully qualified name, including
-            # the module path. That's either on Python 3.3+ (via __qualname__),
-            # or when it's a standalone function (not a method).
-            qualname = getattr(self.predicate, '__qualname__', name)
-            is_method = inspect.ismethod(self.predicate) or \
-                isinstance(self.predicate, staticmethod)
-            if qualname != name or not is_method:
-                # Note that this shows inner functions (those defined locally
-                # inside other functions) as if they were global to the module.
-                # This is why we use colon (:) as separator here, as to not
-                # suggest this is an evaluatable identifier.
-                name = '%s:%s' % (self.predicate.__module__, qualname)
+        # When no user-provided description is available,
+        # use function's own name or even its repr().
+        if desc is None:
+            # If not a lambda function, we can probably make the representation
+            # more readable by showing just the function's own name.
+            if name and name != '<lambda>':
+                # Where possible, make it a fully qualified name, including
+                # the module path. This is either on Python 3.3+
+                # (via __qualname__), or when the predicate is
+                # a standalone function (not a method).
+                qualname = getattr(self.predicate, '__qualname__', name)
+                is_method = inspect.ismethod(self.predicate) or \
+                    isinstance(self.predicate, staticmethod)
+                if qualname != name or not is_method:
+                    # Note that this shows inner functions (those defined
+                    # locally inside other functions) as if they were global
+                    # to the module.
+                    # This is why we use colon (:) as separator here, as to not
+                    # suggest this is an evaluatable identifier.
+                    name = '%s:%s' % (self.predicate.__module__, qualname)
+            else:
+                # For lambdas and other callable objects,
+                # we'll just default to the Python repr().
+                name = None
         else:
-            # For lambdas and other callable objects,
-            # we'll just default to the Python repr().
-            name = None
+            # Quote and possibly ellipsize the provided description.
+            if len(desc) > self.MAX_DESC_LENGTH:
+                ellipsis = '...'
+                desc = desc[:self.MAX_DESC_LENGTH - len(ellipsis)] + ellipsis
+            desc = '"%s"' % desc
 
-        return "<Matching %s>" % (name or repr(self.predicate))
+        return "<Matching %s>" % (desc or name or repr(self.predicate))
 
 ArgThat = Matching
 
