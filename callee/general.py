@@ -32,7 +32,6 @@ class Any(BaseMatcher):
 class Matching(BaseMatcher):
     """Matches an object that satisfies given predicate."""
 
-    # TODO: consider accepting multiple predicates as And() condition
     def __init__(self, predicate):
         """
         :param predicate: Callable taking a single argument
@@ -41,6 +40,7 @@ class Matching(BaseMatcher):
         if not callable(predicate):
             raise TypeError(
                 "Matching requires a predicate, got %r" % (predicate,))
+
         self.predicate = predicate
 
     def match(self, value):
@@ -52,9 +52,30 @@ class Matching(BaseMatcher):
         # exception type to not clutter user-visible stracktraces with our code
 
     def __repr__(self):
-        # TODO: better representation of the predicate;
-        # we could display the code inline for short lambdas, for example
-        return "<Matching %r>" % (self.predicate,)
+        """Return a representation of the matcher."""
+        name = getattr(self.predicate, '__name__', None)
+
+        # If not a lambda function, we can probably make the representation
+        # more readable by showing just the function's own name.
+        if name and name != '<lambda>':
+            # Where possible, make it a fully qualified name, including
+            # the module path. That's either on Python 3.3+ (via __qualname__),
+            # or when it's a standalone function (not a method).
+            qualname = getattr(self.predicate, '__qualname__', name)
+            is_method = inspect.ismethod(self.predicate) or \
+                isinstance(self.predicate, staticmethod)
+            if qualname != name or not is_method:
+                # Note that this shows inner functions (those defined locally
+                # inside other functions) as if they were global to the module.
+                # This is why we use colon (:) as separator here, as to not
+                # suggest this is an evaluatable identifier.
+                name = '%s:%s' % (self.predicate.__module__, qualname)
+        else:
+            # For lambdas and other callable objects,
+            # we'll just default to the Python repr().
+            name = None
+
+        return "<Matching %s>" % (name or repr(self.predicate))
 
 ArgThat = Matching
 
@@ -204,7 +225,7 @@ class Attrs(BaseMatcher):
                 return False
 
         for name, matcher in self.attr_dict.items():
-            # Separately handle retrieving the attribute value,
+            # Separately handle retrieving of the attribute value,
             # so that any stray AttributeErrors from the matcher itself
             # are correctly propagated.
             try:
