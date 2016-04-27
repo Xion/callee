@@ -30,7 +30,7 @@ But it is also a little lacking when it comes to asserting what calls a mock has
 
 You can be either very specific::
 
-    my_mock.assert_called_with(42, some_foo_object, 'certain string')
+    my_mock.assert_called_once_with(42, some_foo_object, 'certain string')
 
 or extremely general::
 
@@ -90,7 +90,7 @@ After cloning the repository, this should get you up and running::
     pip install -r requirements-dev.txt
     tox
 
-To regenerate documentation, and display it in the browser, simply run::
+To regenerate documentation and display it in the browser, simply run::
 
     inv docs
 
