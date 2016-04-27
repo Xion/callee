@@ -145,8 +145,11 @@ class Captor(BaseMatcher):
         """
         if matcher is None:
             matcher = Any()
+
         if not isinstance(matcher, BaseMatcher):
             raise TypeError("expected a matcher, got %r" % (type(matcher),))
+        if isinstance(matcher, Captor):
+            raise TypeError("cannot pass a captor to another captor")
 
         self.matcher = matcher
 

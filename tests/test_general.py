@@ -217,6 +217,87 @@ class Class(object):
         return True
 
 
+# Argument captor
+
+class Captor(MatcherTestCase):
+    ARG = object()
+    FALSE_MATCHER = __unit__.Matching(lambda _: False)
+
+    def test_ctor__no_args(self):
+        captor = __unit__.Captor()
+        self.assertIsInstance(captor.matcher, __unit__.Any)
+
+    def test_ctor__invalid_matcher(self):
+        not_matcher = object()
+        with self.assertRaisesRegexp(TypeError, r'expected'):
+            __unit__.Captor(not_matcher)
+
+    def test_ctor__matcher(self):
+        matcher = __unit__.Matching(bool)
+        captor = __unit__.Captor(matcher)
+        self.assertIs(matcher, captor.matcher)
+
+    def test_ctor__captor(self):
+        captor = __unit__.Captor()
+        with self.assertRaisesRegexp(TypeError, r'captor'):
+            __unit__.Captor(captor)
+
+    def test_has_value__initial(self):
+        captor = __unit__.Captor()
+        self.assertFalse(captor.has_value())
+
+    def test_has_value__not_captured(self):
+        # When the argument fails the matcher test, it should not be captured.
+        captor = __unit__.Captor(self.FALSE_MATCHER)
+        captor.match(self.ARG)
+        self.assertFalse(captor.has_value())
+
+    def test_has_value__captured(self):
+        captor = __unit__.Captor()
+        captor.match(self.ARG)
+        self.assertTrue(captor.has_value())
+
+    def test_arg__initial(self):
+        captor = __unit__.Captor()
+        with self.assertRaisesRegexp(ValueError, r'no value'):
+            captor.arg
+
+    def test_arg__not_captured(self):
+        # When the argument fails the matcher test, it should not be captured.
+        captor = __unit__.Captor(self.FALSE_MATCHER)
+        captor.match(self.ARG)
+        with self.assertRaisesRegexp(ValueError, r'no value'):
+            captor.arg
+
+    def test_arg__captured(self):
+        captor = __unit__.Captor()
+        captor.match(self.ARG)
+        self.assertIs(self.ARG, captor.arg)
+
+    def test_match__captured(self):
+        captor = __unit__.Captor()
+        self.assertTrue(captor.match(self.ARG))
+
+    def test_match___not_captured(self):
+        captor = __unit__.Captor(self.FALSE_MATCHER)
+        self.assertFalse(captor.match(self.ARG))
+
+    def test_match__double_capture(self):
+        captor = __unit__.Captor()
+        captor.match(self.ARG)
+        with self.assertRaisesRegexp(ValueError, r'already'):
+            captor.match(self.ARG)
+
+    def test_repr__not_captured(self):
+        captor = __unit__.Captor()
+        self.assertNotIn("(*)", repr(captor))
+
+    def test_repr__captured(self):
+        captor = __unit__.Captor()
+        captor.match(self.ARG)
+        self.assertIn("(*)", repr(captor))
+
+
 # Function-related matchers
 
 class Callable(MatcherTestCase):

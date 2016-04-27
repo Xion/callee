@@ -104,6 +104,8 @@ class BaseMatcher(object):
     This class shouldn't be used directly by the client.
     To create custom matchers, inherit from :class:`Matcher` instead.
     """
+    __slots__ = ()
+
     def match(self, value):
         raise NotImplementedError("matching not implemented")
 
