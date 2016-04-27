@@ -1,7 +1,7 @@
 """
 callee
 """
-__version__ = "0.1.2"
+__version__ = "0.2"
 __description__ = "Argument matchers for unittest.mock"
 __author__ = "Karol Kuczmarski"
 __license__ = "BSD"
@@ -34,7 +34,7 @@ __all__ = [
     'Sequence', 'List', 'Set',
     'Mapping', 'Dict',
 
-    'Any', 'Matching', 'ArgThat',
+    'Any', 'Matching', 'ArgThat', 'Captor',
     'Callable', 'Function', 'GeneratorFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',

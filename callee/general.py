@@ -10,7 +10,7 @@ from callee.base import BaseMatcher, Eq
 
 
 __all__ = [
-    'Any', 'Matching', 'ArgThat',
+    'Any', 'Matching', 'ArgThat', 'Captor',
     'Callable', 'Function', 'GeneratorFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
@@ -119,6 +119,61 @@ class Matching(BaseMatcher):
         return "<Matching %s>" % (desc or name or repr(self.predicate))
 
 ArgThat = Matching
+
+
+class Captor(BaseMatcher):
+    """Argument captor.
+
+    You can use :class:`Captor` to "capture" the original argument
+    that the mock was called with, and perform custom assertions on it.
+
+    Example::
+
+        captor = Captor()
+        mock_foo.assert_called_with(captor)
+
+        # captured value is available as `arg` attribute
+        self.assertEquals(captor.arg.some_method(), 42)
+        self.assertEquals(captor.arg.some_other_method(), "foo")
+    """
+    __slots__ = ('matcher', 'value')
+
+    def __init__(self, matcher=None):
+        """
+        :param matcher: Optional matcher to validate the argument against
+                        before it's captured
+        """
+        if matcher is None:
+            matcher = Any()
+        if not isinstance(matcher, BaseMatcher):
+            raise TypeError("expected a matcher, got %r" % (type(matcher),))
+
+        self.matcher = matcher
+
+    def has_value(self):
+        """Returns whether the :class:`Captor` has captured a value."""
+        return hasattr(self, 'value')
+
+    @property
+    def arg(self):
+        """The captured argument value."""
+        if not self.has_value():
+            raise ValueError("no value captured")
+        return self.value
+
+    def match(self, value):
+        if self.has_value():
+            raise ValueError("a value has already been captured")
+
+        if not self.matcher.match(value):
+            return False
+        self.value = value
+        return True
+
+    def __repr__(self):
+        """Return a representation of the captor."""
+        return "<Captor %r%s>" % (self.matcher,
+                                  " (*)" if self.has_value() else "")
 
 
 # Function-related matchers
