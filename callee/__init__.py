@@ -7,11 +7,14 @@ __author__ = "Karol Kuczmarski"
 __license__ = "BSD"
 
 
-from callee.base import And, Eq, Is, IsNot, Or, Not
+from callee.base import And, Eq, Is, IsNot, Or, Matcher, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
-from callee.general import (Any, ArgThat, Attrs, Attr, HasAttr, HasAttrs,
-                            IsA, Inherits, InstanceOf, Matching, SubclassOf)
+from callee.general import (
+    Any, ArgThat, Attrs, Attr, Callable, Captor, Class,
+    Function, GeneratorFunction,
+    HasAttr, HasAttrs,
+    IsA, Inherits, InstanceOf, Matching, SubclassOf, Type)
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
 from callee.operators import (
