@@ -16,9 +16,8 @@ class Init(TestCase):
         """
         missing = set(n for n in callee.__all__
                       if getattr(callee, n, None) is None)
-        self.assertEmpty(
-            missing, msg="callee.__all__ contains unresolved names: %s" % (
-                ", ".join(missing),))
+        self.assertEmpty(missing,
+                         msg="callee.__all__ contains unresolved names")
 
     def test_exports__only_exported_by_submodules(self):
         """Test that __all__ contains only names that are actually exported
@@ -30,10 +29,8 @@ class Init(TestCase):
         exported_by_root = set(callee.__all__)
 
         private_exports = exported_by_root - exported_by_submodules
-        self.assertEmpty(
-            private_exports,
-            msg="callee.__all__ contains private symbols: %s" % (
-                ", ".join(private_exports),))
+        self.assertEmpty(private_exports,
+                         msg="callee.__all__ contains private symbols")
 
     def test_exports__all_of_submodule_exports(self):
         """Test that __all__ contains all the publically exported names
@@ -45,10 +42,8 @@ class Init(TestCase):
         exported_by_root = set(callee.__all__)
 
         missing_exports = exported_by_submodules - exported_by_root
-        self.assertEmpty(
-            missing_exports,
-            msg="missing public symbols from callee.__all__: %s" % (
-                ", ".join(missing_exports),))
+        self.assertEmpty(missing_exports,
+                         msg="some public symbols missing from callee.__all__")
 
     # Utility functions
 
