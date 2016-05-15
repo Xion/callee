@@ -25,3 +25,9 @@ def docs(output='html', rebuild=False, show=True):
         if sys.platform == 'darwin':
             path = 'file://%s' % os.path.abspath(path)
         webbrowser.open_new_tab(path)
+
+
+@task
+def upload():
+    """Upload the package to PyPI."""
+    run('python setup.py sdist upload')
