@@ -135,6 +135,8 @@ class Captor(BaseMatcher):
         # captured value is available as `arg` attribute
         self.assertEquals(captor.arg.some_method(), 42)
         self.assertEquals(captor.arg.some_other_method(), "foo")
+
+    .. versionadded:: 0.2
     """
     __slots__ = ('matcher', 'value')
 
