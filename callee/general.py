@@ -275,10 +275,16 @@ class TypeMatcher(BaseMatcher):
         return "<%s %r>" % (self.__class__.__name__, self.type_)
 
 
+# TODO: reverse of this matcher (TypeOf / ClassOf)
 class InstanceOf(TypeMatcher):
     """Matches an object that's an instance of given type
     (as per `isinstance`).
     """
+    def __init__(self, type_):
+        """:param type\ _; Type to match against"""
+        # TODO: strict= argument
+        super(InstanceOf, self).__init__(type_)
+
     def match(self, value):
         return isinstance(value, self.type_)
 
