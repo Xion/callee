@@ -27,6 +27,9 @@ __all__ = [
 
 # TODO: introduce custom exception types rather than using built-ins
 
+# TODO: matchers for positional & keyword arguments,
+# e.g. *Args(Integer(), min=1, max=10), **Kwargs(foo=String(), bar=Float())
+
 
 class Any(BaseMatcher):
     """Matches any object."""
@@ -328,6 +331,12 @@ class Class(BaseMatcher):
 
 
 # TODO: Module() matcher
+
+# TODO: FileLike() matcher
+# TODO: Date, DateTime, and Time matchers (with before=/after= params)
+# TODO: TimeDelta matcher
+# (all the above warrant creating an objects.py module for them
+# & the attribute matchers from below)
 
 
 # Attribute-based matchers
