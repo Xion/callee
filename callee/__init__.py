@@ -12,7 +12,7 @@ from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import (
     Any, ArgThat, Attrs, Attr, Callable, Captor, Class,
-    Coroutine, Function, GeneratorFunction,
+    Coroutine, CoroutineFunction, Function, GeneratorFunction,
     HasAttr, HasAttrs,
     IsA, Inherits, InstanceOf, Matching, SubclassOf, Type)
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
@@ -38,7 +38,8 @@ __all__ = [
     'Mapping', 'Dict',
 
     'Any', 'Matching', 'ArgThat', 'Captor',
-    'Callable', 'Function', 'GeneratorFunction', 'Coroutine',
+    'Callable', 'Function', 'GeneratorFunction',
+    'Coroutine', 'CoroutineFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
 

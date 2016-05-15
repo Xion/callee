@@ -18,7 +18,8 @@ from callee.base import BaseMatcher, Eq
 
 __all__ = [
     'Any', 'Matching', 'ArgThat', 'Captor',
-    'Callable', 'Function', 'GeneratorFunction', 'Coroutine',
+    'Callable', 'Function', 'GeneratorFunction',
+    'Coroutine', 'CoroutineFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
 ]
@@ -227,6 +228,9 @@ class GeneratorFunction(FunctionMatcher):
         return inspect.isgeneratorfunction(value)
 
 
+# TODO: this needs a better place, since it's basically what Generator is
+# to GeneratorFunction; perhaps we need a dedicated module for matchers for
+# async-related objects (coroutines, futures, tasks, etc.)
 class Coroutine(FunctionMatcher):
     """Matches an asynchronous coroutine.
 
@@ -239,6 +243,19 @@ class Coroutine(FunctionMatcher):
     """
     def match(self, value):
         return asyncio and asyncio.iscoroutine(value)
+
+
+class CoroutineFunction(FunctionMatcher):
+    """Matches a coroutine function.
+
+    A coroutine function is an asynchronous function defined using the
+    ``@asyncio.coroutine`` or the ``async def`` syntax.
+
+    These are only available in Python 3.4 and above.
+    On previous versions of Python, no object will match this matcher.
+    """
+    def match(self, value):
+        return asyncio and asyncio.iscoroutinefunction(value)
 
 
 # Type-related matchers
