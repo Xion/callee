@@ -8,7 +8,7 @@ from callee._compat import IS_PY3, metaclass
 
 
 __all__ = [
-    'BaseMatcher', 'Matcher',
+    'Matcher',
     'Eq', 'Is', 'IsNot',
     'Not', 'And', 'Or',
 ]
