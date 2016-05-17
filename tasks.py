@@ -12,7 +12,9 @@ DOCS_DIR = 'docs'
 DOCS_OUTPUT_DIR = os.path.join(DOCS_DIR, '_build')
 
 
-@task
+@task(help={'output': "Documentation output format to produce",
+            'rebuild': "Whether to rebuild the documentation from scratch",
+            'show': "Whether to show the docs in the browser (default: yes)"})
 def docs(output='html', rebuild=False, show=True):
     """Build the docs and show them in default web browser."""
     build_cmd = 'sphinx-build -b {output} {all} docs docs/_build'.format(
