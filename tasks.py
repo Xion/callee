@@ -13,6 +13,15 @@ DOCS_DIR = 'docs'
 DOCS_OUTPUT_DIR = os.path.join(DOCS_DIR, '_build')
 
 
+@task(default=True, help={
+    'all': "Whether to run the tests on all environments (using tox)",
+})
+def test(all=False):
+    """Run the tests."""
+    cmd = 'tox' if all else 'py.test'
+    run(cmd, pty=True)
+
+
 @task(help={
     'output': "Documentation output format to produce",
     'rebuild': "Whether to rebuild the documentation from scratch",
