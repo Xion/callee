@@ -9,7 +9,9 @@ import sys
 
 
 __all__ = [
+    'asyncio',
     'IS_PY3',
+    'STRING_TYPES', 'casefold',
     'metaclass',
 ]
 
@@ -17,6 +19,7 @@ __all__ = [
 IS_PY3 = sys.version_info[0] == 3
 
 STRING_TYPES = (str,) if IS_PY3 else (basestring,)
+casefold = getattr(str, 'casefold', None) or (lambda s: s.lower())
 
 
 class MetaclassDecorator(object):

@@ -4,7 +4,7 @@ Matchers for strings.
 import fnmatch
 import re
 
-from callee._compat import IS_PY3
+from callee._compat import IS_PY3, casefold
 from callee.base import BaseMatcher
 
 
@@ -108,7 +108,7 @@ class Glob(BaseMatcher):
     FNMATCH_FUNCTIONS = {
         DEFAULT_CASE: fnmatch.fnmatch,
         True: fnmatch.fnmatchcase,
-        False: lambda f, p: fnmatch.fnmatchcase(f.lower(), p.lower()),
+        False: lambda f, p: fnmatch.fnmatchcase(casefold(f), casefold(p)),
     }
 
     def __init__(self, pattern, case=DEFAULT_CASE):
