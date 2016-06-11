@@ -36,6 +36,9 @@ Use these matchers to assert on the type of objects passed to your mocks.
 Attribute matchers
 ******************
 
+.. TODO: consider extracting these to a separate document to mirror the module structure
+.. currentmodule:: callee.attributes
+
 These match objects based on their Python attributes.
 
 .. autoclass:: Attrs
