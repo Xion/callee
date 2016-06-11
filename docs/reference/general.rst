@@ -43,8 +43,15 @@ These match objects based on their Python attributes.
 Function matchers
 *****************
 
+.. TODO: consider extracting these to a separate document to mirror the module structure
+.. currentmodule:: callee.functions
+
 .. autoclass:: Callable
 
 .. autoclass:: Function
 
 .. autoclass:: GeneratorFunction
+
+.. autoclass:: Coroutine
+
+.. autoclass:: CoroutineFunction

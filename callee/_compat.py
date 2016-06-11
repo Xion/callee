@@ -1,6 +1,10 @@
 """
 Compatibility shims for different Python versions.
 """
+try:
+    import asyncio
+except ImportError:
+    asyncio = None
 import sys
 
 

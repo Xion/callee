@@ -11,10 +11,11 @@ from callee.base import And, Eq, Is, IsNot, Or, Matcher, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import (
-    Any, ArgThat, Attrs, Attr, Callable, Captor, Class,
-    Coroutine, CoroutineFunction, Function, GeneratorFunction,
+    Any, ArgThat, Attrs, Attr, Captor, Class,
     HasAttr, HasAttrs,
     IsA, Inherits, InstanceOf, Matching, SubclassOf, Type)
+from callee.functions import \
+    Callable, Coroutine, CoroutineFunction, Function, GeneratorFunction
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
 from callee.operators import (
@@ -38,10 +39,11 @@ __all__ = [
     'Mapping', 'Dict',
 
     'Any', 'Matching', 'ArgThat', 'Captor',
-    'Callable', 'Function', 'GeneratorFunction',
-    'Coroutine', 'CoroutineFunction',
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
+
+    'Callable', 'Function', 'GeneratorFunction',
+    'Coroutine', 'CoroutineFunction',
 
     'Number',
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
