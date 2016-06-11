@@ -17,6 +17,9 @@ boolean predicates.
 Type matchers
 *************
 
+.. TODO: consider extracting these to a separate document to mirror the module structure
+.. currentmodule:: callee.types
+
 Use these matchers to assert on the type of objects passed to your mocks.
 
 .. autoclass:: InstanceOf

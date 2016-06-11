@@ -11,9 +11,9 @@ from callee.base import And, Eq, Is, IsNot, Or, Matcher, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import (
-    Any, ArgThat, Attrs, Attr, Captor, Class,
+    Any, ArgThat, Attrs, Attr, Captor,
     HasAttr, HasAttrs,
-    IsA, Inherits, InstanceOf, Matching, SubclassOf, Type)
+    Matching)
 from callee.functions import \
     Callable, Coroutine, CoroutineFunction, Function, GeneratorFunction
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
@@ -27,6 +27,7 @@ from callee.operators import (
     Shorter, ShorterOrEqual, ShorterOrEqualTo, ShorterThan)
 from callee.strings import \
     Bytes, EndsWith, Glob, Regex, StartsWith, String, Unicode
+from callee.types import InstanceOf, IsA, SubclassOf, Inherits, Type, Class
 
 
 __all__ = [
@@ -39,7 +40,6 @@ __all__ = [
     'Mapping', 'Dict',
 
     'Any', 'Matching', 'ArgThat', 'Captor',
-    'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
 
     'Callable', 'Function', 'GeneratorFunction',
@@ -59,4 +59,6 @@ __all__ = [
 
     'String', 'Unicode', 'Bytes',
     'StartsWith', 'EndsWith', 'Glob', 'Regex',
+
+    'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',
 ]

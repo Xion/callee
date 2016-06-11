@@ -7,7 +7,8 @@ import collections
 import inspect
 
 from callee.base import BaseMatcher
-from callee.general import Any, InstanceOf
+from callee.general import Any
+from callee.types import InstanceOf
 
 
 __all__ = [
