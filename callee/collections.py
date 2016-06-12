@@ -96,7 +96,7 @@ class Generator(BaseMatcher):
     .. note::
 
         To match a *generator function* itself, you should use the
-        :class:`~callee.general.GeneratorFunction` matcher instead.
+        :class:`~callee.functions.GeneratorFunction` matcher instead.
     """
     def match(self, value):
         return inspect.isgenerator(value)
