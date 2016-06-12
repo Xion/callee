@@ -62,6 +62,14 @@ class BaseMatcherMetaclassTest(TestCase):
 class Matcher(TestCase):
     """Tests for the Matcher base class."""
 
+    def test_match(self):
+        """Test default match() is left to be implemented by subclasses."""
+        class Custom(__unit__.Matcher):
+            pass
+        matcher = Custom()
+        with self.assertRaises(NotImplementedError):
+            matcher.match(None)
+
     def test_repr__no_ctor(self):
         """Test default __repr__ of Matcher subclass without a constructor."""
         class Custom(__unit__.Matcher):

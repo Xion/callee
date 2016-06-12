@@ -9,10 +9,26 @@ from callee.base import BaseMatcher
 
 
 __all__ = [
-    'String', 'Unicode', 'Bytes',
+    'Bytes',
+    'String', 'Unicode',
     'StartsWith', 'EndsWith',
     'Glob', 'Regex',
 ]
+
+
+# TODO: this is not really a string matcher, at least not per Python 3;
+# move it to an 'objects' module
+class Bytes(BaseMatcher):
+    """Matches a byte array, i.e. the :class:`bytes` type.
+
+    | On Python 2, :class:`bytes` class is identical to :class:`str` class.
+    | On Python 3, byte strings are separate class, distinct from :class:`str`.
+    """
+    def match(self, value):
+        return isinstance(value, bytes)
+
+    def __repr__(self):
+        return "<Bytes>"
 
 
 # String type matchers
@@ -54,15 +70,6 @@ class Unicode(StringTypeMatcher):
     | On Python 3, this means :class:`str` objects exclusively.
     """
     CLASS = str if IS_PY3 else unicode
-
-
-class Bytes(StringTypeMatcher):
-    """Matches a byte string, i.e. the :class:`bytes` type.
-
-    | On Python 2, this is equivalent to :class:`str` class.
-    | On Python 3, byte strings are separate class, distinct from :class:`str`.
-    """
-    CLASS = bytes
 
 
 # Infix matchers
