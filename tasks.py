@@ -22,6 +22,12 @@ def test(all=False):
     run(cmd, pty=True)
 
 
+@task
+def lint():
+    """Run the linter."""
+    run('flake8 callee tests')
+
+
 @task(help={
     'output': "Documentation output format to produce",
     'rebuild': "Whether to rebuild the documentation from scratch",
