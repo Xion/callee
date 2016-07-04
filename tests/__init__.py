@@ -1,10 +1,6 @@
 """
 Test package.
 """
-try:
-    import asyncio
-except ImportError:
-    asyncio = None
 import os
 import sys
 
@@ -14,6 +10,19 @@ except ImportError:
     import mock
 
 from taipan.testing import TestCase as _TestCase
+
+from callee._compat import asyncio
+
+
+__all__ = [
+    'IS_PY34', 'IS_PY35',
+    'MatcherTestCase',
+    'python_code'
+]
+
+
+IS_PY34 = sys.version_info >= (3, 4)
+IS_PY35 = sys.version_info >= (3, 5)
 
 
 class TestCase(_TestCase):

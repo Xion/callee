@@ -13,9 +13,10 @@ from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, Sequence, Set
 from callee.general import Any, ArgThat, Captor, Matching
 from callee.functions import \
-    Callable, Coroutine, CoroutineFunction, Function, GeneratorFunction
+    Callable, CoroutineFunction, Function, GeneratorFunction
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
+from callee.objects import Coroutine
 from callee.operators import (
     Contains,
     Ge, Greater, GreaterOrEqual, GreaterOrEqualTo, GreaterThan, Gt,
@@ -42,11 +43,13 @@ __all__ = [
     'Any', 'Matching', 'ArgThat', 'Captor',
 
     'Callable', 'Function', 'GeneratorFunction',
-    'Coroutine', 'CoroutineFunction',
+    'CoroutineFunction',
 
     'Number',
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
     'Integral', 'Integer', 'Int', 'Long',
+
+    'Coroutine',
 
     'Less', 'LessThan', 'Lt',
     'LessOrEqual', 'LessOrEqualTo', 'Le',

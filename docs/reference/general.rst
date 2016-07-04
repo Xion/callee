@@ -58,6 +58,13 @@ Function matchers
 
 .. autoclass:: GeneratorFunction
 
-.. autoclass:: Coroutine
-
 .. autoclass:: CoroutineFunction
+
+
+Object matchers
+***************
+
+.. TODO: consider extracting these to a separate document to mirror the module structure
+.. currentmodule:: callee.objects
+
+.. autoclass:: Coroutine

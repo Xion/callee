@@ -8,8 +8,7 @@ from callee.base import BaseMatcher
 
 
 __all__ = [
-    'Callable', 'Function', 'GeneratorFunction',
-    'Coroutine', 'CoroutineFunction',
+    'Callable', 'Function', 'GeneratorFunction', 'CoroutineFunction',
 ]
 
 
@@ -48,24 +47,6 @@ class GeneratorFunction(FunctionMatcher):
     """
     def match(self, value):
         return inspect.isgeneratorfunction(value)
-
-
-# TODO: this needs a better place, since it's basically what Generator is
-# to GeneratorFunction; perhaps we need a dedicated module for matchers for
-# async-related objects (coroutines, futures, tasks, etc.),
-# or just various Python "builtin" objects, like file-like
-class Coroutine(FunctionMatcher):
-    """Matches an asynchronous coroutine.
-
-    A coroutine is a result of an asynchronous function call, where the async
-    function has been defined using ``@asyncio.coroutine`` or the ``async def``
-    syntax.
-
-    These are only available in Python 3.4 and above.
-    On previous versions of Python, no object will match this matcher.
-    """
-    def match(self, value):
-        return asyncio and asyncio.iscoroutine(value)
 
 
 class CoroutineFunction(FunctionMatcher):
