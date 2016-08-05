@@ -16,7 +16,7 @@ from callee.functions import \
     Callable, CoroutineFunction, Function, GeneratorFunction
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
-from callee.objects import Coroutine
+from callee.objects import Coroutine, FileLike
 from callee.operators import (
     Contains,
     Ge, Greater, GreaterOrEqual, GreaterOrEqualTo, GreaterThan, Gt,
@@ -50,6 +50,7 @@ __all__ = [
     'Integral', 'Integer', 'Int', 'Long',
 
     'Coroutine',
+    'FileLike',
 
     'Less', 'LessThan', 'Lt',
     'LessOrEqual', 'LessOrEqualTo', 'Le',
