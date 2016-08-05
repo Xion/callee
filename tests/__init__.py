@@ -73,11 +73,11 @@ class MatcherTestCase(TestCase):
 # Utility functions
 
 def python_code(source):
-    """Format Python source code, given as string, for use with ``exec``.
+    """Format Python source code, given as a string, for use with ``exec``.
 
     Use it like so::
 
-        exec(self.code('''
+        exec(python_code('''
             async def foo():
                 pass
         '''))
