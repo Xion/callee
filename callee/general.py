@@ -180,9 +180,3 @@ class Captor(BaseMatcher):
         """Return a representation of the captor."""
         return "<Captor %r%s>" % (self.matcher,
                                   " (*)" if self.has_value() else "")
-
-
-# TODO: FileLike() matcher
-# TODO: Date, DateTime, and Time matchers (with before=/after= params)
-# TODO: TimeDelta matcher
-# (all the above warrant creating an objects.py module for them)

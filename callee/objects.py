@@ -36,7 +36,8 @@ class Coroutine(ObjectMatcher):
 class FileLike(ObjectMatcher):
     """Matches a file-like object.
 
-    In general, a  _file-like object_ is an object you can `read` data from.
+    In general, a `file-like object` is an object you can ``read`` data from,
+    or ``write`` data to.
     """
     def __init__(self, read=True, write=None):
         """
@@ -93,6 +94,10 @@ class FileLike(ObjectMatcher):
         if self.write is not None:
             requirements.append("write" if self.write else "nowrite")
         return "<FileLike %s>" % "(%s)" % ",".join(requirements)
+
+
+# TODO: Date, DateTime, and Time matchers (with before=/after= params)
+# TODO: TimeDelta matcher
 
 
 # Utility method

@@ -68,3 +68,5 @@ Object matchers
 .. currentmodule:: callee.objects
 
 .. autoclass:: Coroutine
+
+.. autoclass:: FileLike
