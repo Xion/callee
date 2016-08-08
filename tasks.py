@@ -6,7 +6,7 @@ import os
 import webbrowser
 import sys
 
-from invoke import task, run
+from invoke import task
 
 
 DOCS_DIR = 'docs'
@@ -16,16 +16,16 @@ DOCS_OUTPUT_DIR = os.path.join(DOCS_DIR, '_build')
 @task(default=True, help={
     'all': "Whether to run the tests on all environments (using tox)",
 })
-def test(all=False):
+def test(ctx, all=False):
     """Run the tests."""
     cmd = 'tox' if all else 'py.test'
-    run(cmd, pty=True)
+    ctx.run(cmd, pty=True)
 
 
 @task
-def lint():
+def lint(ctx):
     """Run the linter."""
-    run('flake8 callee tests')
+    ctx.run('flake8 callee tests')
 
 
 @task(help={
@@ -33,12 +33,12 @@ def lint():
     'rebuild': "Whether to rebuild the documentation from scratch",
     'show': "Whether to show the docs in the browser (default: yes)",
 })
-def docs(output='html', rebuild=False, show=True):
+def docs(ctx, output='html', rebuild=False, show=True):
     """Build the docs and show them in default web browser."""
     build_cmd = 'sphinx-build -b {output} {all} docs docs/_build'.format(
         output=output,
         all='-a -E' if rebuild else '')
-    run(build_cmd)
+    ctx.run(build_cmd)
 
     if show:
         path = os.path.join(DOCS_OUTPUT_DIR, 'index.html')
@@ -51,7 +51,7 @@ def docs(output='html', rebuild=False, show=True):
     'yes': "Whether to actually perform the upload. "
            "By default, a confirmation is necessary.",
 })
-def upload(yes=False):
+def upload(ctx, yes=False):
     """Upload the package to PyPI."""
     import callee
     version = callee.__version__
@@ -67,7 +67,7 @@ def upload(yes=False):
         yes = answer.lower() == 'y'
     if yes:
         logging.debug("Uploading version %s to PyPI...", version)
-        if run('python setup.py sdist upload'):
+        if ctx.run('python setup.py sdist upload'):
             logging.info("PyPI upload completed successfully.")
         else:
             fatal("Failed to upload version %s to PyPI!", version)
@@ -76,9 +76,9 @@ def upload(yes=False):
         return -2
 
     # add a Git tag and push
-    if not run('git tag %s' % version):
+    if not ctx.run('git tag %s' % version):
         fatal("Failed to add a Git tag for uploaded version %s", version)
-    if not run('git push && git push --tags'):
+    if not ctx.run('git push && git push --tags'):
         fatal("Failed to push the release upstream.")
 
 

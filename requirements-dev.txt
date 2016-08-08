@@ -2,9 +2,7 @@
 # (but not required by the library code or its tests)
 
 tox>=1.8
-invoke<0.13
-# TODO: consider upgrading to Invoke 0.13
-# (requires task functions to accept explicit Context object)
+invoke>=0.13
 flake8
 
 # docs
