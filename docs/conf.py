@@ -51,6 +51,7 @@ extensions = [
     'alabaster',
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
 ]
 
@@ -371,3 +372,8 @@ def autodoc_process_docstring(app, what, name, obj, options, lines):
         ctor_docstring_lines = prepare_docstring(obj.__init__.__doc__)
         if lines == ctor_docstring_lines:
             lines[:] = []
+
+
+# -- Options for intersphinx extension ------------------------------------
+
+intersphinx_mapping = {'python': ('https://docs.python.org/2.7', None)}

@@ -262,7 +262,9 @@ class OrderedDict(MappingMatcher):
     CLASS = _OrderedDict
 
     def __init__(self, *args, **kwargs):
-        """See the documentation on :class:`Dict` constructor."""
+        """For more information about arguments,
+        see the documentation of :class:`Dict`.
+        """
         # Override the constructor from the base matcher class
         # without asserting that CLASS is not None, because it legimately will
         # be on Python 2.6 without the ordereddict package.
