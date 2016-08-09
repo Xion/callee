@@ -16,10 +16,13 @@ DOCS_OUTPUT_DIR = os.path.join(DOCS_DIR, '_build')
 
 @task(default=True, help={
     'all': "Whether to run the tests on all environments (using tox)",
+    'verbose': "Whether to enable verbose output",
 })
-def test(ctx, all=False):
+def test(ctx, all=False, verbose=False):
     """Run the tests."""
     cmd = 'tox' if all else 'py.test'
+    if verbose:
+        cmd += ' -v'
     return ctx.run(cmd, pty=True).return_code
 
 
@@ -33,13 +36,15 @@ def lint(ctx):
     'output': "Documentation output format to produce",
     'rebuild': "Whether to rebuild the documentation from scratch",
     'show': "Whether to show the docs in the browser (default: yes)",
+    'verbose': "Whether to enable verbose output",
 })
-def docs(ctx, output='html', rebuild=False, show=True):
+def docs(ctx, output='html', rebuild=False, show=True, verbose=True):
     """Build the docs and show them in default web browser."""
     sphinx_build = ctx.run(
-        'sphinx-build -b {output} {all} docs docs/_build'.format(
+        'sphinx-build -b {output} {all} {verbose} docs docs/_build'.format(
             output=output,
-            all='-a -E' if rebuild else ''))
+            all='-a -E' if rebuild else '',
+            verbose='-v' if verbose else ''))
     if not sphinx_build.ok:
         fatal("Failed to build the docs", cause=sphinx_build)
 
