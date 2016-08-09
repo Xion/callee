@@ -58,3 +58,5 @@ These match the particular Python built-in collections types, like :class:`list`
 .. autoclass:: Set
 
 .. autoclass:: Dict
+
+.. autoclass:: OrderedDict

@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import collections
 import inspect
 
+from callee._compat import OrderedDict as _OrderedDict
 from callee.base import BaseMatcher
 from callee.general import Any
 from callee.types import InstanceOf
@@ -14,7 +15,7 @@ from callee.types import InstanceOf
 __all__ = [
     'Iterable', 'Generator',
     'Sequence', 'List', 'Set',
-    'Mapping', 'Dict',
+    'Mapping', 'Dict', 'OrderedDict',
 ]
 
 
@@ -157,7 +158,10 @@ class MappingMatcher(CollectionMatcher):
 
         """
         assert self.CLASS, "must specify mapping type to match"
+        self._initialize(*args, **kwargs)
 
+    def _initialize(self, *args, **kwargs):
+        """Initiaize the mapping matcher with constructor arguments."""
         self.items = None
         self.keys = None
         self.values = None
@@ -248,5 +252,23 @@ class Dict(MappingMatcher):
     CLASS = dict
 
 
-# TODO: consider adding a matcher for OrderedDict, but in a way
-# that doesn't unconditionally require the ordereddict package for Python 2.6
+class OrderedDict(MappingMatcher):
+    """Matches an ordered dictionary (:class:`collections.OrderedDict`)
+    of given items.
+
+    On Python 2.6, this requires the ordereddict backport package.
+    Otherwise, no object will match this matcher.
+    """
+    CLASS = _OrderedDict
+
+    def __init__(self, *args, **kwargs):
+        """See the documentation on :class:`Dict` constructor."""
+        # Override the constructor from the base matcher class
+        # without asserting that CLASS is not None, because it legimately will
+        # be on Python 2.6 without the ordereddict package.
+        self._initialize(*args, **kwargs)
+
+    def match(self, value):
+        if self.CLASS is None:
+            return False
+        return super(OrderedDict, self).match(value)

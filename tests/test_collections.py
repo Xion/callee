@@ -3,6 +3,9 @@ Tests for collections' matchers.
 """
 import collections
 
+from taipan.testing import skipIf
+
+from callee._compat import OrderedDict as _OrderedDict
 import callee.collections as __unit__
 from tests import MatcherTestCase
 
@@ -297,3 +300,56 @@ class Dict(MatcherTestCase):
     def assert_no_match(self, value, *args, **kwargs):
         return super(Dict, self) \
             .assert_no_match(__unit__.Dict(*args, **kwargs), value)
+
+
+class OrderedDict(MatcherTestCase):
+
+    def test_invalid_arg(self):
+        with self.assertRaises(TypeError):
+            self.assert_match(None, of='not a pair of matchers')
+
+    test_none = lambda self: self.assert_no_match(None)
+    test_zero = lambda self: self.assert_no_match(0)
+    test_empty_string = lambda self: self.assert_no_match('')
+    test_empty_list = lambda self: self.assert_no_match([])
+    test_empty_set = lambda self: self.assert_no_match(set())
+    test_empty_tuple = lambda self: self.assert_no_match(())
+    test_empty_dict__regular = lambda self: self.assert_no_match({})
+    test_empty_dict__custom = lambda self: self.assert_no_match(CustomDict())
+
+    @skipIf(_OrderedDict is None,
+            "requires Python 2.6 or the ordereddict package")
+    def test_empty_ordereddict(self):
+        d = _OrderedDict()
+        self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
+        self.assert_match(d, of=(str, int))
+
+    test_empty_generator = lambda self: self.assert_no_match(x for x in ())
+    test_some_string = lambda self: self.assert_no_match("Alice has a cat")
+    test_some_number = lambda self: self.assert_no_match(42)
+    test_some_list = lambda self: self.assert_no_match([1, 2, 3, 5, 8, 13])
+    test_some_set = lambda self: self.assert_no_match(set([2, 4, 6, 8, 10]))
+    test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
+    test_some_dict = lambda self: self.assert_no_match({'a': 1})
+
+    @skipIf(_OrderedDict is None,
+            "requires Python 2.6 or the ordereddict package")
+    def test_some_ordereddict(self):
+        d = _OrderedDict([('a', 1)])
+        self.assert_match(d)
+        self.assert_match(d, str, int)
+        self.assert_match(d, keys=str, values=int)
+        self.assert_match(d, of=(str, int))
+
+    test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
+    test_some_object = lambda self: self.assert_no_match(object())
+
+    def assert_match(self, value, *args, **kwargs):
+        return super(OrderedDict, self) \
+            .assert_match(__unit__.OrderedDict(*args, **kwargs), value)
+
+    def assert_no_match(self, value, *args, **kwargs):
+        return super(OrderedDict, self) \
+            .assert_no_match(__unit__.OrderedDict(*args, **kwargs), value)

@@ -10,7 +10,7 @@ __license__ = "BSD"
 from callee.attributes import Attrs, Attr, HasAttrs, HasAttr
 from callee.base import And, Eq, Is, IsNot, Or, Matcher, Not
 from callee.collections import \
-    Dict, Generator, Iterable, List, Mapping, Sequence, Set
+    Dict, Generator, Iterable, List, Mapping, OrderedDict, Sequence, Set
 from callee.general import Any, ArgThat, Captor, Matching
 from callee.functions import \
     Callable, CoroutineFunction, Function, GeneratorFunction
@@ -38,7 +38,7 @@ __all__ = [
 
     'Iterable', 'Generator',
     'Sequence', 'List', 'Set',
-    'Mapping', 'Dict',
+    'Mapping', 'Dict', 'OrderedDict',
 
     'Any', 'Matching', 'ArgThat', 'Captor',
 

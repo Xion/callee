@@ -1,16 +1,26 @@
 """
 Compatibility shims for different Python versions.
 """
+from __future__ import absolute_import
+
 try:
     import asyncio
 except ImportError:
     asyncio = None
+try:
+    from collections import OrderedDict  # Python 2.7+
+except ImportError:
+    try:
+        from ordereddict import OrderedDict  # Python 2.6 with the shim library
+    except ImportError:
+        OrderedDict = None
 import inspect
 import sys
 
 
 __all__ = [
     'asyncio',
+    'OrderedDict',
     'IS_PY3',
     'STRING_TYPES', 'casefold',
     'metaclass',
