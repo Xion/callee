@@ -377,3 +377,7 @@ def autodoc_process_docstring(app, what, name, obj, options, lines):
 # -- Options for intersphinx extension ------------------------------------
 
 intersphinx_mapping = {'python': ('https://docs.python.org/2.7', None)}
+
+# Since we point to Python 2.7 docs which basically don't change,
+# there is no reason not to cache the them indefinetely.
+intersphinx_cache_limit = -1

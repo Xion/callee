@@ -16,7 +16,7 @@ from callee.functions import \
     Callable, CoroutineFunction, Function, GeneratorFunction
 from callee.numbers import (Complex, Float, Fraction, Int, Integer, Integral,
                             Long, Number, Rational, Real)
-from callee.objects import Coroutine, FileLike
+from callee.objects import Bytes, Coroutine, FileLike
 from callee.operators import (
     Contains,
     Ge, Greater, GreaterOrEqual, GreaterOrEqualTo, GreaterThan, Gt,
@@ -25,7 +25,7 @@ from callee.operators import (
     Longer, LongerOrEqual, LongerOrEqualTo, LongerThan, Lt,
     Shorter, ShorterOrEqual, ShorterOrEqualTo, ShorterThan)
 from callee.strings import \
-    Bytes, EndsWith, Glob, Regex, StartsWith, String, Unicode
+    EndsWith, Glob, Regex, StartsWith, String, Unicode
 from callee.types import InstanceOf, IsA, SubclassOf, Inherits, Type, Class
 
 
@@ -49,6 +49,7 @@ __all__ = [
     'Complex', 'Real', 'Float', 'Rational', 'Fraction',
     'Integral', 'Integer', 'Int', 'Long',
 
+    'Bytes',
     'Coroutine',
     'FileLike',
 
@@ -60,7 +61,7 @@ __all__ = [
     'Longer', 'LongerThan', 'LongerOrEqual', 'LongerOrEqualTo',
     'Contains', 'In',
 
-    'String', 'Unicode', 'Bytes',
+    'String', 'Unicode',
     'StartsWith', 'EndsWith', 'Glob', 'Regex',
 
     'InstanceOf', 'IsA', 'SubclassOf', 'Inherits', 'Type', 'Class',

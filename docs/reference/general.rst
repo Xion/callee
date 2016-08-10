@@ -67,6 +67,8 @@ Object matchers
 .. TODO: consider extracting these to a separate document to mirror the module structure
 .. currentmodule:: callee.objects
 
+.. autoclass:: Bytes
+
 .. autoclass:: Coroutine
 
 .. autoclass:: FileLike

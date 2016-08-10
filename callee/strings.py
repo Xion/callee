@@ -6,29 +6,15 @@ import re
 
 from callee._compat import IS_PY3, casefold
 from callee.base import BaseMatcher
+from callee.objects import Bytes
 
 
 __all__ = [
-    'Bytes',
+    'Bytes',  # backwards compatibility
     'String', 'Unicode',
     'StartsWith', 'EndsWith',
     'Glob', 'Regex',
 ]
-
-
-# TODO: this is not really a string matcher, at least not per Python 3;
-# move it to an 'objects' module
-class Bytes(BaseMatcher):
-    """Matches a byte array, i.e. the :class:`bytes` type.
-
-    | On Python 2, :class:`bytes` class is identical to :class:`str` class.
-    | On Python 3, byte strings are separate class, distinct from :class:`str`.
-    """
-    def match(self, value):
-        return isinstance(value, bytes)
-
-    def __repr__(self):
-        return "<Bytes>"
 
 
 # String type matchers

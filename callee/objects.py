@@ -8,7 +8,7 @@ from callee._compat import asyncio, getargspec
 from callee.base import BaseMatcher
 
 
-__all__ = ['Coroutine', 'FileLike']
+__all__ = ['Bytes', 'Coroutine', 'FileLike']
 
 
 class ObjectMatcher(BaseMatcher):
@@ -17,6 +17,16 @@ class ObjectMatcher(BaseMatcher):
     """
     def __repr__(self):
         return "<%s>" % (self.__class__.__name__,)
+
+
+class Bytes(ObjectMatcher):
+    """Matches a byte array, i.e. the :class:`bytes` type.
+
+    | On Python 2, :class:`bytes` class is identical to :class:`str` class.
+    | On Python 3, byte strings are separate class, distinct from :class:`str`.
+    """
+    def match(self, value):
+        return isinstance(value, bytes)
 
 
 class Coroutine(ObjectMatcher):
