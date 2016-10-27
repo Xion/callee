@@ -302,8 +302,8 @@ class And(BaseMatcher):
     def match(self, value):
         return all(matcher.match(value) for matcher in self._matchers)
 
-    def __repr__(self, value):
-        return "<%s>" % " and ".join(map(repr, self.matchers))
+    def __repr__(self):
+        return "<%s>" % " and ".join(map(repr, self._matchers))
 
 
 class Or(BaseMatcher):
@@ -320,5 +320,5 @@ class Or(BaseMatcher):
     def match(self, value):
         return any(matcher.match(value) for matcher in self._matchers)
 
-    def __repr__(self, value):
-        return "<%s>" % " or ".join(map(repr, self.matchers))
+    def __repr__(self):
+        return "<%s>" % " or ".join(map(repr, self._matchers))
