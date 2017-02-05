@@ -104,19 +104,22 @@ class Glob(BaseMatcher):
         False: lambda f, p: fnmatch.fnmatchcase(casefold(f), casefold(p)),
     }
 
-    def __init__(self, pattern, case=DEFAULT_CASE):
+    def __init__(self, pattern, case=None):
         """
         :param pattern: Pattern to match against
         :param case:
 
             Case sensitivity setting. Possible options:
 
-                * ``'system'`` (default): case sensitvity is system-dependent
+                * ``'system'`` or ``None``: case sensitvity is system-dependent
+                  (this is the default)
                 * ``True``: matching is case-sensitive
                 * ``False``: matching is case-insensitive
         """
         self.pattern = pattern
         try:
+            if case is None:
+                case = self.DEFAULT_CASE
             self.fnmatch = self.FNMATCH_FUNCTIONS[case]
         except KeyError:
             raise ValueError("invalid case= argument: %r" % (case,))
@@ -130,6 +133,8 @@ class Glob(BaseMatcher):
 
 class Regex(BaseMatcher):
     """Matches a string against a regular expression."""
+
+    REGEX_TYPE = type(re.compile(''))
 
     def __init__(self, pattern, flags=0):
         """
@@ -148,7 +153,7 @@ class Regex(BaseMatcher):
         self.pattern = pattern
 
     def _is_regex_object(self, obj):
-        return isinstance(obj, type(re.compile('')))
+        return isinstance(obj, self.REGEX_TYPE)
 
     def match(self, value):
         return self.pattern.match(value)

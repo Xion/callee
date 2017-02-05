@@ -1,6 +1,7 @@
 """
 Tests for string matchers.
 """
+import fnmatch
 from itertools import combinations
 import re
 
@@ -200,6 +201,14 @@ class Glob(PatternTestCase):
         self.assert_match('foo', 'foo', case=False)
         self.assert_match('foo', 'Foo', case=False)
         self.assert_match('FoO', 'fOo', case=False)
+
+    def test_system_case(self):
+        # Just test that the fnmatch function is picked correctly,
+        # since the actual match result is system-dependent by definition.
+        self.assertIs(fnmatch.fnmatch, __unit__.Glob('').fnmatch)
+        self.assertIs(fnmatch.fnmatch,
+                      __unit__.Glob('', case='system').fnmatch)
+        self.assertIs(fnmatch.fnmatch, __unit__.Glob('', case=None).fnmatch)
 
     # Assertion functions
 
