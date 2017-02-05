@@ -101,7 +101,7 @@ class BaseMatcherMetaclass(type):
 class BaseMatcher(object):
     """Base class for all argument matchers.
 
-    This class shouldn't be used directly by the client.
+    This class shouldn't be used directly by the clients.
     To create custom matchers, inherit from :class:`Matcher` instead.
     """
     __slots__ = ()
@@ -161,6 +161,7 @@ class Matcher(BaseMatcher):
         # if so, then it probably means it has some interesting state
         # in its attributes which we can include in the default representation
         if has_argful_ctor:
+            # TODO: __getstate__ instead of __dict__?
             fields = [(name, value) for name, value in self.__dict__.items()
                       if not name.startswith('_')]
             if fields:

@@ -30,7 +30,7 @@ class BaseMatcherMetaclassTest(TestCase):
         is_bmcd = \
             __unit__.BaseMatcherMetaclass._is_base_matcher_class_definition
 
-        self.assertFalse(is_bmcd('Foo', {}))
+        self.assertFalse(is_bmcd('Foo', {}))  # wrong name
         self.assertFalse(is_bmcd('BaseMatcher', {}))  # needs members
         self.assertFalse(is_bmcd('BaseMatcher', {'foo': 1}))  # needs methods
         self.assertFalse(  # needs methods from same module
@@ -57,6 +57,19 @@ class BaseMatcherMetaclassTest(TestCase):
             def __rdiv__(self, other):
                 return self
         self.assertItemsEqual(['init', 'rdiv'], lmm(Baz))
+
+        class Qux(object):
+            def __init__(self):
+                pass
+            def foo(self):
+                pass
+        self.assertItemsEqual(['init'], lmm(Qux))
+
+        class Thud(object):
+            def __bool__(self):
+                return False
+            __nonzero__ = __bool__
+        self.assertItemsEqual(['bool', 'nonzero'], lmm(Thud))
 
 
 class Matcher(TestCase):
@@ -97,7 +110,7 @@ class Matcher(TestCase):
                 pass
         self.assertEquals("<Custom(...)>", "%r" % Custom('unused'))
 
-    def test_repr__argful_ctor__with_state(self):
+    def test_repr__argful_ctor__with_state_from_args(self):
         """Test __repr__ with argful constructor & object fields."""
         class Custom(__unit__.Matcher):
             def __init__(self, foo):
@@ -106,3 +119,11 @@ class Matcher(TestCase):
         foo = 'bar'
         self.assertEquals("<Custom(foo=%r)>" % (foo,),
                           "%r" % Custom(foo='bar'))
+
+    def test_repr__argful_ctor__with_unrelated_state(self):
+        """Test __repr__ with argful ctor & unrelated object fields."""
+        class Custom(__unit__.Matcher):
+            def __init__(self, foo):
+                self.bar = 42
+
+        self.assertEquals("<Custom(bar=42)>", "%r" % Custom(foo='unused'))
