@@ -7,7 +7,13 @@ import webbrowser
 import sys
 
 from invoke import task
+from invoke.exceptions import Exit
 from invoke.runners import Result
+
+try:
+    input = raw_input
+except NameError:
+    pass  # Python 3, input() already works like raw_input() in 2.x.
 
 
 DOCS_DIR = 'docs'
@@ -71,8 +77,8 @@ def upload(ctx, yes=False):
 
     # run the upload if it has been confirmed by the user
     if not yes:
-        answer = raw_input("Do you really want to upload to PyPI [y/N]? ")
-        yes = answer.lower() == 'y'
+        answer = input("Do you really want to upload to PyPI [y/N]? ")
+        yes = answer.strip().lower() == 'y'
     if not yes:
         logging.warning("Aborted -- not uploading to PyPI.")
         return -2
@@ -97,7 +103,14 @@ def upload(ctx, yes=False):
 # Utility functions
 
 def fatal(*args, **kwargs):
-    """Log an error message and exit."""
+    """Log an error message and exit.
+
+    Following arguments are keyword-only.
+
+    :param exitcode: Optional exit code to use
+    :param cause: Optional Invoke's Result object, i.e.
+                  result of a subprocess invocation
+    """
     # determine the exitcode to return to the operating system
     exitcode = None
     if 'exitcode' in kwargs:
@@ -111,4 +124,4 @@ def fatal(*args, **kwargs):
         exitcode = exitcode or cause.return_code
 
     logging.error(*args, **kwargs)
-    sys.exit(exitcode or -1)
+    raise Exit(exitcode or -1)
