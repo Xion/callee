@@ -24,26 +24,32 @@ class InstanceOf(MatcherTestCase):
         self.assert_match(s, str)
         self.assert_no_match(s, self.Class)
 
-    def test_class(self):
+    def test_class__inexact(self):
         self.assert_match(self.Class(), self.Class)
         self.assert_no_match(self.Class(), int)
 
+    def test_class__exact(self):
+        self.assert_match(self.Class(), self.Class, exact=True)
+        self.assert_no_match(self.Class(), object, exact=True)
+
     def test_meta(self):
         self.assert_match(self.Class, type)
+        self.assert_match(self.Class, type, exact=True)
         self.assert_match(type, type)
+        self.assert_match(type, type, exact=True)
 
     # Utility code
 
     class Class(object):
         pass
 
-    def assert_match(self, value, type_):
+    def assert_match(self, value, type_, exact=False):
         return super(InstanceOf, self) \
-            .assert_match(__unit__.InstanceOf(type_), value)
+            .assert_match(__unit__.InstanceOf(type_, exact), value)
 
-    def assert_no_match(self, value, type_):
+    def assert_no_match(self, value, type_, exact=False):
         return super(InstanceOf, self) \
-            .assert_no_match(__unit__.InstanceOf(type_), value)
+            .assert_no_match(__unit__.InstanceOf(type_, exact), value)
 
 
 class SubclassOf(MatcherTestCase):

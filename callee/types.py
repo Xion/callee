@@ -31,13 +31,23 @@ class InstanceOf(TypeMatcher):
     """Matches an object that's an instance of given type
     (as per `isinstance`).
     """
-    def __init__(self, type_):
-        """:param type\ _; Type to match against"""
-        # TODO: strict= argument
+    def __init__(self, type_, exact=False):
+        """
+        :param type\ _; Type to match against
+        :param exact:
+
+            If True, the match will only succeed if the value type matches
+            given ``type_`` exactly.
+            Otherwise (the default), a subtype of ``type_`` will also match.
+        """
         super(InstanceOf, self).__init__(type_)
+        self.exact = exact
 
     def match(self, value):
-        return isinstance(value, self.type_)
+        if self.exact:
+            return type(value) is self.type_
+        else:
+            return isinstance(value, self.type_)
 
 IsA = InstanceOf
 

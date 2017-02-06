@@ -57,7 +57,7 @@ class CollectionMatcher(BaseMatcher):
         return True
 
     def __repr__(self):
-        """Return a readable representation of the matcher
+        """Return a readable representation of the matcher.
         Used mostly for AssertionError messages in failed tests.
 
         Example::
