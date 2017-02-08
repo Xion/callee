@@ -57,13 +57,26 @@ class SubclassOf(TypeMatcher):
     """Matches a class that's a subclass of given type
     (as per `issubclass`).
     """
-    def __init__(self, type_):
-        """:param type\ _: Type to match against"""
-        # TODO: strict= argument
+    def __init__(self, type_, strict=False):
+        """
+        :param type\ _: Type to match against
+        :param strict:
+
+            If True, the match if only succeed if the value is a _strict_
+            subclass of ``type_`` -- that is, it's not ``type_`` itself.
+            Otherwise (the default), any subclass of ``type_`` matches.
+        """
         super(SubclassOf, self).__init__(type_)
+        self.strict = strict
 
     def match(self, value):
-        return isinstance(value, type) and issubclass(value, self.type_)
+        if not isinstance(value, type):
+            return False
+        if not issubclass(value, self.type_):
+            return False
+        if value is self.type_ and self.strict:
+            return False
+        return True
 
 Inherits = SubclassOf
 

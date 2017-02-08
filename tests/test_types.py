@@ -65,21 +65,34 @@ class SubclassOf(MatcherTestCase):
         self.assert_no_match((), object)
         self.assert_no_match([], object)
 
+    def test_non_types__strict(self):
+        self.assert_no_match(None, object, strict=True)
+        self.assert_no_match(0, object, strict=True)
+        self.assert_no_match("Alice has a cat", object, strict=True)
+        self.assert_no_match((), object, strict=True)
+        self.assert_no_match([], object, strict=True)
+
     def test_types(self):
         self.assert_match(self.Class, object)
         self.assert_match(self.Class, self.Class)
-        self.assert_match(self.Class, object)
+        self.assert_no_match(object, self.Class)
         self.assert_match(object, object)
+
+    def test_types__strict(self):
+        self.assert_match(self.Class, object, strict=True)
+        self.assert_no_match(self.Class, self.Class, strict=True)
+        self.assert_no_match(object, self.Class, strict=True)
+        self.assert_no_match(object, object, strict=True)
 
     # Utility code
 
     class Class(object):
         pass
 
-    def assert_match(self, value, type_):
+    def assert_match(self, value, type_, strict=False):
         return super(SubclassOf, self) \
-            .assert_match(__unit__.SubclassOf(type_), value)
+            .assert_match(__unit__.SubclassOf(type_, strict), value)
 
-    def assert_no_match(self, value, type_):
+    def assert_no_match(self, value, type_, strict=False):
         return super(SubclassOf, self) \
-            .assert_no_match(__unit__.SubclassOf(type_), value)
+            .assert_no_match(__unit__.SubclassOf(type_, strict), value)
