@@ -19,6 +19,10 @@ class ObjectMatcher(BaseMatcher):
         return "<%s>" % (self.__class__.__name__,)
 
 
+# TODO: Date, DateTime, and Time matchers (with before=/after= params)
+# TODO: TimeDelta matcher
+
+
 class Bytes(ObjectMatcher):
     """Matches a byte array, i.e. the :class:`bytes` type.
 
@@ -94,7 +98,7 @@ class FileLike(ObjectMatcher):
         except AttributeError:
             return False
         else:
-            return is_method(write, max_arity=1)
+            return is_method(write, min_arity=1, max_arity=1)
 
     def __repr__(self):
         """Return a representation of this matcher."""
@@ -106,14 +110,14 @@ class FileLike(ObjectMatcher):
         return "<FileLike %s>" % "(%s)" % ",".join(requirements)
 
 
-# TODO: Date, DateTime, and Time matchers (with before=/after= params)
-# TODO: TimeDelta matcher
+# Utility functions
 
+def is_method(arg, min_arity=None, max_arity=None):
+    """Check if argument is a method.
 
-# Utility method
-
-def is_method(arg, max_arity=None):
-    """Check if argument is a method, optionally of given maximum arity."""
+    Optionally, we can also check if minimum or maximum arities
+    (number of accepted arguments) match given minimum and/or maximum.
+    """
     if not callable(arg):
         return False
 
@@ -123,7 +127,7 @@ def is_method(arg, max_arity=None):
         return False
 
     try:
-        argnames, varargs, kwargs, _ = getargspec(arg)
+        argnames, varargs, kwargs, defaults = getargspec(arg)
     except TypeError:
         # On CPython 2.x, built-in methods of file aren't inspectable,
         # so if it's file.read() or file.write(), we can't tell it for sure.
@@ -134,9 +138,17 @@ def is_method(arg, max_arity=None):
         if argnames and argnames[0] == 'self':
             argnames = argnames[1:]
 
-    # TODO: verify min_arity as well (e.g. read() of file-like objects
-    # may or may not accept an argument, but write() has to)
-    if max_arity is None:
-        return True
-    actual_max_arity = sys.maxsize if varargs or kwargs else len(argnames)
-    return int(max_arity) == actual_max_arity
+    if min_arity is not None:
+        actual_min_arity = len(argnames) - len(defaults or ())
+        assert actual_min_arity >= 0, (
+            "Minimum arity of %r found to be negative (got %s)!" % (
+                arg, actual_min_arity))
+        if int(min_arity) != actual_min_arity:
+            return False
+
+    if max_arity is not None:
+        actual_max_arity = sys.maxsize if varargs or kwargs else len(argnames)
+        if int(max_arity) != actual_max_arity:
+            return False
+
+    return True
