@@ -3,10 +3,10 @@
 Tests for matcher base classes.
 """
 import callee.base as __unit__
-from tests import TestCase
+from tests import MatcherTestCase, TestCase
 
 
-class BaseMatcherMetaclassTest(TestCase):
+class BaseMatcherMetaclass(TestCase):
     """Tests for the BaseMatcherMetaclass."""
 
     def test_validate_class_definition(self):
@@ -127,6 +127,46 @@ class Matcher(TestCase):
                 self.bar = 42
 
         self.assertEquals("<Custom(bar=42)>", "%r" % Custom(foo='unused'))
+
+
+class Eq(MatcherTestCase):
+    """Tests for the Eq matcher."""
+
+    def test_regular_objects(self):
+        """Test that Eq is a no-op for regular objects."""
+        self.assert_match(__unit__.Eq(None), None)
+        self.assert_match(__unit__.Eq(0), 0)
+        self.assert_match(__unit__.Eq(""), "")
+        self.assert_match(__unit__.Eq([]), [])
+        self.assert_match(__unit__.Eq(()), ())
+
+        # Arbitary objects are only equal in the `is` sense.
+        obj = object()
+        self.assert_match(__unit__.Eq(obj), obj)
+
+    def test_matchers(self):
+        """Test that Eq allows to treat matchers as values."""
+        # Hypothetical objects that we want to check the equality of,
+        # where one is by some accident a Matcher.
+        eq_by_x = lambda this, other: this.x == getattr(other, 'x', object())
+        class RegularValue(object):
+            def __init__(self, x):
+                self.x = x
+            def __eq__(self, other):
+                return eq_by_x(self, other)
+        class MatcherValue(__unit__.Matcher):
+            def __init__(self, x):
+                self.x = x
+            def match(self, value):
+                return eq_by_x(self, value)
+
+        # Matching against a matcher object is an error if Eq isn't used.
+        with self.assertRaises(TypeError) as r:
+            self.assert_match(MatcherValue(42), MatcherValue(42))
+        self.assertIn("incorrect use of matcher object", str(r.exception))
+
+        # It's fine with Eq, though.
+        self.assert_match(__unit__.Eq(RegularValue(42)), MatcherValue(42))
 
 
 class LogicalCombinators(TestCase):

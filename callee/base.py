@@ -211,7 +211,7 @@ class Eq(BaseMatcher):
         self.value = value
 
     def match(self, value):
-        return value == self.value
+        return self.value == value
 
     def __eq__(self, other):
         return self.match(other)
