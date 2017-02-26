@@ -10,7 +10,7 @@ from callee._compat import IS_PY3, metaclass
 __all__ = [
     'Matcher',
     'Eq', 'Is', 'IsNot',
-    'Not', 'And', 'Or',
+    'Not', 'And', 'Or', 'Either',
 ]
 
 
@@ -130,6 +130,9 @@ class BaseMatcher(object):
     def __or__(self, other):
         matchers = other._matchers if isinstance(other, Or) else [other]
         return Or(self, *matchers)
+
+    def __xor__(self, other):
+        return Either(self, other)
 
 
 class Matcher(BaseMatcher):
@@ -312,7 +315,7 @@ class Or(BaseMatcher):
 
     def __init__(self, *matchers):
         assert matchers, "Or() expects at least one matcher"
-        assert any(isinstance(m, BaseMatcher)
+        assert all(isinstance(m, BaseMatcher)
                    for m in matchers), "Or() expects matchers"
         self._matchers = list(matchers)
 
@@ -323,3 +326,20 @@ class Or(BaseMatcher):
 
     def __repr__(self):
         return "<%s>" % " or ".join(map(repr, self._matchers))
+
+
+class Either(BaseMatcher):
+    """Matches the argument only if exactly one of the two matchers does."""
+
+    def __init__(self, matcher1, matcher2):
+        assert matcher1 and matcher2, "Either() expects two matchers"
+        assert all(isinstance(m, BaseMatcher)
+                   for m in (matcher1, matcher2)), "Either() expects matchers"
+        self.matcher1 = matcher1
+        self.matcher2 = matcher2
+
+    def match(self, value):
+        return bool(self.matcher1(value)) != bool(self.matcher2(value))
+
+    def __repr__(self):
+        return "<%s>" % " xor ".join(map(repr, (self.matcher1, self.matcher2)))

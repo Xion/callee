@@ -8,7 +8,7 @@ __license__ = "BSD"
 
 
 from callee.attributes import Attrs, Attr, HasAttrs, HasAttr
-from callee.base import And, Eq, Is, IsNot, Or, Matcher, Not
+from callee.base import And, Either, Eq, Is, IsNot, Or, Matcher, Not
 from callee.collections import \
     Dict, Generator, Iterable, List, Mapping, OrderedDict, Sequence, Set
 from callee.general import Any, ArgThat, Captor, Matching
@@ -32,7 +32,7 @@ from callee.types import InstanceOf, IsA, SubclassOf, Inherits, Type, Class
 __all__ = [
     'Matcher',
     'Eq', 'Is', 'IsNot',
-    'Not', 'And', 'Or',
+    'Not', 'And', 'Or', 'Either',
 
     'Attrs', 'Attr', 'HasAttrs', 'HasAttr',
 
