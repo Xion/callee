@@ -127,3 +127,131 @@ class Matcher(TestCase):
                 self.bar = 42
 
         self.assertEquals("<Custom(bar=42)>", "%r" % Custom(foo='unused'))
+
+
+class LogicalCombinators(TestCase):
+    """Tests for the logical combinators (Not, And, etc.)."""
+
+    def test_not(self):
+        test_strings = ['', 'a', '42', 'a13', '99b', '!', '22 ?']
+        not_no_digits = ~self.NoDigits()  # i.e. HasDigits
+        has_digits = self.HasDigits()
+        for s in test_strings:
+            self.assertEquals(
+                has_digits.match(s), not_no_digits.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    has_digits, not_no_digits, s))
+
+    def test_and__impossible(self):
+        test_strings = ['', 'a', '42', 'a13', '99b']
+        impossible = self.AllDigits() & self.NoDigits()
+        for s in test_strings:
+            self.assertFalse(
+                impossible.match(s),
+                msg="%r matched an impossible matcher %r" % (s, impossible))
+
+    def test_and__idempotent(self):
+        test_strings = ['', 'a', '42', 'a13', '99b', '!', '22 ?']
+        all_digits_and_all_digits = self.AllDigits() & self.AllDigits()
+        all_digits = self.AllDigits()
+        for s in test_strings:
+            self.assertEquals(
+                all_digits.match(s), all_digits_and_all_digits.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    all_digits, all_digits_and_all_digits, s))
+
+    def test_and__regular(self):
+        test_strings = ['', '42', '31337', 'abcdef', 'a42', '22?']
+        short_and_digits = self.Short() & self.AllDigits()
+        short_digits = self.ShortDigits()
+        for s in test_strings:
+            self.assertEquals(
+                short_digits.match(s), short_and_digits.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    short_digits, short_and_digits, s))
+
+    def test_or__trivially_true(self):
+        test_strings = ['', 'abc', '123456789', 'qwerty?', '!!!!one']
+        true = self.Short() | self.Long()
+        for s in test_strings:
+            self.assertTrue(
+                true.match(s),
+                msg="%r didn't match a trivially true matcher %r" % (s, true))
+
+    def test_or__idempotent(self):
+        test_strings = ['', '42', '31337', 'abcdef', 'a42', '22?']
+        short_or_short = self.Short() | self.Short()
+        short = self.Short()
+        for s in test_strings:
+            self.assertEquals(
+                short.match(s), short_or_short.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    short, short_or_short, s))
+
+    def test_or__regular(self):
+        test_strings = ['', '42', '31337', 'abcdef', 'qwerty55', 'a42', '22?']
+        has_digits_or_long = self.HasDigits() | self.Long()
+        long_or_has_digits = self.LongOrHasDigits()
+        for s in test_strings:
+            self.assertEquals(
+                long_or_has_digits.match(s), has_digits_or_long.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    long_or_has_digits, has_digits_or_long, s))
+
+    def test_xor__impossible(self):
+        test_strings = ['', 'a', '42', 'a13', '99b', '!', '22 ?']
+        impossible = self.HasDigits() ^ self.HasDigits()  # a^a <=> ~a
+        for s in test_strings:
+            self.assertFalse(
+                impossible.match(s),
+                msg="%r matched an impossible matcher" % (s,))
+
+    def test_xor__trivially_true(self):
+        test_strings = ['', 'abc', '123456789', 'qwerty?', '!!!!one']
+        true = self.NoDigits() ^ self.HasDigits()
+        for s in test_strings:
+            self.assertTrue(
+                true.match(s),
+                msg="%r didn't match a trivially true matcher %r" % (s, true))
+
+    def test_xor__as_and_not(self):
+        test_strings = ['', '42', '31337', 'abcdef', 'a42', '22?']
+        any_xor_all_digits = self.HasDigits() ^ self.AllDigits()
+        only_some_digits = self.HasDigits() & ~self.AllDigits()
+        for s in test_strings:
+            # Note that the truth of assertion is specific to those predicates:
+            # the second one implies the first one.
+            self.assertEquals(
+                only_some_digits.match(s), any_xor_all_digits.match(s),
+                msg="expected `%r` and `%r` to match %r equivalently" % (
+                    only_some_digits, any_xor_all_digits, s))
+
+    # Utility code
+
+    class NoDigits(__unit__.Matcher):
+        def match(self, value):
+            return all(not c.isdigit() for c in value)
+
+    class HasDigits(__unit__.Matcher):
+        def match(self, value):
+            return any(c.isdigit() for c in value)
+
+    class AllDigits(__unit__.Matcher):
+        def match(self, value):
+            return value.isdigit()
+
+    class Short(__unit__.Matcher):
+        def match(self, value):
+            return len(value) < 5
+
+    class ShortDigits(__unit__.Matcher):
+        def match(self, value):
+            return value.isdigit() and len(value) < 5
+
+    class Long(__unit__.Matcher):
+        def match(self, value):
+            return len(value) >= 5
+
+    class LongOrHasDigits(__unit__.Matcher):
+        def match(self, value):
+            return len(value) >= 5 or any(c.isdigit() for c in value)

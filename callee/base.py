@@ -273,7 +273,7 @@ class Not(BaseMatcher):
         return not self._matcher.match(value)
 
     def __repr__(self):
-        return "not %r" % (self.matcher,)
+        return "not %r" % (self._matcher,)
 
     def __invert__(self):
         return self._matcher
@@ -330,24 +330,24 @@ class Or(BaseMatcher):
 
 
 class Either(BaseMatcher):
-    """Matches the argument only if exactly one of the given matchers does.
+    """Matches the argument only if some (but not all) of given matchers do.
 
     .. versionadded:: 0.3
     """
     def __init__(self, *matchers):
-        assert matchers, "Either() expects at least one matcher"
+        assert len(matchers) >= 2, "Either() expects at least two matchers"
         assert all(isinstance(m, BaseMatcher)
                    for m in matchers), "Either() expects matchers"
         self._matchers = list(matchers)
 
     def match(self, value):
-        any_matches = False
-        for matcher in self._matchers:
+        any_matches = bool(self._matchers[0].match(value))
+        for matcher in self._matchers[1:]:
             is_match = bool(matcher.match(value))
-            if is_match and any_matches:
-                return False
-            any_matches = is_match
-        return any_matches
+            if is_match != any_matches:
+                return True
+            any_matches |= is_match
+        return False
 
     def __repr__(self):
         return "<%s>" % " xor ".join(map(repr, self._matchers))
