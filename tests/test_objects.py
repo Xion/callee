@@ -30,6 +30,10 @@ class Bytes(MatcherTestCase):
     test_some_object = lambda self: self.assert_no_match(object())
     test_some_number = lambda self: self.assert_no_match(42)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Bytes())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Bytes, self).assert_match(__unit__.Bytes(), value)
 
@@ -113,6 +117,8 @@ class Coroutine(MatcherTestCase):
             """))
         except SyntaxError:
             pass
+
+    test_repr = lambda self: self.assert_repr(__unit__.Coroutine())
 
     # Assertion functions
 

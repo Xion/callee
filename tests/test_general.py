@@ -24,6 +24,8 @@ class Any(MatcherTestCase):
     test_some_list = lambda self: self.assert_match([1, 2, 3, 5, 8, 13])
     test_some_tuple = lambda self: self.assert_match(('foo', -1, ['bar']))
 
+    test_repr = lambda self: self.assert_repr(__unit__.Any())
+
     def assert_match(self, value):
         return super(Any, self).assert_match(__unit__.Any(), value)
 

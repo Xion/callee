@@ -30,6 +30,10 @@ class String(MatcherTestCase):
     test_some_object = lambda self: self.assert_no_match(object())
     test_some_number = lambda self: self.assert_no_match(42)
 
+    test_repr = lambda self: self.assert_repr(__unit__.String)
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(String, self).assert_match(__unit__.String(), value)
 
@@ -52,6 +56,10 @@ class Unicode(MatcherTestCase):
 
     test_some_object = lambda self: self.assert_no_match(object())
     test_some_number = lambda self: self.assert_no_match(42)
+
+    test_repr = lambda self: self.assert_repr(__unit__.Unicode)
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Unicode, self).assert_match(__unit__.Unicode(), value)
@@ -92,6 +100,8 @@ class StartsWith(MatcherTestCase):
         self.assert_no_match(u' foo', u'f')
         self.assert_no_match(u'foo', u'b')
         self.assert_no_match(u'', u'foo')
+
+    test_repr = lambda self: self.assert_repr(__unit__.StartsWith(''))
 
     # Assertion functions
 
@@ -134,6 +144,8 @@ class EndsWith(MatcherTestCase):
         self.assert_no_match(u'bar', u'o')
         self.assert_no_match(u'bar ', u'r')
         self.assert_no_match(u'', u'bar')
+
+    test_repr = lambda self: self.assert_repr(__unit__.EndsWith(''))
 
     # Assertion functions
 
@@ -210,6 +222,8 @@ class Glob(PatternTestCase):
                       __unit__.Glob('', case='system').fnmatch)
         self.assertIs(fnmatch.fnmatch, __unit__.Glob('', case=None).fnmatch)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Glob('*'))
+
     # Assertion functions
 
     def assert_match(self, value, pattern, case=__unit__.Glob.DEFAULT_CASE):
@@ -248,6 +262,8 @@ class Regex(PatternTestCase):
         for suffix in self.suffixes():
             square_pattern = ''.join('[%s]' % char for char in suffix)
             self.assert_match(text + suffix, re.escape(text) + square_pattern)
+
+    test_repr = lambda self: self.assert_repr(__unit__.Regex('.'))
 
     # Assertion functions
 

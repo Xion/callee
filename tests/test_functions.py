@@ -42,6 +42,10 @@ class Callable(MatcherTestCase):
     test_lambda = lambda self: self.assert_match(lambda: ())
     test_generator = lambda self: self.assert_no_match(x for x in ())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Callable())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Callable, self).assert_match(__unit__.Callable(), value)
 
@@ -87,6 +91,10 @@ class Function(MatcherTestCase):
     test_lambda = lambda self: self.assert_match(lambda: ())
     test_generator = lambda self: self.assert_no_match(x for x in ())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Function())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Function, self).assert_match(__unit__.Function(), value)
 
@@ -123,6 +131,10 @@ class GeneratorFunction(MatcherTestCase):
 
     test_lambda = lambda self: self.assert_no_match(lambda: ())
     test_generator = lambda self: self.assert_no_match(x for x in ())
+
+    test_repr = lambda self: self.assert_repr(__unit__.GeneratorFunction())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(GeneratorFunction, self) \
@@ -201,6 +213,8 @@ class CoroutineFunction(MatcherTestCase):
             """))
         except SyntaxError:
             pass
+
+    test_repr = lambda self: self.assert_repr(__unit__.CoroutineFunction())
 
     # Assertion functions
 

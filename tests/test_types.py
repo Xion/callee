@@ -38,6 +38,8 @@ class InstanceOf(MatcherTestCase):
         self.assert_match(type, type)
         self.assert_match(type, type, exact=True)
 
+    test_repr = lambda self: self.assert_repr(__unit__.InstanceOf(object))
+
     # Utility code
 
     class Class(object):
@@ -83,6 +85,8 @@ class SubclassOf(MatcherTestCase):
         self.assert_no_match(self.Class, self.Class, strict=True)
         self.assert_no_match(object, self.Class, strict=True)
         self.assert_no_match(object, object, strict=True)
+
+    test_repr = lambda self: self.assert_repr(__unit__.SubclassOf(object))
 
     # Utility code
 

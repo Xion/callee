@@ -168,8 +168,14 @@ class Eq(MatcherTestCase):
         # It's fine with Eq, though.
         self.assert_match(__unit__.Eq(RegularValue(42)), MatcherValue(42))
 
+    def test_repr(self):
+        """Test for the __repr__ method."""
+        value = 42
+        eq = __unit__.Eq(value)
+        self.assert_repr(eq, value)
 
-class LogicalCombinators(TestCase):
+
+class LogicalCombinators(MatcherTestCase):
     """Tests for the logical combinators (Not, And, etc.)."""
 
     def test_not(self):
@@ -181,6 +187,10 @@ class LogicalCombinators(TestCase):
                 has_digits.match(s), not_no_digits.match(s),
                 msg="expected `%r` and `%r` to match %r equivalently" % (
                     has_digits, not_no_digits, s))
+
+    def test_not__repr(self):
+        not_all_digits = ~self.AllDigits()
+        self.assert_repr(not_all_digits)
 
     def test_and__impossible(self):
         test_strings = ['', 'a', '42', 'a13', '99b']
@@ -210,6 +220,10 @@ class LogicalCombinators(TestCase):
                 msg="expected `%r` and `%r` to match %r equivalently" % (
                     short_digits, short_and_digits, s))
 
+    def test_and__repr(self):
+        short_and_digits = self.Short() & self.AllDigits()
+        self.assert_repr(short_and_digits)
+
     def test_or__trivially_true(self):
         test_strings = ['', 'abc', '123456789', 'qwerty?', '!!!!one']
         true = self.Short() | self.Long()
@@ -238,6 +252,10 @@ class LogicalCombinators(TestCase):
                 msg="expected `%r` and `%r` to match %r equivalently" % (
                     long_or_has_digits, has_digits_or_long, s))
 
+    def test_or__repr(self):
+        has_digits_or_short = self.HasDigits() | self.Short()
+        self.assert_repr(has_digits_or_short)
+
     def test_xor__impossible(self):
         test_strings = ['', 'a', '42', 'a13', '99b', '!', '22 ?']
         impossible = self.HasDigits() ^ self.HasDigits()  # a^a <=> ~a
@@ -265,6 +283,10 @@ class LogicalCombinators(TestCase):
                 only_some_digits.match(s), any_xor_all_digits.match(s),
                 msg="expected `%r` and `%r` to match %r equivalently" % (
                     only_some_digits, any_xor_all_digits, s))
+
+    def test_xor__repr(self):
+        all_digits_xor_short = self.AllDigits() ^ self.Short()
+        self.assert_repr(all_digits_xor_short)
 
     # Utility code
 

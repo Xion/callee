@@ -24,6 +24,10 @@ class Number(MatcherTestCase):
     test_float = lambda self: self.assert_match(0.0)
     test_complex = lambda self: self.assert_match(complex(0, 1))
 
+    test_repr = lambda self: self.assert_repr(__unit__.Number())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Number, self).assert_match(__unit__.Number(), value)
 
@@ -44,6 +48,10 @@ class Complex(MatcherTestCase):
     test_fraction = lambda self: self.assert_match(Fraction(5, 7))
     test_float = lambda self: self.assert_match(0.0)
     test_complex = lambda self: self.assert_match(complex(0, 1))
+
+    test_repr = lambda self: self.assert_repr(__unit__.Complex())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Complex, self).assert_match(__unit__.Complex(), value)
@@ -66,6 +74,10 @@ class Real(MatcherTestCase):
     test_float = lambda self: self.assert_match(0.0)
     test_complex = lambda self: self.assert_no_match(complex(0, 1))
 
+    test_repr = lambda self: self.assert_repr(__unit__.Real())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Real, self).assert_match(__unit__.Real(), value)
 
@@ -86,6 +98,10 @@ class Float(MatcherTestCase):
     test_fraction = lambda self: self.assert_no_match(Fraction(9, 11))
     test_float = lambda self: self.assert_match(0.0)
     test_complex = lambda self: self.assert_no_match(complex(0, 1))
+
+    test_repr = lambda self: self.assert_repr(__unit__.Float())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Float, self).assert_match(__unit__.Float(), value)
@@ -108,6 +124,10 @@ class Integral(MatcherTestCase):
     test_float = lambda self: self.assert_no_match(0.0)
     test_complex = lambda self: self.assert_no_match(complex(0, 1))
 
+    test_repr = lambda self: self.assert_repr(__unit__.Integral())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Integral, self).assert_match(__unit__.Integral(), value)
 
@@ -129,6 +149,10 @@ class Integer(MatcherTestCase):
     test_fraction = lambda self: self.assert_no_match(Fraction(9, 11))
     test_float = lambda self: self.assert_no_match(0.0)
     test_complex = lambda self: self.assert_no_match(complex(0, 1))
+
+    test_repr = lambda self: self.assert_repr(__unit__.Integer())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Integer, self).assert_match(__unit__.Integer(), value)
@@ -157,6 +181,10 @@ class Long(MatcherTestCase):
     test_fraction = lambda self: self.assert_no_match(Fraction(9, 11))
     test_float = lambda self: self.assert_no_match(0.0)
     test_complex = lambda self: self.assert_no_match(complex(0, 1))
+
+    test_repr = lambda self: self.assert_repr(__unit__.Long())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Long, self).assert_match(__unit__.Long(), value)

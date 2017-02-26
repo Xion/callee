@@ -54,6 +54,8 @@ class Less(OperatorTestCase):
         self.assert_no_match(ref | set([7]), ref)
         self.assert_no_match(set([0]), ref)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Less(42))
+
     # Assertion functions
 
     def assert_match(self, value, ref):
@@ -93,6 +95,8 @@ class LessOrEqual(OperatorTestCase):
 
         self.assert_no_match(ref | set([7]), ref)
         self.assert_no_match(set([0]), ref)
+
+    test_repr = lambda self: self.assert_repr(__unit__.LessOrEqual(42))
 
     # Assertion functions
 
@@ -136,6 +140,8 @@ class Greater(OperatorTestCase):
             self.assert_no_match(s, ref)
         self.assert_no_match(set([0]), ref)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Greater(42))
+
     # Assertion functions
 
     def assert_match(self, value, ref):
@@ -178,6 +184,8 @@ class GreaterOrEqual(OperatorTestCase):
             self.assert_no_match(s, ref)
         self.assert_no_match(set([0]), ref)
 
+    test_repr = lambda self: self.assert_repr(__unit__.GreaterOrEqual(42))
+
     # Assertion functions
 
     def assert_match(self, value, ref):
@@ -214,6 +222,8 @@ class Shorter(OperatorTestCase):
         self.assert_no_match(ref, ref)
         self.assert_no_match(2 * ref, ref)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Shorter(42))
+
     # Assertion functions
 
     def assert_match(self, value, ref):
@@ -246,6 +256,8 @@ class ShorterOrEqual(OperatorTestCase):
         self.assert_match([42] * (len(ref) - 1), ref)
 
         self.assert_no_match(2 * ref, ref)
+
+    test_repr = lambda self: self.assert_repr(__unit__.ShorterOrEqual(42))
 
     # Assertion functions
 
@@ -282,6 +294,8 @@ class Longer(OperatorTestCase):
             self.assert_no_match(list(s), ref)
         self.assert_no_match([42] * len(ref), ref)
 
+    test_repr = lambda self: self.assert_repr(__unit__.Longer(42))
+
     # Assertion functions
 
     def assert_match(self, value, ref):
@@ -316,6 +330,8 @@ class LongerOrEqual(OperatorTestCase):
 
         for s in self.subsets(ref, strict=True):
             self.assert_no_match(list(s), ref)
+
+    test_repr = lambda self: self.assert_repr(__unit__.LongerOrEqual(42))
 
     # Assertion functions
 
@@ -359,6 +375,8 @@ class Contains(OperatorTestCase):
         self.assert_match(set([ref]), ref)
         self.assert_match(set([None, ref]), ref)
         self.assert_match(set(range(ref + 1)), ref)
+
+    test_repr = lambda self: self.assert_repr(__unit__.Contains(42))
 
     # Assertion functions
 
@@ -412,6 +430,8 @@ class In(OperatorTestCase):
 
         for num in ref:
             self.assert_match(num, ref)
+
+    test_repr = lambda self: self.assert_repr(__unit__.In(()))
 
     # Assertion functions
 

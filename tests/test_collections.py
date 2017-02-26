@@ -31,6 +31,10 @@ class Iterable(MatcherTestCase):
 
     test_some_object = lambda self: self.assert_no_match(object())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Iterable())
+
+    # Assertion functions
+
     def assert_match(self, value):
         return super(Iterable, self).assert_match(__unit__.Iterable(), value)
 
@@ -59,6 +63,10 @@ class Generator(MatcherTestCase):
             gen, msg="matcher shouldn't have iterated over the generator")
 
     test_some_object = lambda self: self.assert_no_match(object())
+
+    test_repr = lambda self: self.assert_repr(__unit__.Generator())
+
+    # Assertion functions
 
     def assert_match(self, value):
         return super(Generator, self).assert_match(__unit__.Generator(), value)
@@ -96,6 +104,10 @@ class Sequence(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Sequence())
+
+    # Assertion functions
+
     def assert_match(self, value, of=None):
         return super(Sequence, self).assert_match(__unit__.Sequence(of), value)
 
@@ -120,6 +132,10 @@ class List(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
+    test_repr = lambda self: self.assert_repr(__unit__.List())
+
+    # Assertion functions
+
     def assert_match(self, value, of=None):
         return super(List, self).assert_match(__unit__.List(of), value)
 
@@ -143,6 +159,10 @@ class Set(MatcherTestCase):
     test_some_tuple = lambda self: self.assert_no_match(('foo', -1, ['bar']))
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
+
+    test_repr = lambda self: self.assert_repr(__unit__.Set())
+
+    # Assertion functions
 
     def assert_match(self, value, of=None):
         return super(Set, self).assert_match(__unit__.Set(of), value)
@@ -233,6 +253,10 @@ class Mapping(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Mapping())
+
+    # Assertion functions
+
     def assert_match(self, value, *args, **kwargs):
         return super(Mapping, self)\
             .assert_match(__unit__.Mapping(*args, **kwargs), value)
@@ -293,6 +317,10 @@ class Dict(MatcherTestCase):
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
 
+    test_repr = lambda self: self.assert_repr(__unit__.Dict())
+
+    # Assertion functions
+
     def assert_match(self, value, *args, **kwargs):
         return super(Dict, self) \
             .assert_match(__unit__.Dict(*args, **kwargs), value)
@@ -345,6 +373,10 @@ class OrderedDict(MatcherTestCase):
 
     test_some_generator = lambda self: self.assert_no_match(x for x in [1, 2])
     test_some_object = lambda self: self.assert_no_match(object())
+
+    test_repr = lambda self: self.assert_repr(__unit__.OrderedDict())
+
+    # Assertion functions
 
     def assert_match(self, value, *args, **kwargs):
         return super(OrderedDict, self) \

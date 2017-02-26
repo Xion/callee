@@ -51,6 +51,22 @@ class MatcherTestCase(TestCase):
             m.assert_called_with(matcher)
         return True
 
+    def assert_repr(self, matcher, *args):
+        """Assert on the representation of a matcher.
+
+        :param matcher: Matcher object
+
+        Positional arguments are expected to have their repr's be contained
+        within the matcher's repr.
+        """
+        repr_ = "%r" % matcher
+        for arg in args:
+            arg_repr = "%r" % arg
+            self.assertIn(
+                arg_repr, repr_,
+                msg="%s (repr of %s) didn't contain expected value %s" % (
+                    repr_, matcher.__class__.__name__, arg_repr))
+
     def await_(self, coroutine):
         """Run given asynchronous coroutine to completion.
         This prevents a warning from being emitted when it goes out of scope.
