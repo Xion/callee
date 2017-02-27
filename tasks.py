@@ -61,6 +61,7 @@ def docs(ctx, output='html', rebuild=False, show=True, verbose=True):
         webbrowser.open_new_tab(path)
 
 
+# TODO: remove this when PyPI upload from Travis CI is verified to work
 @task(help={
     'yes': "Whether to actually perform the upload. "
            "By default, a confirmation is necessary.",
