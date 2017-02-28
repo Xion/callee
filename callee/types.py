@@ -33,7 +33,7 @@ class InstanceOf(TypeMatcher):
     """
     def __init__(self, type_, exact=False):
         """
-        :param type\ _; Type to match against
+        :param type\ _: Type to match against
         :param exact:
 
             If True, the match will only succeed if the value type matches

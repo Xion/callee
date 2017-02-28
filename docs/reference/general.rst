@@ -13,6 +13,8 @@ boolean predicates.
 .. autoclass:: Matching
 .. autoclass:: ArgThat
 
+.. autoclass:: Captor
+
 
 Type matchers
 *************

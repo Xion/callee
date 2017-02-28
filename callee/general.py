@@ -133,7 +133,7 @@ class Captor(BaseMatcher):
         captor = Captor()
         mock_foo.assert_called_with(captor)
 
-        # captured value is available as `arg` attribute
+        # captured value is available as the `arg` attribute
         self.assertEquals(captor.arg.some_method(), 42)
         self.assertEquals(captor.arg.some_other_method(), "foo")
 
