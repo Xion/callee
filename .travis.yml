@@ -41,7 +41,7 @@ branches:
     - master
     # Also on tags, so that deploys are triggered.
     # (This regex matches semantic versions like v1.2.3-rc4+2016.02.22)
-    - /^\d+\.\d+\.\d+.*$/
+    - /^\d+\.\d+(\.\d+)?.*$/
 
 git:
   # Don't set this to 1
