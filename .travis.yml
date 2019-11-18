@@ -13,7 +13,9 @@ python:
   - '3.6'
   - pypy3
 
-install: pip install tox-travis
+install:
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.3 ]]; then pip install virtualenv==15.2.0; fi
+  - pip install tox-travis
 sudo: false
 
 script: tox
