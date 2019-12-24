@@ -1,7 +1,7 @@
 """
 callee
 """
-__version__ = "0.3"
+__version__ = "0.3.1"
 __description__ = "Argument matchers for unittest.mock"
 __author__ = "Karol Kuczmarski"
 __license__ = "BSD"

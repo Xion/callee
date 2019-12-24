@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+* Python 3.6 & 3.7 support
+
 ## 0.3
 
 * `strict=` param in `SubclassOf`.
