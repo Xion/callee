@@ -67,7 +67,11 @@ def docs(ctx, output='html', rebuild=False, show=True, verbose=True):
            "By default, a confirmation is necessary.",
 })
 def upload(ctx, yes=False):
-    """Upload the package to PyPI."""
+    """Upload the package to PyPI.
+
+    This is done by adding a Git tag for the current non-dev version
+    and pushing to GitHub, which triggers the Travis build & deploy pipeline.
+    """
     import callee
     version = callee.__version__
 
@@ -84,14 +88,8 @@ def upload(ctx, yes=False):
         logging.warning("Aborted -- not uploading to PyPI.")
         return -2
 
-    logging.debug("Uploading version %s to PyPI...", version)
-    setup_py_upload = ctx.run('python setup.py sdist upload')
-    if not setup_py_upload.ok:
-        fatal("Failed to upload version %s to PyPI!", version,
-              cause=setup_py_upload)
-    logging.info("PyPI upload completed successfully.")
-
     # add a Git tag and push
+    logging.debug("Tagging current HEAD as %s..." % version)
     git_tag = ctx.run('git tag %s' % version)
     if not git_tag.ok:
         fatal("Failed to add a Git tag for uploaded version %s", version,
@@ -99,6 +97,7 @@ def upload(ctx, yes=False):
     git_push = ctx.run('git push && git push --tags')
     if not git_push.ok:
         fatal("Failed to push the release upstream.", cause=git_push)
+    logging.info("New version (%s) successfully pushed." % version)
 
 
 # Utility functions
