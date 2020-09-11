@@ -95,7 +95,7 @@ class Iterable(CollectionMatcher):
 
 
 class Generator(BaseMatcher):
-    """Matches an iterable that's a generator.
+    r"""Matches an iterable that's a generator.
 
     A generator can be a generator expression ("comprehension")
     or an invocation of a generator function (one that ``yield``\ s objects).

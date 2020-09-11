@@ -185,7 +185,7 @@ ShorterThan = Shorter
 
 
 class ShorterOrEqual(LengthMatcher):
-    """Matches values that are shorter than,
+    r"""Matches values that are shorter than,
     or equal in ``len``\ gth to (as per ``<=`` operator), given object.
     """
     OP = operator.le
@@ -203,7 +203,7 @@ LongerThan = Longer
 
 
 class LongerOrEqual(LengthMatcher):
-    """Matches values that are longer than,
+    r"""Matches values that are longer than,
     or equal in ``len``\ gth to (as per ``>=`` operator), given object.
     """
     OP = operator.ge

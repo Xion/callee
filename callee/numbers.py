@@ -43,7 +43,7 @@ class Number(NumericMatcher):
 
 
 class Complex(NumericMatcher):
-    """Matches any complex number.
+    r"""Matches any complex number.
 
     This *includes* all real, rational, and integer numbers as well,
     which in Python translates to `float`\ s, fractions, and `int`\ egers.
@@ -57,7 +57,7 @@ class Complex(NumericMatcher):
 
 
 class Real(NumericMatcher):
-    """Matches any real number.
+    r"""Matches any real number.
 
     This includes all rational and integer numbers as well, which in Python
     translates to fractions, and `int`\ egers.
@@ -72,7 +72,7 @@ class Float(NumericMatcher):
 
 
 class Rational(NumericMatcher):
-    """Matches a rational number.
+    r"""Matches a rational number.
     This includes all `int`\ eger numbers as well.
     """
     CLASS = numbers.Rational
