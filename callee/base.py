@@ -2,9 +2,9 @@
 Base classes for argument matchers.
 """
 import inspect
-from operator import itemgetter
+from operator import attrgetter, itemgetter
 
-from callee._compat import IS_PY3, metaclass
+from callee._compat import IS_PY3, STRING_TYPES, metaclass
 
 
 __all__ = [
@@ -205,13 +205,24 @@ class Eq(BaseMatcher):
 
     Those situations shouldn't generally arise outside of writing tests
     for code that is itself a test library or helper.
+
+    :param on: Optional transform to apply to both values before comparing.
+               When a string is given, it is treated as an attribute name.
+    :param key: Alias for ``on``.
     """
-    def __init__(self, value):
+    def __init__(self, value, on=None, key=None):
         """:param value: Value to match against"""
+        if on is not None and key is not None:
+            raise TypeError("Eq() cannot specify both 'on' and 'key'")
+
         self.value = value
+        self.transform = self._get_transform(on, key)
 
     def match(self, value):
-        return self.value == value
+        if self.transform is None:
+            return self.value == value
+
+        return self.transform(self.value) == self.transform(value)
 
     def __eq__(self, other):
         return self.match(other)
@@ -220,6 +231,23 @@ class Eq(BaseMatcher):
         # This representation matches the format of comparison operators
         # (such as :class:`Less`) defined in the ``.operators`` module.
         return "<... == %r>" % (self.value,)
+
+    @staticmethod
+    def _get_transform(on, key):
+        transform = on if on is not None else key
+
+        if transform is None:
+            return None
+
+        if isinstance(transform, STRING_TYPES):
+            return attrgetter(transform)
+
+        if not callable(transform):
+            raise TypeError(
+                "Eq() 'on'/'key' transform must be callable or a string, "
+                "got %r" % (type(transform),))
+
+        return transform
 
 
 class Is(BaseMatcher):

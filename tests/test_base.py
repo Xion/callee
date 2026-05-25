@@ -2,6 +2,8 @@
 """
 Tests for matcher base classes.
 """
+from operator import attrgetter
+
 import callee.base as __unit__
 from tests import MatcherTestCase, TestCase
 
@@ -173,6 +175,48 @@ class Eq(MatcherTestCase):
         value = 42
         eq = __unit__.Eq(value)
         self.assert_repr(eq, value)
+
+    def test_on_parameter(self):
+        """Test matching by transforming compared values."""
+        class Value(object):
+            def __init__(self, id, name):
+                self.id = id
+                self.name = name
+
+        expected = Value(1, 'expected')
+        actual = Value(1, 'actual')
+        other = Value(2, 'actual')
+
+        self.assert_match(__unit__.Eq(expected, on=attrgetter('id')), actual)
+        self.assert_no_match(__unit__.Eq(expected, on=attrgetter('id')), other)
+
+    def test_on_parameter_with_string(self):
+        """Test string shorthand for attrgetter."""
+        class Value(object):
+            def __init__(self, id):
+                self.id = id
+
+        self.assert_match(__unit__.Eq(Value(1), on='id'), Value(1))
+        self.assert_no_match(__unit__.Eq(Value(1), on='id'), Value(2))
+
+    def test_key_alias(self):
+        """Test key= as an alias for on=."""
+        class Value(object):
+            def __init__(self, id):
+                self.id = id
+
+        self.assert_match(__unit__.Eq(Value(1), key='id'), Value(1))
+        self.assert_no_match(__unit__.Eq(Value(1), key='id'), Value(2))
+
+    def test_on_and_key_are_mutually_exclusive(self):
+        """Test that on= and key= cannot be combined."""
+        with self.assertRaises(TypeError):
+            __unit__.Eq(1, on='id', key='id')
+
+    def test_on_parameter_must_be_callable_or_string(self):
+        """Test validation for the on= transform."""
+        with self.assertRaises(TypeError):
+            __unit__.Eq(1, on=object())
 
 
 class LogicalCombinators(MatcherTestCase):
