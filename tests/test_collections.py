@@ -1,7 +1,10 @@
 """
 Tests for collections' matchers.
 """
-import collections
+try:
+    import collections.abc as collections_abc
+except ImportError:
+    import collections as collections_abc
 
 from taipan.testing import skipIf
 
@@ -173,12 +176,12 @@ class Set(MatcherTestCase):
 
 # Mappings
 
-class CustomDict(collections.MutableMapping):
+class CustomDict(collections_abc.MutableMapping):
     """"Custom, no-op mapping class that just wraps a regular Python dict
     but is not a Python dict itself.
     """
     def __init__(self, iterable=(), **kwargs):
-        if isinstance(iterable, collections.Mapping):
+        if isinstance(iterable, collections_abc.Mapping):
             iterable = iterable.items()
 
         self.d = {}
