@@ -183,7 +183,7 @@ class MappingMatcher(CollectionMatcher):
             # got positional arguments only
             self.keys, self.values = map(self._validate_argument, args)
         elif kwargs:
-            has_kv = 'keys' in kwargs and 'values' in kwargs
+            has_kv = 'keys' in kwargs or 'values' in kwargs
             has_of = 'of' in kwargs
             if not (has_kv or has_of):
                 raise TypeError("expected keys/values or items matchers, "
@@ -194,8 +194,8 @@ class MappingMatcher(CollectionMatcher):
 
             if has_kv:
                 # got keys= and values= matchers
-                self.keys = self._validate_argument(kwargs['keys'])
-                self.values = self._validate_argument(kwargs['values'])
+                self.keys = self._validate_argument(kwargs.get('keys'))
+                self.values = self._validate_argument(kwargs.get('values'))
             else:
                 # got of= matcher, which can be a tuple of matchers,
                 # or a single matcher for dictionary items
@@ -219,8 +219,10 @@ class MappingMatcher(CollectionMatcher):
 
         if self.items is not None:
             return all(self.items == i for i in value.items())
-        if self.keys is not None and self.values is not None:
-            return all(self.keys == k and self.values == v
+        if self.keys is not None or self.values is not None:
+            keys = Any() if self.keys is None else self.keys
+            values = Any() if self.values is None else self.values
+            return all(keys == k and values == v
                        for k, v in value.items())
 
         return True

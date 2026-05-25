@@ -307,6 +307,14 @@ class Dict(MatcherTestCase):
         self.assert_match(d, keys=str, values=int)
         self.assert_match(d, of=(str, int))
 
+    def test_some_dict__regular_keys_only(self):
+        self.assert_match({'a': 1}, keys=str)
+        self.assert_no_match({1: 'a'}, keys=str)
+
+    def test_some_dict__regular_values_only(self):
+        self.assert_match({'a': 1}, values=int)
+        self.assert_no_match({'a': 'b'}, values=int)
+
     def test_some_dict__custom(self):
         d = CustomDict({'a': 1})
         self.assert_no_match(d)
