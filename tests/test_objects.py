@@ -11,7 +11,7 @@ from taipan.testing import skipIf, skipUnless
 
 from callee._compat import IS_PY3, asyncio
 import callee.objects as __unit__
-from tests import IS_PY34, IS_PY35, MatcherTestCase, python_code
+from tests import IS_PY34, IS_PY34_ONLY, IS_PY35, MatcherTestCase, python_code
 
 
 class Bytes(MatcherTestCase):
@@ -75,7 +75,7 @@ class Coroutine(MatcherTestCase):
         self.assert_no_match(func)
         self.assert_match(func())
 
-    @skipUnless(IS_PY34, "requires Python 3.4+")
+    @skipUnless(IS_PY34_ONLY, "requires Python 3.4")
     def test_coroutine__decorator(self):
         @asyncio.coroutine
         def coro_func(loop):
@@ -98,7 +98,7 @@ class Coroutine(MatcherTestCase):
         except SyntaxError:
             pass
 
-    @skipUnless(IS_PY34, "requires Python 3.4+")
+    @skipUnless(IS_PY34_ONLY, "requires Python 3.4")
     def test_coroutine_function__decorator(self):
         @asyncio.coroutine
         def coro_func(loop):

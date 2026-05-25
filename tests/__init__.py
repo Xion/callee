@@ -15,13 +15,14 @@ from callee._compat import asyncio
 
 
 __all__ = [
-    'IS_PY34', 'IS_PY35',
+    'IS_PY34', 'IS_PY34_ONLY', 'IS_PY35',
     'MatcherTestCase',
     'python_code'
 ]
 
 
 IS_PY34 = sys.version_info >= (3, 4)
+IS_PY34_ONLY = IS_PY34 and sys.version_info < (3, 5)
 IS_PY35 = sys.version_info >= (3, 5)
 
 
