@@ -192,6 +192,28 @@ class LogicalCombinators(MatcherTestCase):
         not_all_digits = ~self.AllDigits()
         self.assert_repr(not_all_digits)
 
+    def test_not__and_not(self):
+        matcher = ~self.HasDigits() & ~self.Long()
+        for value, expected in [('', True), ('abc', True),
+                                ('a1', False), ('abcde', False),
+                                ('abcde1', False)]:
+            self.assertEqual(matcher.match(value), expected)
+            if expected:
+                self.assert_match(matcher, value)
+            else:
+                self.assert_no_match(matcher, value)
+
+    def test_not__or_not(self):
+        matcher = ~self.HasDigits() | ~self.Long()
+        for value, expected in [('', True), ('abc', True),
+                                ('a1', True), ('abcde', True),
+                                ('abcde1', False)]:
+            self.assertEqual(matcher.match(value), expected)
+            if expected:
+                self.assert_match(matcher, value)
+            else:
+                self.assert_no_match(matcher, value)
+
     def test_and__impossible(self):
         test_strings = ['', 'a', '42', 'a13', '99b']
         impossible = self.AllDigits() & self.NoDigits()

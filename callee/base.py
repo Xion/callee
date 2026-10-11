@@ -282,14 +282,14 @@ class Not(BaseMatcher):
         # convert (~a) & (~b) into ~(a | b) which is one operation less
         # but still equivalent as per de Morgan laws
         if isinstance(other, Not):
-            return Not(self.matcher | other.matcher)
+            return Not(self._matcher | other._matcher)
         return super(Not, self).__and__(other)
 
     def __or__(self, other):
         # convert (~a) | (~b) into ~(a & b) which is one operation less
         # but still equivalent as per de Morgan laws
         if isinstance(other, Not):
-            return Not(self.matcher & other.matcher)
+            return Not(self._matcher & other._matcher)
         return super(Not, self).__or__(other)
 
 
